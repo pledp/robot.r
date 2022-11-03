@@ -19,7 +19,10 @@ namespace pLdevTest
         private int currentLine;
         private int numberOfLines;
         private Dictionary<char, SpriteFont.Glyph> fontGlyphs;
+
         Texture2D whiteRectangle;
+        Texture2D yellowRectangle;
+
         private List<String> typing;
         private List<int> lineCounter;
         private double typeWriterTimer;
@@ -52,6 +55,9 @@ namespace pLdevTest
 
             whiteRectangle = new Texture2D(graphicsDevice, 1, 1);
             whiteRectangle.SetData(new[] { Color.White });
+            yellowRectangle = new Texture2D(graphicsDevice, 1, 1);
+            yellowRectangle.SetData(new[] { Color.Yellow });
+
         }
 
         public void Update(GameTime gameTime)
@@ -91,13 +97,14 @@ namespace pLdevTest
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
+            spriteBatch.Draw(yellowRectangle, new Rectangle(Convert.ToInt32(codeEditorOffset.X), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), Convert.ToInt32(font.MeasureString(typing[currentLine]).X + 40), Convert.ToInt32(font.MeasureString("A").Y)), Color.White);
+
             spriteBatch.DrawString(font, typeWriterStringType, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - font.MeasureString(typeWriterString).X / 2, graphics.GraphicsDevice.Viewport.Height / 2 - font.MeasureString(typeWriterString).Y / 2), Color.Black);
 
 
             foreach (int line in lineCounter)
             {
                 // Draw code
-                
                 spriteBatch.DrawString(font, typing[line - 1], new Vector2(50 + codeEditorOffset.X, line * 50 + codeEditorOffset.Y - 50), Color.Black);
 
                 // Draw line counter
@@ -105,6 +112,7 @@ namespace pLdevTest
             }
             // Typing cursor indicator
             spriteBatch.Draw(whiteRectangle, new Rectangle(Convert.ToInt32(font.MeasureString(typing[currentLine]).X) + 60 + Convert.ToInt32(codeEditorOffset.X), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), 20, Convert.ToInt32(font.MeasureString("A").Y)), Color.White);
+
         }
 
         public void typeText(char key)
