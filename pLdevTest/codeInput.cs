@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 
@@ -16,8 +17,11 @@ namespace pLdevTest
         private SpriteFont font;
         private string typeWriterString;
         private string typeWriterStringType;
+        private string currentCharString;
         private int currentLine;
         private int numberOfLines;
+        private int currentChar;
+        private int cursorOffset;
         private Dictionary<char, SpriteFont.Glyph> fontGlyphs;
 
         Texture2D whiteRectangle;
@@ -37,6 +41,8 @@ namespace pLdevTest
             typeWriterStringType = "";
             currentLine = 0;
             numberOfLines = 1;
+            currentChar = 0;
+            cursorOffset = 0;
 
             typing = new List<String>();
             lineCounter = new List<int>();
@@ -56,7 +62,7 @@ namespace pLdevTest
             whiteRectangle = new Texture2D(graphicsDevice, 1, 1);
             whiteRectangle.SetData(new[] { Color.White });
             yellowRectangle = new Texture2D(graphicsDevice, 1, 1);
-            yellowRectangle.SetData(new[] { Color.Yellow });
+            yellowRectangle.SetData(new[] { Color.Green });
 
         }
 
@@ -70,15 +76,21 @@ namespace pLdevTest
             {
                 if (!lastPressedKeys.Contains(key) || arrowTimer > 0.2)
                 {
-                    if (kbState.IsKeyDown(Keys.Up))
+                    switch(key)
                     {
-                        swapCodeLine(Keys.Up);
+                        case Keys.Up:
+                            swapCodeLine(Keys.Up);
+                            break;
+                        case Keys.Down:
+                            swapCodeLine(Keys.Down);
+                            break;
+                        case Keys.Right:
+                            moveOnCodeLine(Keys.Right);
+                            break;
+                        case Keys.Left:
+                            moveOnCodeLine(Keys.Left);
+                            break;
                     }
-                    else if (kbState.IsKeyDown(Keys.Down))
-                    {
-                        swapCodeLine(Keys.Down);
-                    }
-
                     arrowTimer = 0;
                 }
             }
@@ -97,7 +109,7 @@ namespace pLdevTest
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
-            spriteBatch.Draw(yellowRectangle, new Rectangle(Convert.ToInt32(codeEditorOffset.X), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), Convert.ToInt32(font.MeasureString(typing[currentLine]).X + 40), Convert.ToInt32(font.MeasureString("A").Y)), Color.White);
+            spriteBatch.Draw(yellowRectangle, new Rectangle(5 + Convert.ToInt32(codeEditorOffset.X), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), Convert.ToInt32(font.MeasureString(lineCounter[currentLine].ToString()).X) +5, Convert.ToInt32(font.MeasureString("A").Y)), Color.White);
 
             spriteBatch.DrawString(font, typeWriterStringType, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - font.MeasureString(typeWriterString).X / 2, graphics.GraphicsDevice.Viewport.Height / 2 - font.MeasureString(typeWriterString).Y / 2), Color.Black);
 
@@ -105,13 +117,23 @@ namespace pLdevTest
             foreach (int line in lineCounter)
             {
                 // Draw code
-                spriteBatch.DrawString(font, typing[line - 1], new Vector2(50 + codeEditorOffset.X, line * 50 + codeEditorOffset.Y - 50), Color.Black);
+                spriteBatch.DrawString(font, typing[line - 1], new Vector2(60 + codeEditorOffset.X, line * 50 + codeEditorOffset.Y - 50), Color.Black);
 
                 // Draw line counter
                 spriteBatch.DrawString(font, line.ToString(), new Vector2(10 + codeEditorOffset.X, (line - 1) * 50 + codeEditorOffset.Y), Color.White);
             }
             // Typing cursor indicator
-            spriteBatch.Draw(whiteRectangle, new Rectangle(Convert.ToInt32(font.MeasureString(typing[currentLine]).X) + 60 + Convert.ToInt32(codeEditorOffset.X), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), 20, Convert.ToInt32(font.MeasureString("A").Y)), Color.White);
+            switch (typing[currentLine])
+            {
+                case "":
+                    cursorOffset = 0;
+                    break;
+
+                default:
+                    cursorOffset = Convert.ToInt32(font.MeasureString(currentCharString).X) + Convert.ToInt32(font.MeasureString(typing[currentLine].Remove(currentChar)).X);
+                    break;
+            }
+            spriteBatch.Draw(whiteRectangle, new Rectangle(cursorOffset + 40 + Convert.ToInt32(codeEditorOffset.X), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), 10, Convert.ToInt32(font.MeasureString("A").Y)), Color.White);
 
         }
 
@@ -130,7 +152,11 @@ namespace pLdevTest
             {
                 // Type text to array
                 if (fontGlyphs.ContainsKey(key))
-                    typing[currentLine] += key.ToString();
+                {
+                    typing[currentLine] = typing[currentLine].Insert(currentChar, key.ToString());
+                    currentChar++;
+                    currentCharString = typing[currentLine][currentChar-1].ToString();
+                }
             }
         }
 
@@ -145,6 +171,7 @@ namespace pLdevTest
             }
             numberOfLines++;
             currentLine++;
+            currentChar = 0;
             lineCounter.Insert(currentLine, currentLine+1);
             typing.Insert(currentLine, "");
         }
@@ -153,19 +180,30 @@ namespace pLdevTest
             if (key == Keys.Up && currentLine > 0)
             {
                 currentLine--;
+                currentChar = typing[currentLine].Length;
+                Debug.WriteLine(currentChar);
             }
             else if (key == Keys.Down && currentLine < numberOfLines -1)
             {
                 currentLine++;
+                currentChar = typing[currentLine].Length;
+                Debug.WriteLine(currentChar);
+
+            }
+        }
+        private void moveOnCodeLine(Keys key)
+        {
+            if(key == Keys.Left && currentChar > 0 )
+            {
+                currentChar--;
+            } else if (key == Keys.Right && currentChar < typing[currentLine].Length)
+            {
+                currentChar++;
             }
         }
         private void HandleBackspace()
         {
-            if (typing[currentLine].Length > 0)
-            {
-                typing[currentLine] = typing[currentLine].Remove(typing[currentLine].Length - 1);
-            }
-            else if (currentLine != 0 && typing[currentLine].Length == 0)
+            if (currentLine != 0 && typing[currentLine].Length == 0)
             {
                 // If line is empty; delete line, 
 
@@ -175,6 +213,7 @@ namespace pLdevTest
                 typing.RemoveAt(currentLine);
                 numberOfLines--;
                 currentLine--;
+                currentChar = typing[currentLine].Length;
 
                 // Change line counter for all lines after the deleted line by -1
                 for (int i = 0; i < lineCounter.Count; i++)
@@ -184,6 +223,11 @@ namespace pLdevTest
                         lineCounter[i] = lineCounter[i] - 1;
                     }
                 }
+            }
+            else if (typing[currentLine].Length > 0 && currentChar > 0)
+            {
+                currentChar--;
+                typing[currentLine] = typing[currentLine].Remove(currentChar, 1);
             }
         }
     } 

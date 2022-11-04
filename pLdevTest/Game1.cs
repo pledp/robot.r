@@ -12,6 +12,7 @@ namespace pLdevTest
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         public static GameWindow gw;
+        MouseState currentMouseState;
 
         codeInput codeTextBar;
 
@@ -38,6 +39,7 @@ namespace pLdevTest
             // TODO: Add your initialization logic here
             Window.TextInput += ProcessTextInput;
             base.Initialize();
+            Camera.Instance.SetFocalPoint(new Vector2(0, 0), _graphics);
         }
 
         public void ProcessTextInput(object sender, TextInputEventArgs e)
@@ -68,7 +70,9 @@ namespace pLdevTest
                 Exit();
             // TODO: Add your update logic here
             codeTextBar.Update(gameTime);
+            Camera.Instance.Update();
             base.Update(gameTime);
+            currentMouseState = Mouse.GetState();
 
         }
 
@@ -76,7 +80,7 @@ namespace pLdevTest
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin();
+            _spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.Instance.ViewMatrix);
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
             _spriteBatch.End();
 
