@@ -15,7 +15,7 @@ namespace pLdevTest
 {
     public class codeInput
     {
-        private SpriteFont font;
+        public static SpriteFont font;
         private string typeWriterString;
         private string typeWriterStringType;
         private string currentCharString;
@@ -165,6 +165,17 @@ namespace pLdevTest
                     break;
             }
             spriteBatch.Draw(whiteRectangle, new Rectangle(cursorOffset + 30 + Convert.ToInt32(codeEditorOffset.X), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), 10, Convert.ToInt32(font.MeasureString("A").Y)), Color.White);
+
+            int variableIndex = 0;
+            if (Interpreter.variables != null)
+            {
+                Dictionary<string, double> variables = new Dictionary<string, double>(Interpreter.variables);
+                foreach (KeyValuePair<string, double> variable in variables)
+                {
+                    variableIndex++;
+                    spriteBatch.DrawString(font, variable.Key + ": " + variable.Value.ToString(), new Vector2(graphics.GraphicsDevice.Viewport.Width - font.MeasureString(variable.Key + ": " + variable.Value.ToString()).X, variableIndex * 50 + codeEditorOffset.Y - 50), Color.Black);
+                }
+            }
 
             playButton.Draw(spriteBatch, gameTime, graphics);
         }

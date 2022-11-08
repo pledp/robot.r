@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
@@ -54,6 +55,26 @@ namespace pLdevTest
             if (enterButton() && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
             {
                 Interpreter.RunLines(codeInput.Typing);
+
+                string code = "sqrt(40 + 50) + 50 + sqrt(70)";
+                List <string> sections = new List<string>();
+                string substring = "";
+                string currentChar;
+
+                Debug.WriteLine(code.Trim());
+                for (int z = 0; z < code.Length; z++)
+                {
+                    currentChar = code[z].ToString();
+                    if (currentChar == " ")
+                    {
+                        sections.Add(substring);
+                        Debug.WriteLine(substring);
+                        substring = "";
+                    } else
+                    {
+                        substring += currentChar;
+                    }
+                }
             }
             lastMouseState = Mouse.GetState();
         }
