@@ -39,7 +39,7 @@ namespace pLdevTest
             // TODO: Add your initialization logic here
             Window.TextInput += ProcessTextInput;
             base.Initialize();
-            Camera.Instance.SetFocalPoint(new Vector2(0, 0), _graphics);
+            Camera.Instance.SetFocalPoint(new Vector2(50, 0), _graphics);
         }
 
         public void ProcessTextInput(object sender, TextInputEventArgs e)

@@ -36,7 +36,7 @@ namespace pLdevTest
         public void SetFocalPoint(Vector2 focalPosition, GraphicsDeviceManager graphics)
         {
             position = new Vector2(focalPosition.X - graphics.GraphicsDevice.Viewport.Width / 2, focalPosition.Y - graphics.GraphicsDevice.Viewport.Width / 2);
-
+            
             if (position.X < 0)
             {
                 position.X = 0;
