@@ -59,7 +59,7 @@ namespace pLdevTest
                 string code = "sqrt(40 + 50) + 50 + sqrt(70)";
                 List <string> sections = new List<string>();
                 string regex = @"(?<=\().+?\)";
-                Debug.WriteLine(Regex.IsMatch("(asda)", regex));
+                Debug.WriteLine(Regex.IsMatch("sqrt(asda + 50", regex));
                 string substring = "";
                 string currentChar;
 
