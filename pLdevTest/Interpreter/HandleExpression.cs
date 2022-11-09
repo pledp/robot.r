@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using System.Collections;
 
 namespace pLdevTest
 {
@@ -21,10 +22,7 @@ namespace pLdevTest
             DataTable dt = new DataTable();
             elements = new List<ExpressionElements>();
 
-            // Regex to find expressions within parentheses
-            string[] funcExpressions = Regex.Matches(expression, @"\((.+?)\)").Cast<Match>().Select(m => m.Groups[1].Value).ToArray();
-
-            string[] expressions = expression.Split(' ', ')');
+            string[] expressions = FormatExpressions(expression);
             
             for (int i = 0; i < expressions.Length; i++)
             {
@@ -35,6 +33,7 @@ namespace pLdevTest
                 }
                 if (Interpreter.ArrayContainsString(Interpreter.builtInFunctions, expressions[i].Split('(')[0]))
                 {
+                    // Check for element functions 
                     elementFuncFound = true;
                     switch (expressions[i].Split('(')[0])
                     {
@@ -55,9 +54,11 @@ namespace pLdevTest
 
                 if (elementFuncFound)
                 {
-                    expressions[i] = Regex.Replace(expressions[i], @"[^A-Z]+", String.Empty);
-                    Debug.WriteLine(expressions[i] + "test");
-                    string[] elementExpressions = funcExpressions[currentFunc].ToString().Split(' ');
+                    // Get arguments from parentheses
+                    string funcExpressions = expressions[i].Split('(', ')')[1];
+
+                    string[] elementExpressions = FormatExpressions(funcExpressions);
+
                     switch (elements[0])
                     {
                         case ExpressionElements.Sqrt:
@@ -78,13 +79,12 @@ namespace pLdevTest
                     currentFunc++;
                 }
             }
-            foreach(string fun in expressions)
-            {
-                Debug.WriteLine(fun);
-            }
-            //double value = Convert.ToDouble(dt.Compute(string.Join(" ", expressions), ""));
+            string joinedString = string.Join(" ", expressions);
+            joinedString = joinedString.Replace(",", ".");
+            Debug.WriteLine(joinedString);
+            double value = Convert.ToDouble(dt.Compute(joinedString, ""));
 
-            return 5;
+            return value;
         }
 
         private static string GetVariableValue(string expression, Dictionary<string, double> variables)
@@ -95,6 +95,54 @@ namespace pLdevTest
                 return value;
             }
             return expression;
+        }
+
+        private static string[] FormatExpressions(string expression)
+        {
+            string code = expression;
+            List<string> sections = new List<string>();
+            // string regex = @"(?<=\().+?\)";
+            string substring = "";
+            string currentChar;
+
+            bool insideParen = false;
+            bool breakExpression = false;
+
+            for (int z = 0; z < code.Length; z++)
+            {
+                currentChar = code[z].ToString();
+                if (currentChar == " " || currentChar == "(" || breakExpression)
+                {
+                    // If inside parenthasese, don't split line at spaces
+                    if (currentChar == "(" || insideParen)
+                    {
+                        if (currentChar == ")")
+                        {
+                            insideParen = false;
+                        } else
+                        {
+                            insideParen = true;
+                        }
+                        breakExpression = true;
+                        substring += currentChar;
+                    }
+                    else
+                    {
+                        sections.Add(substring);
+                        substring = "";
+                        breakExpression = false;
+                    }
+                }
+                else
+                {
+                    substring += currentChar;
+                }
+                if (z == code.Length - 1)
+                {
+                    sections.Add(substring);
+                }
+            }
+            return sections.ToArray();
         }
     }
 }

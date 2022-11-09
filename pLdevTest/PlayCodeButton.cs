@@ -56,27 +56,7 @@ namespace pLdevTest
             {
                 Interpreter.RunLines(codeInput.Typing);
 
-                string code = "sqrt(40 + 50) + 50 + sqrt(70)";
-                List <string> sections = new List<string>();
-                string regex = @"(?<=\().+?\)";
-                Debug.WriteLine(Regex.IsMatch("sqrt(asda + 50", regex));
-                string substring = "";
-                string currentChar;
 
-                Debug.WriteLine(code.Trim());
-                for (int z = 0; z < code.Length; z++)
-                {
-                    currentChar = code[z].ToString();
-                    if (currentChar == " ")
-                    {
-                        sections.Add(substring);
-                        Debug.WriteLine(substring);
-                        substring = "";
-                    } else
-                    {
-                        substring += currentChar;
-                    }
-                }
             }
             lastMouseState = Mouse.GetState();
         }
