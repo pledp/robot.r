@@ -17,7 +17,7 @@ namespace pLdevTest
         private static bool elementFuncFound;
         public static double GetResults(string expression, Dictionary<string, double> variables)
         {
-            // Evaluates the value of the expressions
+            // Evaluates the value of the expressions.
             double value = EvaluateExpression(expression, variables);
             return value;
         }
@@ -28,7 +28,7 @@ namespace pLdevTest
             List<ExpressionElements> elements;
             elements = new List<ExpressionElements>();
 
-            // Splits the expressions into readable segments
+            // Splits the expressions into readable segments.
             string[] expressions = FormatExpressions(expression);
             foreach(string s in expressions)
             {
@@ -39,13 +39,14 @@ namespace pLdevTest
             {
                 elementFuncFound = false;
 
+                // If expression is a variable that is declared, set value to variables value
                 expressions[i] = GetVariableValue(expressions[i], variables);
 
+                // Check if text matches built in functions
                 string splitArrayContainer = expressions[i].Split('(')[0];
                 Debug.WriteLine(splitArrayContainer);
                 if (Interpreter.ArrayContainsString(Interpreter.builtInFunctions, splitArrayContainer))
                 {
-                    // Check if text matches functions
                     switch (splitArrayContainer)
                     {
                         case "sqrt":
@@ -70,6 +71,7 @@ namespace pLdevTest
                 if (elementFuncFound)
                 {
                     string funcExpressions = expressions[i];
+
                     // Get arguments from parentheses
                     if (expressions[i].Contains("(") || expressions[i].Contains(")"))
                     {
@@ -120,6 +122,8 @@ namespace pLdevTest
         {
             string code = expression;
             List<string> sections = new List<string>();
+
+            // NOTE TO SELF: Don't use regex.
             // string regex = @"(?<=\().+?\)";
             string substring = "";
             string currentChar;
@@ -129,12 +133,13 @@ namespace pLdevTest
             bool insideParen = false;
             bool breakExpression = false;
 
+            // Run through all charachters, generally at spaces, break the line.
             for (int z = 0; z < code.Length; z++)
             {
                 currentChar = code[z].ToString();
                 if (currentChar == " " || currentChar == "(" || breakExpression)
                 {
-                    // If inside parenthasese, don't split line at spaces
+                    // If inside parenthesese, or nested within another parenthesese, don't break line.
                     if (currentChar == "(" || insideParen)
                     {
                         if (currentChar == ")")

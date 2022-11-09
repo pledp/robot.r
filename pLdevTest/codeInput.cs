@@ -91,7 +91,7 @@ namespace pLdevTest
 
             foreach (Keys key in pressedKeys)
             {
-                if (!lastPressedKeys.Contains(key) || arrowTimer > 0.2)
+                if (!lastPressedKeys.Contains(key) || arrowTimer > 0.15)
                 {
                     switch(key)
                     {
@@ -248,7 +248,7 @@ namespace pLdevTest
         {
             if (currentLine != 0 && typing[currentLine].Length == 0)
             {
-                // If line is empty; delete line, 
+                // If line is empty; delete line.
 
                 // If current line is the last line, go back 1 line
                 
@@ -258,7 +258,7 @@ namespace pLdevTest
                 currentLine--;
                 currentChar = typing[currentLine].Length;
 
-                // Change line counter for all lines after the deleted line by -1
+                // Change line counter for all lines after the deleted line by -1.
                 for (int i = 0; i < lineCounter.Count; i++)
                 {
                     if (lineCounter[i] > currentLine + 1)
