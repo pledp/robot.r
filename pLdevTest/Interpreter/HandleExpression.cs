@@ -13,60 +13,80 @@ namespace pLdevTest
 {
     public class HandleExpression
     {
-        private static List<ExpressionElements> elements;
-        private static int currentFunc;
-        public static double EvaluateExpression(string expression, Dictionary<string, double> variables)
+        private static DataTable dt;
+        private static bool elementFuncFound;
+        public static double GetResults(string expression, Dictionary<string, double> variables)
         {
-            // Search dictionary for variables, if found convert expression to value from dictionary
-            currentFunc = 0;
-            DataTable dt = new DataTable();
+            // Evaluates the value of the expressions
+            double value = EvaluateExpression(expression, variables);
+            return value;
+        }
+
+        private static double EvaluateExpression(string expression, Dictionary<string, double> variables)
+        {
+            dt = new DataTable();
+            List<ExpressionElements> elements;
             elements = new List<ExpressionElements>();
 
+            // Splits the expressions into readable segments
             string[] expressions = FormatExpressions(expression);
-            
+            foreach(string s in expressions)
+            {
+                Debug.WriteLine("EXPRESSIONS 1: " + s);
+            }
+
             for (int i = 0; i < expressions.Length; i++)
             {
-                bool elementFuncFound = false;
-                if (variables.ContainsKey(expressions[i]))
+                elementFuncFound = false;
+
+                expressions[i] = GetVariableValue(expressions[i], variables);
+
+                string splitArrayContainer = expressions[i].Split('(')[0];
+                Debug.WriteLine(splitArrayContainer);
+                if (Interpreter.ArrayContainsString(Interpreter.builtInFunctions, splitArrayContainer))
                 {
-                    expressions[i] = variables[expressions[i]].ToString();
-                }
-                if (Interpreter.ArrayContainsString(Interpreter.builtInFunctions, expressions[i].Split('(')[0]))
-                {
-                    // Check for element functions 
-                    elementFuncFound = true;
-                    switch (expressions[i].Split('(')[0])
+                    // Check if text matches functions
+                    switch (splitArrayContainer)
                     {
                         case "sqrt":
                             elements.Add(ExpressionElements.Sqrt);
+                            Debug.WriteLine("test: ");
+                            elementFuncFound = true;
                             break;
                         case "sin":
                             elements.Add(ExpressionElements.Sin);
+                            elementFuncFound = true;
                             break;
                         case "tan":
                             elements.Add(ExpressionElements.Tan);
+                            elementFuncFound = true;
                             break;
                         case "cos":
                             elements.Add(ExpressionElements.Cos);
+                            elementFuncFound = true;
                             break;
                     }
                 }
-
                 if (elementFuncFound)
                 {
+                    string funcExpressions = expressions[i];
                     // Get arguments from parentheses
-                    string funcExpressions = expressions[i].Split('(', ')')[1];
+                    if (expressions[i].Contains("(") || expressions[i].Contains(")"))
+                    {
+                        Debug.WriteLine(funcExpressions);
+                        funcExpressions = funcExpressions.Substring(funcExpressions.IndexOf("("));
+                        Debug.WriteLine("Expressin1: " + funcExpressions);
+                        funcExpressions = funcExpressions.Substring(1, funcExpressions.Length - 2);
+                        Debug.WriteLine("Expression: " + funcExpressions);
 
-                    string[] elementExpressions = FormatExpressions(funcExpressions);
+                    }
+
+                    double elementExpressions = EvaluateExpression(funcExpressions, variables);
 
                     switch (elements[0])
                     {
                         case ExpressionElements.Sqrt:
-                            for (int x = 0; x < elementExpressions.Length; x++)
-                            {
-                                elementExpressions[x] = GetVariableValue(elementExpressions[x], variables);
-                            }
-                            double elementFuncValue = Math.Sqrt(Convert.ToDouble(dt.Compute(string.Join(" ", elementExpressions), "")));
+                            double elementFuncValue = Math.Sqrt(elementExpressions);
                             expressions[i] = elementFuncValue.ToString();
                             break;
                         case ExpressionElements.Sin:
@@ -76,15 +96,14 @@ namespace pLdevTest
                         case ExpressionElements.Cos:
                             break;
                     }
-                    currentFunc++;
                 }
             }
             string joinedString = string.Join(" ", expressions);
             joinedString = joinedString.Replace(",", ".");
-            Debug.WriteLine(joinedString);
+            Debug.WriteLine("String: " + joinedString);
             double value = Convert.ToDouble(dt.Compute(joinedString, ""));
 
-            return value;
+            return value;   
         }
 
         private static string GetVariableValue(string expression, Dictionary<string, double> variables)
@@ -105,6 +124,8 @@ namespace pLdevTest
             string substring = "";
             string currentChar;
 
+            int nestedParen = 0;
+
             bool insideParen = false;
             bool breakExpression = false;
 
@@ -118,11 +139,16 @@ namespace pLdevTest
                     {
                         if (currentChar == ")")
                         {
-                            insideParen = false;
-                        } else
+                            nestedParen--;
+                            if(nestedParen == 0)
+                            {
+                                insideParen = false;
+                            }
+                        } else if(currentChar == "(")
                         {
+                            nestedParen++;
                             insideParen = true;
-                        }
+                        } 
                         breakExpression = true;
                         substring += currentChar;
                     }

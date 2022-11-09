@@ -16,8 +16,8 @@ namespace pLdevTest
         {
             "sqrt",
             "sin",
-            "cos",
-            "tan"
+            "tan",
+            "cos"
         };
 
         public static Dictionary<string, double> variables;
@@ -43,13 +43,14 @@ namespace pLdevTest
             string varName = line.Split(" = ")[0];
             string expression = line.Split(" = ")[1];
 
-            double value = HandleExpression.EvaluateExpression(expression, variables);
+            double value = HandleExpression.GetResults(expression, variables);
             
             if (!variables.ContainsKey(varName))
             {
                 variables.Add(varName, 0);
             }
             variables[varName] = value;
+            Debug.WriteLine(variables[varName]);
         }
 
         public static bool ArrayContainsString(string[] array, string s)

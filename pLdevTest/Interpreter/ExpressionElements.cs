@@ -2,6 +2,6 @@
 {
     Sqrt,
     Sin,
-    Cos,
-    Tan
+    Tan,
+    Cos
 }
