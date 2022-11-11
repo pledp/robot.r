@@ -84,20 +84,24 @@ namespace pLdevTest
                     }
 
                     double elementExpressions = EvaluateExpression(funcExpressions, variables);
+                    double elementFuncValue = elementExpressions;
 
                     switch (elements[0])
                     {
                         case ExpressionElements.Sqrt:
-                            double elementFuncValue = Math.Sqrt(elementExpressions);
-                            expressions[i] = elementFuncValue.ToString();
+                            elementFuncValue = Math.Sqrt(elementExpressions);
                             break;
                         case ExpressionElements.Sin:
+                            elementFuncValue = Math.Sin(elementExpressions);
                             break;
                         case ExpressionElements.Tan:
+                            elementFuncValue = Math.Tan(elementExpressions);
                             break;
                         case ExpressionElements.Cos:
+                            elementFuncValue = Math.Cos(elementExpressions);
                             break;
                     }
+                    expressions[i] = elementFuncValue.ToString();
                 }
             }
             string joinedString = string.Join(" ", expressions);

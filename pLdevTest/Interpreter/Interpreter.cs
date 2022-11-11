@@ -38,6 +38,8 @@ namespace pLdevTest
 {
     public class Interpreter
     {
+        private static List<string> lines;
+
         // Built in functions, need to list built in functions in ExpressionElements.cs aswell.
         public static readonly string[] builtInFunctions =
         {
@@ -48,25 +50,43 @@ namespace pLdevTest
         };
 
         public static Dictionary<string, double> variables;
-        public static void RunLines(List<string> lines)
+
+        public static void StartInterprete(List<string> typedLines, int lineIndex, int stopIndex)
         {
             variables = new Dictionary<string, double>();
-            foreach (string line in lines)
+            lines = typedLines;
+
+            RunLines(lines, lineIndex, stopIndex);
+        }
+        private static void RunLines(List<string> lines, int lineIndex, int stopIndex)
+        {
+            // Interprate every line, split segment by spaces.
+            string[] segments = lines[lineIndex].Split(" ");
+            if (segments.Length > 1)
             {
-                // Interprate every line, split line by spaces.
-                string[] segments = line.Split(" ");
-                if (segments.Length > 2)
+                if (segments[1] == "=")
                 {
-                    if (segments[1] == "=")
-                    {
-                        HandleAssignment(line);
-                    }
+                    HandleAssignment(lineIndex);
                 }
-            }  
+
+                if (segments[0] == "if" || segments[0] == "elseif" || segments[0] == "else")
+                {
+                    HandleCondition(lineIndex, stopIndex);
+                }
+            }
+            if (lineIndex + 1 < stopIndex && lineIndex + 1 < lines.Count)
+            {
+                RunLines(lines, lineIndex + 1, stopIndex);
+            }
         }
 
-        private static void HandleAssignment(string line)
+        private static void HandleCondition(int lineIndex, int stopIndex)
         {
+            Debug.WriteLine(lineIndex + " " + stopIndex);
+        }
+        private static void HandleAssignment(int lineIndex)
+        {
+            string line = lines[lineIndex];
             string varName = line.Split(" = ")[0];
             string expression = line.Split(" = ")[1];
 

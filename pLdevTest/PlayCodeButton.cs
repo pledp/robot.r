@@ -54,7 +54,7 @@ namespace pLdevTest
             mouseState = Mouse.GetState();
             if (enterButton() && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
             {
-                Interpreter.RunLines(codeInput.Typing);
+                Interpreter.StartInterprete(codeInput.Typing, 0, codeInput.Typing.Count);
 
 
             }

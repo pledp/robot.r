@@ -27,7 +27,6 @@ namespace pLdevTest
         private Dictionary<char, SpriteFont.Glyph> fontGlyphs;
 
         Texture2D whiteRectangle;
-        Texture2D yellowRectangle;
 
         private static List<String> typing;
         public static List <String> Typing
@@ -45,6 +44,7 @@ namespace pLdevTest
         private Vector2 size;
         private Vector2 pos;
         private Vector2 origin;
+        private Color darkeyGrey;
 
         public codeInput()
         {
@@ -76,10 +76,9 @@ namespace pLdevTest
 
             whiteRectangle = new Texture2D(graphicsDevice, 1, 1);
             whiteRectangle.SetData(new[] { Color.White });
-            yellowRectangle = new Texture2D(graphicsDevice, 1, 1);
-            yellowRectangle.SetData(new[] { Color.Green });
 
             playButton = new PlayCodeButton(graphicsDevice, 10, 10);
+            darkeyGrey = new Color(65, 65, 63);
 
         }
 
@@ -127,8 +126,6 @@ namespace pLdevTest
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
-            spriteBatch.Draw(yellowRectangle, new Rectangle(30 - Convert.ToInt32(font.MeasureString(lineCounter[currentLine].ToString()).X) + Convert.ToInt32(codeEditorOffset.X) -5, currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), Convert.ToInt32(font.MeasureString(lineCounter[currentLine].ToString()).X) +10, Convert.ToInt32(font.MeasureString("A").Y)), Color.White);
-
             spriteBatch.DrawString(font, typeWriterStringType, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - font.MeasureString(typeWriterString).X / 2, graphics.GraphicsDevice.Viewport.Height / 2 - font.MeasureString(typeWriterString).Y / 2), Color.Black);
 
             
@@ -147,10 +144,10 @@ namespace pLdevTest
 
                 lineCounterOffset = Convert.ToInt32(font.MeasureString(lineCounter[line-1].ToString()).X);
                 // Draw code
-                spriteBatch.DrawString(font, typing[line - 1], new Vector2(60 + codeEditorOffset.X, line * 50 + codeEditorOffset.Y - 50), Color.Black);
+                spriteBatch.DrawString(font, typing[line - 1], new Vector2(60 + codeEditorOffset.X, line * 50 + codeEditorOffset.Y - 50), Color.White);
 
                 // Draw line counter
-                spriteBatch.DrawString(font, line.ToString(), new Vector2(codeEditorOffset.X + pos.X, (line - 1) * 50 + codeEditorOffset.Y + 20), Color.White, 0, origin, 1, SpriteEffects.None, 0);
+                spriteBatch.DrawString(font, line.ToString(), new Vector2(codeEditorOffset.X + pos.X, (line - 1) * 50 + codeEditorOffset.Y + 20), darkeyGrey, 0, origin, 1, SpriteEffects.None, 0);
             }
 
             // Typing cursor indicator
@@ -172,8 +169,30 @@ namespace pLdevTest
                 Dictionary<string, double> variables = new Dictionary<string, double>(Interpreter.variables);
                 foreach (KeyValuePair<string, double> variable in variables)
                 {
+                    string printableValue = variable.Value.ToString();
+                    Rectangle rectangle = new Rectangle(graphics.GraphicsDevice.Viewport.Width - 200, 10, graphics.GraphicsDevice.Viewport.Width, 40);
+                    pos = new Vector2(rectangle.Width / 2, rectangle.Height / 2);
+
                     variableIndex++;
-                    spriteBatch.DrawString(font, variable.Key + ": " + variable.Value.ToString(), new Vector2(graphics.GraphicsDevice.Viewport.Width - font.MeasureString(variable.Key + ": " + variable.Value.ToString()).X, variableIndex * 50 + codeEditorOffset.Y - 50), Color.Black);
+                    string valueTooLong = "";
+                    string valueStringFormatter = "";
+                   
+                    if(printableValue.Contains(','))
+                    {
+                        valueStringFormatter = "#.00000";
+                    }
+                    if(printableValue.Length > 7)
+                    {
+                        valueTooLong = "...";
+                        printableValue = printableValue.Substring(0, 8);
+                    }
+
+                    size = font.MeasureString(printableValue);
+                    origin = size * 0.5f;
+                    origin.X -= rectangle.X / 2 - size.X / 2;
+
+                    spriteBatch.DrawString(font, variable.Key + ": ", new Vector2(graphics.GraphicsDevice.Viewport.Width - 500, variableIndex * 50 + codeEditorOffset.Y - 50), darkeyGrey);
+                    spriteBatch.DrawString(font, String.Format(printableValue, valueStringFormatter) + valueTooLong, new Vector2(codeEditorOffset.X + pos.X, variableIndex * 50 + codeEditorOffset.Y + 20 - 50), darkeyGrey, 0, origin, 1, SpriteEffects.None, 0);
                 }
             }
 

@@ -16,6 +16,7 @@ namespace pLdevTest
         MouseState currentMouseState;
 
         codeInput codeTextBar;
+        Color background;
 
         public Game1()
         {
@@ -60,7 +61,8 @@ namespace pLdevTest
             codeTextBar.LoadContent(Content, GraphicsDevice);
             gw = Window;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            
+
+            background = new Color(30, 30, 28);
 
             // TODO: use this.Content to load your game content here
         }
@@ -79,7 +81,7 @@ namespace pLdevTest
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(background);
 
             _spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.Instance.ViewMatrix);
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
