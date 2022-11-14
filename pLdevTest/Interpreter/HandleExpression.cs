@@ -30,10 +30,6 @@ namespace pLdevTest
 
             // Splits the expressions into readable segments.
             string[] expressions = FormatExpressions(expression);
-            foreach(string s in expressions)
-            {
-                Debug.WriteLine("EXPRESSIONS 1: " + s);
-            }
 
             for (int i = 0; i < expressions.Length; i++)
             {
@@ -44,14 +40,12 @@ namespace pLdevTest
 
                 // Check if text matches built in functions
                 string splitArrayContainer = expressions[i].Split('(')[0];
-                Debug.WriteLine(splitArrayContainer);
                 if (Interpreter.ArrayContainsString(Interpreter.builtInFunctions, splitArrayContainer))
                 {
                     switch (splitArrayContainer)
                     {
                         case "sqrt":
                             elements.Add(ExpressionElements.Sqrt);
-                            Debug.WriteLine("test: ");
                             elementFuncFound = true;
                             break;
                         case "sin":
@@ -75,12 +69,8 @@ namespace pLdevTest
                     // Get arguments from parentheses
                     if (expressions[i].Contains("(") || expressions[i].Contains(")"))
                     {
-                        Debug.WriteLine(funcExpressions);
                         funcExpressions = funcExpressions.Substring(funcExpressions.IndexOf("("));
-                        Debug.WriteLine("Expressin1: " + funcExpressions);
                         funcExpressions = funcExpressions.Substring(1, funcExpressions.Length - 2);
-                        Debug.WriteLine("Expression: " + funcExpressions);
-
                     }
 
                     double elementExpressions = EvaluateExpression(funcExpressions, variables);
@@ -106,7 +96,6 @@ namespace pLdevTest
             }
             string joinedString = string.Join(" ", expressions);
             joinedString = joinedString.Replace(",", ".");
-            Debug.WriteLine("String: " + joinedString);
             double value = Convert.ToDouble(dt.Compute(joinedString, ""));
 
             return value;   
@@ -122,7 +111,7 @@ namespace pLdevTest
             return expression;
         }
 
-        private static string[] FormatExpressions(string expression)
+        public static string[] FormatExpressions(string expression)
         {
             string code = expression;
             List<string> sections = new List<string>();

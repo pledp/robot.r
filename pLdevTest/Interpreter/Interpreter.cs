@@ -29,6 +29,15 @@ INCLUDES (WORK IN PROGRESS):
     Expressions within and outside parentheses are split with spaces. Outside parentheses expressions might work without a space, but not inside.
     RECURSION within arguments works. For example: foo = sqrt(sqrt(sqrt(20))) is a valid argument.
 
+- Conditional statements
+    if (arguments), elseif (arguments), else (arguments) is a work in progress, currently simple version functional. 
+    
+- Operators
+    - == (Equals)
+    - != (Does not equal)
+    - < (Smaller than)
+    - > (Bigger than)
+
 DEMO: 
     foo = 50
     dev = sqrt(sqrt(50))
@@ -47,6 +56,14 @@ namespace pLdevTest
             "sin",
             "tan",
             "cos"
+        };
+
+        public static readonly string[] operators =
+        {
+            "== ",
+            "!= ",
+            "< ",
+            "> "
         };
 
         public static Dictionary<string, double> variables;
@@ -80,9 +97,34 @@ namespace pLdevTest
             }
         }
 
+        // Handles conditional statements.
         private static void HandleCondition(int lineIndex, int stopIndex)
         {
-            Debug.WriteLine(lineIndex + " " + stopIndex);
+            // Get arguments from inside the parenthesese
+
+            /* TODO
+             * Add && and || support
+             * Make else () and elseif () properly functional
+             * Make conditional statements read lines within { } 
+            */
+
+            string currLine = lines[lineIndex].Substring(lines[lineIndex].IndexOf("(") +1, lines[lineIndex].Substring(lines[lineIndex].IndexOf("(")+1).Length -3);
+            string[] splitByArguments = currLine.Split(operators, StringSplitOptions.None);
+            List<Double> arguments = new List<Double>();
+            
+
+            for(int x = 0; x < splitByArguments.Length; x++)
+            {
+                double argumentExpression = HandleExpression.GetResults(splitByArguments[x], variables);
+                arguments.Add(argumentExpression);
+            }
+
+            if (arguments[0] == arguments[1])
+            {
+                Debug.WriteLine("TRUE");
+            }
+            
+
         }
         private static void HandleAssignment(int lineIndex)
         {
