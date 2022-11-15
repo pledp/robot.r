@@ -114,12 +114,11 @@ namespace pLdevTest
             bool ifCondition = HandleCondition.ConditionHandler(lineIndex, stopIndex, lines);
             if (ifCondition)
             {
-                Debug.WriteLine("TRUE");
+                // If condition was true: Run next line
                 RunLines(lines, lineIndex +1, stopIndex);
             } else
             {
-                // Find where brackets end.
-                Debug.WriteLine("test");
+                // If condition was false: Find closing brackets and read line after closing brackets.
                 int falseStartIndex = FindBracket(lineIndex);
                 RunLines(lines, falseStartIndex, stopIndex);
             }

@@ -78,7 +78,6 @@ namespace pLdevTest
             }
             else
             {
-                // Find where brackets end.
                 return false;
             }
         }
