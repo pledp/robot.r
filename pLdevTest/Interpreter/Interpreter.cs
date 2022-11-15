@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -48,6 +51,7 @@ namespace pLdevTest
     public class Interpreter
     {
         private static List<string> lines;
+        private static bool ifConclusion;
 
         // Built in functions, need to list built in functions in ExpressionElements.cs aswell.
         public static readonly string[] builtInFunctions =
@@ -78,17 +82,18 @@ namespace pLdevTest
         private static void RunLines(List<string> lines, int lineIndex, int stopIndex)
         {
             // Interprate every line, split segment by spaces.
-            string[] segments = lines[lineIndex].Split(" ");
+            string[] segments = lines[lineIndex].Split(" ", StringSplitOptions.RemoveEmptyEntries);
             if (segments.Length > 1)
             {
                 if (segments[1] == "=")
                 {
-                    HandleAssignment(lineIndex);
+                    HandleAssignment(lineIndex, segments[0]);
                 }
 
                 if (segments[0] == "if" || segments[0] == "elseif" || segments[0] == "else")
                 {
-                    HandleCondition(lineIndex, stopIndex);
+                    HandleConditionStatement(lineIndex, stopIndex);
+                    return;
                 }
             }
             if (lineIndex + 1 < stopIndex && lineIndex + 1 < lines.Count)
@@ -98,38 +103,32 @@ namespace pLdevTest
         }
 
         // Handles conditional statements.
-        private static void HandleCondition(int lineIndex, int stopIndex)
+        private static void HandleConditionStatement(int lineIndex, int stopIndex)
         {
-            // Get arguments from inside the parenthesese
 
             /* TODO
              * Add && and || support
              * Make else () and elseif () properly functional
-             * Make conditional statements read lines within { } 
             */
 
-            string currLine = lines[lineIndex].Substring(lines[lineIndex].IndexOf("(") +1, lines[lineIndex].Substring(lines[lineIndex].IndexOf("(")+1).Length -3);
-            string[] splitByArguments = currLine.Split(operators, StringSplitOptions.None);
-            List<Double> arguments = new List<Double>();
-            
-
-            for(int x = 0; x < splitByArguments.Length; x++)
-            {
-                double argumentExpression = HandleExpression.GetResults(splitByArguments[x], variables);
-                arguments.Add(argumentExpression);
-            }
-
-            if (arguments[0] == arguments[1])
+            bool ifCondition = HandleCondition.ConditionHandler(lineIndex, stopIndex, lines);
+            if (ifCondition)
             {
                 Debug.WriteLine("TRUE");
+                RunLines(lines, lineIndex +1, stopIndex);
+            } else
+            {
+                // Find where brackets end.
+                Debug.WriteLine("test");
+                int falseStartIndex = FindBracket(lineIndex);
+                RunLines(lines, falseStartIndex, stopIndex);
             }
             
 
         }
-        private static void HandleAssignment(int lineIndex)
+        private static void HandleAssignment(int lineIndex, string varName)
         {
             string line = lines[lineIndex];
-            string varName = line.Split(" = ")[0];
             string expression = line.Split(" = ")[1];
 
             // Handle expressions for numeric variables
@@ -155,6 +154,36 @@ namespace pLdevTest
                 }
             }
             return false;
+        }
+
+        private static int FindBracket(int startIndex)
+        {
+            int bracketEndIndex = startIndex;
+
+            bool insideBracket = false;
+            int nestedBracket = 0;
+            for(int x = startIndex; x < lines.Count; x++)
+            {
+                if (lines[x].Contains('{') || insideBracket)
+                {
+                    if (lines[x].Contains('}'))
+                    {
+                        nestedBracket--;
+                        if (nestedBracket == 0)
+                        {
+                            insideBracket = false;
+                            bracketEndIndex = x;
+                            return bracketEndIndex;
+                        }
+                    }
+                    else if (lines[x].Contains('{'))
+                    {
+                        nestedBracket++;
+                        insideBracket = true;
+                    }
+                }
+            }
+            return startIndex;
         }
     }
 }

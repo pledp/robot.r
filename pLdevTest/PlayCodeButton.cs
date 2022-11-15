@@ -55,8 +55,12 @@ namespace pLdevTest
             if (enterButton() && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
             {
                 Interpreter.StartInterprete(codeInput.Typing, 0, codeInput.Typing.Count);
-
-
+                string tt = "   j = 5";
+                string[] ttt = tt.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+                foreach (string s in ttt)
+                {
+                    Debug.WriteLine(s);
+                }
             }
             lastMouseState = Mouse.GetState();
         }
