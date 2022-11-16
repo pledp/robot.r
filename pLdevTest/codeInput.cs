@@ -54,6 +54,7 @@ namespace pLdevTest
         private Desktop _desktop;
 
         private Label memoryText;
+        private ScrollViewer textboxScroll;
 
         public codeInput()
         {
@@ -111,9 +112,9 @@ namespace pLdevTest
             memoryText.Font = fontSystem.GetFont(32);
 
             // Make scrollbar for text and attach text to scrollbar.
-            var textboxScroll = new ScrollViewer();
+            textboxScroll = new ScrollViewer();
             textboxScroll.Content = memoryText;
-            textboxScroll.Left = graphicsDevice.Viewport.Width - Convert.ToInt32(memoryText.Width);
+            textboxScroll.Left = graphicsDevice.Viewport.Width - Convert.ToInt32(memoryText.Width) - Convert.ToInt32(textboxScroll.Width);
 
 
             grid.Widgets.Add(textboxScroll);
@@ -176,7 +177,7 @@ namespace pLdevTest
             
             pos = new Vector2(10 / 2, 0 /2);
             Vector2 origin = size * 0.5f;
-            _desktop.Render();
+            
 
             foreach (int line in lineCounter)
             {
@@ -241,7 +242,7 @@ namespace pLdevTest
                     spriteBatch.DrawString(font, String.Format(printableValue, valueStringFormatter) + valueTooLong, new Vector2(codeEditorOffset.X + pos.X, variableIndex * 50 + codeEditorOffset.Y + 20 - 50), darkeyGrey, 0, origin, 1, SpriteEffects.None, 0);
                 }
             }
-
+            _desktop.Render();
             playButton.Draw(spriteBatch, gameTime, graphics);
         }
 
@@ -339,9 +340,9 @@ namespace pLdevTest
             }
         }
 
-        public void UpdateMemoryText()
+        public void UpdateMemoryText(GraphicsDeviceManager graphicsDevice)
         {
-
+            textboxScroll.Left = graphicsDevice.GraphicsDevice.Viewport.Width - Convert.ToInt32(memoryText.Width) - Convert.ToInt32(textboxScroll.Width);
         }
     } 
 }

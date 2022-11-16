@@ -40,10 +40,15 @@ namespace pLdevTest
         {
             // TODO: Add your initialization logic here
             Window.TextInput += ProcessTextInput;
+            Window.ClientSizeChanged += ProcessWindowSizeChange;
             base.Initialize();
             Camera.Instance.SetFocalPoint(new Vector2(50, 0), _graphics);
         }
 
+        private void ProcessWindowSizeChange(object sender, EventArgs e)
+        {
+            codeTextBar.UpdateMemoryText(_graphics);
+        }
         public void ProcessTextInput(object sender, TextInputEventArgs e)
         {
             Debug.WriteLine(Convert.ToChar(e.Character));
