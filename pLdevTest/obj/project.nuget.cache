@@ -1,11 +1,19 @@
 {
   "version": 2,
-  "dgSpecHash": "347PdQKgr98PiwzTy7F5VCPOq/s54XGF+r1nDSl1XFPrCz79Lo+lv4DdEjbOX7lkpLO8QDU6LcLJiRwH3xIyrw==",
+  "dgSpecHash": "M/kYi7q1gMeo9Gm/esXLvzETV1cLksamM3+L8/N2OdMQ2SA5Bx8Zf/KqFyie5FjMi7REKAX3ytVE+LLQ3tbkQQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\lasse\\source\\repos\\pLdevTest\\pLdevTest\\pLdev\\pLdevTest\\pLdevTest.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\lasse\\.nuget\\packages\\cyotek.drawing.bitmapfont\\2.0.4\\cyotek.drawing.bitmapfont.2.0.4.nupkg.sha512",
+    "C:\\Users\\lasse\\.nuget\\packages\\fontstashsharp.base\\1.1.8\\fontstashsharp.base.1.1.8.nupkg.sha512",
+    "C:\\Users\\lasse\\.nuget\\packages\\fontstashsharp.monogame\\1.2.8\\fontstashsharp.monogame.1.2.8.nupkg.sha512",
+    "C:\\Users\\lasse\\.nuget\\packages\\fontstashsharp.rasterizers.stbtruetypesharp\\1.1.8\\fontstashsharp.rasterizers.stbtruetypesharp.1.1.8.nupkg.sha512",
+    "C:\\Users\\lasse\\.nuget\\packages\\info.lundin.math.dll\\1.2.6\\info.lundin.math.dll.1.2.6.nupkg.sha512",
     "C:\\Users\\lasse\\.nuget\\packages\\monogame.content.builder.task\\3.8.1.303\\monogame.content.builder.task.3.8.1.303.nupkg.sha512",
-    "C:\\Users\\lasse\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.1.303\\monogame.framework.desktopgl.3.8.1.303.nupkg.sha512"
+    "C:\\Users\\lasse\\.nuget\\packages\\monogame.framework.desktopgl\\3.8.1.303\\monogame.framework.desktopgl.3.8.1.303.nupkg.sha512",
+    "C:\\Users\\lasse\\.nuget\\packages\\myra\\1.4.5\\myra.1.4.5.nupkg.sha512",
+    "C:\\Users\\lasse\\.nuget\\packages\\stbimagesharp\\2.27.13\\stbimagesharp.2.27.13.nupkg.sha512",
+    "C:\\Users\\lasse\\.nuget\\packages\\stbtruetypesharp\\1.26.11\\stbtruetypesharp.1.26.11.nupkg.sha512"
   ],
   "logs": []
 }

@@ -1,7 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FontStashSharp;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Myra.Graphics2D.UI;
+using Myra;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -10,6 +13,9 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using static System.Net.Mime.MediaTypeNames;
+using System.IO;
+using Myra.Graphics2D.Brushes;
+using FontStashSharp.RichText;
 
 namespace pLdevTest
 {
@@ -45,6 +51,9 @@ namespace pLdevTest
         private Vector2 pos;
         private Vector2 origin;
         private Color darkeyGrey;
+        private Desktop _desktop;
+
+        private Label memoryText;
 
         public codeInput()
         {
@@ -79,6 +88,42 @@ namespace pLdevTest
 
             playButton = new PlayCodeButton(graphicsDevice, 10, 10);
             darkeyGrey = new Color(65, 65, 63);
+
+            var grid = new Grid
+            {
+                RowSpacing = 8,
+                ColumnSpacing = 8
+            };
+            // Make text that displays every variable in MEMORY
+            memoryText = new Label();
+            memoryText.Wrap = true;
+            memoryText.Text = "/c[red]MEMORY/cd\n" +
+                              "/c[red]----/cd\n" +
+                              "test: 5dasdasdsadaskdjaskldjdljdajdaskldjslkdj asjdkskdskdklskldjklsjldjklsjkldjklsjkldjklsjkljsjdjjkjksdsljkd5hghfghfghfghf";
+            memoryText.TextAlign = TextHorizontalAlignment.Center;
+            memoryText.VerticalAlignment = Myra.Graphics2D.UI.VerticalAlignment.Stretch;
+            memoryText.Id = "memoryText";
+            memoryText.Background = new SolidBrush("#ADD8E6FF");
+            memoryText.Width = Convert.ToInt32(graphicsDevice.Viewport.Width * 0.20);
+            byte[] ttfData = File.ReadAllBytes("Content\\Retro Gaming.ttf");
+            FontSystem fontSystem = new FontSystem();
+            fontSystem.AddFont(ttfData);
+            memoryText.Font = fontSystem.GetFont(32);
+
+            // Make scrollbar for text and attach text to scrollbar.
+            var textboxScroll = new ScrollViewer();
+            textboxScroll.Content = memoryText;
+            textboxScroll.Left = graphicsDevice.Viewport.Width - Convert.ToInt32(memoryText.Width);
+
+
+            grid.Widgets.Add(textboxScroll);
+
+            // Add it to the desktop
+            _desktop = new Desktop
+            {
+                FocusedKeyboardWidget = memoryText,
+            };
+            _desktop.Root = grid;
 
         }
 
@@ -131,6 +176,7 @@ namespace pLdevTest
             
             pos = new Vector2(10 / 2, 0 /2);
             Vector2 origin = size * 0.5f;
+            _desktop.Render();
 
             foreach (int line in lineCounter)
             {
@@ -291,6 +337,11 @@ namespace pLdevTest
                 currentChar--;
                 typing[currentLine] = typing[currentLine].Remove(currentChar, 1);
             }
+        }
+
+        public void UpdateMemoryText()
+        {
+
         }
     } 
 }

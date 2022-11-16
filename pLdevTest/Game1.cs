@@ -5,6 +5,11 @@ using System.Diagnostics;
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using Myra;
+using Myra.Graphics2D.UI;
+using System.Runtime.InteropServices;
+using System.IO;
+using FontStashSharp;
 
 namespace pLdevTest
 {
@@ -29,11 +34,6 @@ namespace pLdevTest
 
             codeTextBar = new codeInput();
 
-            static int makeInt()
-            {
-                return(5);
-            }
-            Debug.WriteLine(makeInt());
         }
 
         protected override void Initialize()
@@ -58,13 +58,12 @@ namespace pLdevTest
 
         protected override void LoadContent()
         {
+            MyraEnvironment.Game = this;
             codeTextBar.LoadContent(Content, GraphicsDevice);
             gw = Window;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             background = new Color(30, 30, 28);
-
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
@@ -82,7 +81,6 @@ namespace pLdevTest
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(background);
-
             _spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.Instance.ViewMatrix);
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
             _spriteBatch.End();

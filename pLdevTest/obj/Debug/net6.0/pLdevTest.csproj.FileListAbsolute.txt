@@ -76,3 +76,11 @@ C:\Users\lasse\source\repos\pLdev\pLdevTest\obj\Debug\net6.0\pLdevTest.csproj.Co
 C:\Users\lasse\source\repos\pLdev\pLdevTest\obj\Debug\net6.0\pLdevTest.csproj.CopyComplete
 C:\Users\lasse\source\repos\pLdev\pLdevTest\obj\Debug\net6.0\pLdevTest.genruntimeconfig.cache
 C:\Users\lasse\source\repos\pLdev\pLdevTest\obj\Debug\net6.0\ref\pLdevTest.dll
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Cyotek.Drawing.BitmapFont.dll
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\FontStashSharp.Base.dll
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\FontStashSharp.MonoGame.dll
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\FontStashSharp.Rasterizers.StbTrueTypeSharp.dll
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\info.lundin.math.dll
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Myra.dll
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\StbImageSharp.dll
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\StbTrueTypeSharp.dll
