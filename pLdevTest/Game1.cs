@@ -31,8 +31,7 @@ namespace pLdevTest
         {
             _graphics = new GraphicsDeviceManager(this)
             {
-                PreferredBackBufferWidth = 1200,
-                PreferredBackBufferHeight = 800
+
             };
 
             Content.RootDirectory = "Content";
@@ -77,6 +76,7 @@ namespace pLdevTest
         protected override void LoadContent()
         {
             MyraEnvironment.Game = this;
+            Stylesheet.Current.HorizontalSplitPaneStyle.MaxWidth = 500;
 
             codeTextBar.LoadContent(Content, GraphicsDevice);
             gw = Window;

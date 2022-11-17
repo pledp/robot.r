@@ -119,7 +119,6 @@ namespace pLdevTest
             memoryText.TextAlign = TextHorizontalAlignment.Center;
             memoryText.VerticalAlignment = Myra.Graphics2D.UI.VerticalAlignment.Stretch;
             memoryText.Id = "memoryText";
-            memoryText.Background = new SolidBrush("#99E1D9");
             byte[] ttfData = File.ReadAllBytes("Retro Gaming.ttf");
             FontSystem fontSystem = new FontSystem();
             fontSystem.AddFont(ttfData);
@@ -130,15 +129,15 @@ namespace pLdevTest
             textboxScroll.Content = memoryText;
 
             topPanel = new HorizontalSplitPane();
-            SplitPaneStyle paneStyle = new SplitPaneStyle();
-            
+
             topPanel.Widgets.Add(phLabel);
-            topPanel.DragDirection = DragDirection.Vertical;
-            topPanel.Widgets.Add(memoryText);
-            topPanel.Widgets[1].Width = graphicsDevice.Viewport.Width;
+            topPanel.Widgets.Add(textboxScroll);
+            topPanel.Widgets[1].Width = Convert.ToInt32(graphicsDevice.Viewport.Width * 0.25);
+            memoryText.Width = topPanel.Widgets[1].Width - 5;
 
             topPanel.ProportionsChanged += SplitPaneOnProportionsChanged;
             topPanel.SetSplitterPosition(0, 0.75f);
+            topPanel.Widgets[1].Background = new SolidBrush("#99E1D9");
 
             // Add it to the desktop
             _desktop = new Desktop
@@ -150,7 +149,13 @@ namespace pLdevTest
         }
         private void SplitPaneOnProportionsChanged(object sender, EventArgs eventArgs)
         {
-            topPanel.Widgets[1].Width = staticGraphicsDevice.Viewport.Width;
+            UpdateMemoryBar();
+        }
+        private void UpdateMemoryBar()
+        {
+            // Measures size of sidepanel, centers MEMORY text to middle of sidepanel.
+            topPanel.Widgets[1].Width = Convert.ToInt32(topPanel.GetProportion(1) * staticGraphicsDevice.Viewport.Width * 0.5);
+            memoryText.Width = topPanel.Widgets[1].Width - 5;
         }
 
         public void Update(GameTime gameTime, GraphicsDeviceManager graphics)
@@ -336,7 +341,7 @@ namespace pLdevTest
         public void UpdateMemoryText(GraphicsDeviceManager graphicsDevice)
         {
             staticGraphicsDevice = graphicsDevice.GraphicsDevice;
-            Debug.WriteLine("test");
+            UpdateMemoryBar();
             memoryText.Text = startingMemoryText;
             int variableIndex = 0;
             if (Interpreter.variables != null)

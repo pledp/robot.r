@@ -85,4 +85,3 @@ C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\StbImageSharp.dll
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\StbTrueTypeSharp.dll
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Retro Gaming.ttf
-C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Resources\ui_stylesheet.xmms
