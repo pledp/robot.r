@@ -16,6 +16,10 @@ using static System.Net.Mime.MediaTypeNames;
 using System.IO;
 using Myra.Graphics2D.Brushes;
 using FontStashSharp.RichText;
+using System.Globalization;
+using Myra.Graphics2D.UI.Styles;
+using Myra.Graphics2D;
+using Myra.Assets;
 
 namespace pLdevTest
 {
@@ -53,11 +57,20 @@ namespace pLdevTest
         private Color darkeyGrey;
         private Desktop _desktop;
 
-        private Label memoryText;
+        private Myra.Graphics2D.UI.Label memoryText;
+        private const int Labels = 2;
         private ScrollViewer textboxScroll;
+        private string startingMemoryText;
 
+        private SplitPane _splitPane;
+        private HorizontalSplitPane topPanel;
+
+        private static GraphicsDevice staticGraphicsDevice;
         public codeInput()
         {
+            startingMemoryText = "/c[red]MEMORY/cd\n" +
+                                 "/c[red]----/cd\n";
+
             typeWriterString = "pLdev!";
             typeWriterStringType = "";
             currentLine = 0;
@@ -81,8 +94,10 @@ namespace pLdevTest
 
         public void LoadContent(ContentManager Content, GraphicsDevice graphicsDevice)
         {
+            staticGraphicsDevice = graphicsDevice;
             font = Content.Load<SpriteFont>("font");
             fontGlyphs = font.GetGlyphs();
+
 
             whiteRectangle = new Texture2D(graphicsDevice, 1, 1);
             whiteRectangle.SetData(new[] { Color.White });
@@ -95,18 +110,17 @@ namespace pLdevTest
                 RowSpacing = 8,
                 ColumnSpacing = 8
             };
-            // Make text that displays every variable in MEMORY
+            // Make text that displays every variable in MEMORY TODO: MOVE THIS TO OTHER CLASS.
+            Label phLabel = new Label();
+
             memoryText = new Label();
             memoryText.Wrap = true;
-            memoryText.Text = "/c[red]MEMORY/cd\n" +
-                              "/c[red]----/cd\n" +
-                              "test: 5dasdasdsadaskdjaskldjdljdajdaskldjslkdj asjdkskdskdklskldjklsjldjklsjkldjklsjkldjklsjkljsjdjjkjksdsljkd5hghfghfghfghf";
+            memoryText.Text = startingMemoryText;
             memoryText.TextAlign = TextHorizontalAlignment.Center;
             memoryText.VerticalAlignment = Myra.Graphics2D.UI.VerticalAlignment.Stretch;
             memoryText.Id = "memoryText";
-            memoryText.Background = new SolidBrush("#ADD8E6FF");
-            memoryText.Width = Convert.ToInt32(graphicsDevice.Viewport.Width * 0.20);
-            byte[] ttfData = File.ReadAllBytes("Content\\Retro Gaming.ttf");
+            memoryText.Background = new SolidBrush("#99E1D9");
+            byte[] ttfData = File.ReadAllBytes("Retro Gaming.ttf");
             FontSystem fontSystem = new FontSystem();
             fontSystem.AddFont(ttfData);
             memoryText.Font = fontSystem.GetFont(32);
@@ -114,21 +128,32 @@ namespace pLdevTest
             // Make scrollbar for text and attach text to scrollbar.
             textboxScroll = new ScrollViewer();
             textboxScroll.Content = memoryText;
-            textboxScroll.Left = graphicsDevice.Viewport.Width - Convert.ToInt32(memoryText.Width) - Convert.ToInt32(textboxScroll.Width);
 
+            topPanel = new HorizontalSplitPane();
+            SplitPaneStyle paneStyle = new SplitPaneStyle();
+            
+            topPanel.Widgets.Add(phLabel);
+            topPanel.DragDirection = DragDirection.Vertical;
+            topPanel.Widgets.Add(memoryText);
+            topPanel.Widgets[1].Width = graphicsDevice.Viewport.Width;
 
-            grid.Widgets.Add(textboxScroll);
+            topPanel.ProportionsChanged += SplitPaneOnProportionsChanged;
+            topPanel.SetSplitterPosition(0, 0.75f);
 
             // Add it to the desktop
             _desktop = new Desktop
             {
                 FocusedKeyboardWidget = memoryText,
             };
-            _desktop.Root = grid;
+            _desktop.Root = topPanel;
 
         }
+        private void SplitPaneOnProportionsChanged(object sender, EventArgs eventArgs)
+        {
+            topPanel.Widgets[1].Width = staticGraphicsDevice.Viewport.Width;
+        }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, GraphicsDeviceManager graphics)
         {
             KeyboardState kbState = Keyboard.GetState();
             Keys[] pressedKeys = kbState.GetPressedKeys();
@@ -167,7 +192,7 @@ namespace pLdevTest
                     typeWriterStringType += typeWriterString[typeWriterStringType.Length];
                 }
             }
-            playButton.Update(gameTime);
+            playButton.Update(graphics, gameTime, this);
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
@@ -210,38 +235,6 @@ namespace pLdevTest
             }
             spriteBatch.Draw(whiteRectangle, new Rectangle(cursorOffset + 40 + Convert.ToInt32(codeEditorOffset.X), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), 10, Convert.ToInt32(font.MeasureString("A").Y)), Color.White);
 
-            int variableIndex = 0;
-            if (Interpreter.variables != null)
-            {
-                Dictionary<string, double> variables = new Dictionary<string, double>(Interpreter.variables);
-                foreach (KeyValuePair<string, double> variable in variables)
-                {
-                    string printableValue = variable.Value.ToString();
-                    Rectangle rectangle = new Rectangle(graphics.GraphicsDevice.Viewport.Width - 200, 10, graphics.GraphicsDevice.Viewport.Width, 40);
-                    pos = new Vector2(rectangle.Width / 2, rectangle.Height / 2);
-
-                    variableIndex++;
-                    string valueTooLong = "";
-                    string valueStringFormatter = "";
-                   
-                    if(printableValue.Contains(','))
-                    {
-                        valueStringFormatter = "#.00000";
-                    }
-                    if(printableValue.Length > 7)
-                    {
-                        valueTooLong = "...";
-                        printableValue = printableValue.Substring(0, 8);
-                    }
-
-                    size = font.MeasureString(printableValue);
-                    origin = size * 0.5f;
-                    origin.X -= rectangle.X / 2 - size.X / 2;
-
-                    spriteBatch.DrawString(font, variable.Key + ": ", new Vector2(graphics.GraphicsDevice.Viewport.Width - 500, variableIndex * 50 + codeEditorOffset.Y - 50), darkeyGrey);
-                    spriteBatch.DrawString(font, String.Format(printableValue, valueStringFormatter) + valueTooLong, new Vector2(codeEditorOffset.X + pos.X, variableIndex * 50 + codeEditorOffset.Y + 20 - 50), darkeyGrey, 0, origin, 1, SpriteEffects.None, 0);
-                }
-            }
             _desktop.Render();
             playButton.Draw(spriteBatch, gameTime, graphics);
         }
@@ -342,7 +335,34 @@ namespace pLdevTest
 
         public void UpdateMemoryText(GraphicsDeviceManager graphicsDevice)
         {
-            textboxScroll.Left = graphicsDevice.GraphicsDevice.Viewport.Width - Convert.ToInt32(memoryText.Width) - Convert.ToInt32(textboxScroll.Width);
+            staticGraphicsDevice = graphicsDevice.GraphicsDevice;
+            Debug.WriteLine("test");
+            memoryText.Text = startingMemoryText;
+            int variableIndex = 0;
+            if (Interpreter.variables != null)
+            {
+                Dictionary<string, double> variables = new Dictionary<string, double>(Interpreter.variables);
+                foreach (KeyValuePair<string, double> variable in variables)
+                {
+                    string printableValue = variable.Value.ToString();
+
+                    variableIndex++;
+                    string valueTooLong = "";
+                    string valueStringFormatter = "";
+
+                    if (printableValue.Contains(','))
+                    {
+                        valueStringFormatter = "#.00000";
+                    }
+                    if (printableValue.Length > 5)
+                    {
+                        valueTooLong = "...";
+                        printableValue = printableValue.Substring(0, 6);
+                        
+                    }
+                    memoryText.Text += "\n" + String.Format(variable.Key, valueStringFormatter) + ": " + printableValue + valueTooLong;
+                }
+            }
         }
     } 
 }

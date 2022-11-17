@@ -10,12 +10,16 @@ using Myra.Graphics2D.UI;
 using System.Runtime.InteropServices;
 using System.IO;
 using FontStashSharp;
+using Myra.Assets;
+using Myra.Graphics2D.TextureAtlases;
+using Myra.Graphics2D.UI.Styles;
+using Myra.Graphics2D.Brushes;
 
 namespace pLdevTest
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
+        public GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         public static GameWindow gw;
         MouseState currentMouseState;
@@ -25,7 +29,11 @@ namespace pLdevTest
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            _graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = 1200,
+                PreferredBackBufferHeight = 800
+            };
 
             Content.RootDirectory = "Content";
             Window.AllowUserResizing = true;
@@ -43,6 +51,11 @@ namespace pLdevTest
             Window.ClientSizeChanged += ProcessWindowSizeChange;
             base.Initialize();
             Camera.Instance.SetFocalPoint(new Vector2(50, 0), _graphics);
+
+            // Cap FPS to 144 FPS
+            IsFixedTimeStep = true;
+            TargetElapsedTime = TimeSpan.FromSeconds(1 / 144.0f);
+
         }
 
         private void ProcessWindowSizeChange(object sender, EventArgs e)
@@ -60,15 +73,19 @@ namespace pLdevTest
                 codeTextBar.typeText(e.Character); 
             }
         }
-
+        
         protected override void LoadContent()
         {
             MyraEnvironment.Game = this;
+
             codeTextBar.LoadContent(Content, GraphicsDevice);
             gw = Window;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            background = new Color(30, 30, 28);
+            background = new Color(50, 41, 47);
+            // Load stylesheet
+
+
         }
 
         protected override void Update(GameTime gameTime)
@@ -76,7 +93,7 @@ namespace pLdevTest
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             // TODO: Add your update logic here
-            codeTextBar.Update(gameTime);
+            codeTextBar.Update(gameTime, _graphics);
             Camera.Instance.Update();
             base.Update(gameTime);
             currentMouseState = Mouse.GetState();

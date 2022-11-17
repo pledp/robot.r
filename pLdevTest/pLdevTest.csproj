@@ -13,6 +13,12 @@
   <ItemGroup>
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
+    <None Remove="Retro Gaming.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Retro Gaming.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
