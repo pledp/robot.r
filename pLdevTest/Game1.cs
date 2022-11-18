@@ -4,16 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using System.Diagnostics;
 using System;
 using System.Text;
-using System.Text.RegularExpressions;
-using Myra;
-using Myra.Graphics2D.UI;
-using System.Runtime.InteropServices;
 using System.IO;
-using FontStashSharp;
-using Myra.Assets;
-using Myra.Graphics2D.TextureAtlases;
-using Myra.Graphics2D.UI.Styles;
-using Myra.Graphics2D.Brushes;
+
 
 namespace pLdevTest
 {
@@ -33,9 +25,13 @@ namespace pLdevTest
             {
 
             };
-
+            /*_graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            _graphics.IsFullScreen = true;
+            _graphics.ApplyChanges();*/
             Content.RootDirectory = "Content";
             Window.AllowUserResizing = true;
+            
 
             IsMouseVisible = true;
 
@@ -59,7 +55,7 @@ namespace pLdevTest
 
         private void ProcessWindowSizeChange(object sender, EventArgs e)
         {
-            codeTextBar.UpdateMemoryText(_graphics);
+            codeTextBar.UpdateEditorProportions(_graphics);
         }
         public void ProcessTextInput(object sender, TextInputEventArgs e)
         {
@@ -75,9 +71,6 @@ namespace pLdevTest
         
         protected override void LoadContent()
         {
-            MyraEnvironment.Game = this;
-            Stylesheet.Current.HorizontalSplitPaneStyle.MaxWidth = 500;
-
             codeTextBar.LoadContent(Content, GraphicsDevice);
             gw = Window;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
