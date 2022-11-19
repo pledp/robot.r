@@ -74,7 +74,6 @@ namespace pLdevTest
             codeTextBar.LoadContent(Content, GraphicsDevice);
             gw = Window;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
             background = new Color(50, 41, 47);
             // Load stylesheet
 

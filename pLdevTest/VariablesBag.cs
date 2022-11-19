@@ -28,6 +28,9 @@ namespace pLdevTest
 
         private int varBagWidth;
         private ScrollBar scrollBar;
+        private RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
+        private Vector2 _scrollOffset = Vector2.Zero;
+        private Matrix _matrix = Matrix.CreatePerspective(500, 50, 1, 2);
 
         public VariablesBag(GraphicsDevice _graphics)
         {
@@ -75,6 +78,18 @@ namespace pLdevTest
                     AnimateBagY(newBagY);
                 }
             }
+            _matrix = Matrix.CreateTranslation(new Vector3(_scrollOffset, 0));
+            if (enterButton())
+            {
+                if (mouseState.ScrollWheelValue > 0)
+                {
+                        _scrollOffset.Y -= 1;
+                }
+                else if (mouseState.ScrollWheelValue < 0)
+                {
+                        _scrollOffset.Y += 1;
+                }
+            }
             lastMouseState = Mouse.GetState();
             scrollBar.Update();
         }
@@ -108,9 +123,14 @@ namespace pLdevTest
 
             Vector2 variableTextPos = new Vector2(variableBag.X, variableBag.Y);
             variableTextPos.X = variableBag.X + (variableBag.Width - font.MeasureString("VARIABLES").X) / 1.9f;
+
             spriteBatch.DrawString(font, "VARIABLES", new Vector2(variableTextPos.X, variableBag.Y), Color.Red);
             spriteBatch.DrawString(font, "---------------", new Vector2(variableBag.X, variableBag.Y+30), Color.Red);
-
+            spriteBatch.End();
+            RasterizerState oldState = spriteBatch.GraphicsDevice.RasterizerState;
+            Rectangle currentScissorRect = spriteBatch.GraphicsDevice.ScissorRectangle;
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, rasterizerState: _rasterizerState, transformMatrix: _matrix);
+            spriteBatch.GraphicsDevice.ScissorRectangle = variableBag;
             if (Interpreter.variables != null)
             {
                 Dictionary<string, double> variables = new Dictionary<string, double>(Interpreter.variables);
@@ -147,6 +167,8 @@ namespace pLdevTest
                     variableIndex++;
                 }
             }
+            spriteBatch.End();
+            spriteBatch.Begin();
             scrollBar.Draw(spriteBatch);
         }
 
