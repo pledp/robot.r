@@ -30,10 +30,13 @@ INCLUDES (WORK IN PROGRESS):
 
 - Expressions
     Expressions within and outside parentheses are split with spaces. Outside parentheses expressions might work without a space, but not inside.
-    RECURSION within arguments works. For example: foo = sqrt(sqrt(sqrt(20))) is a valid argument.
+    Recursion within arguments works. For example: foo = sqrt(sqrt(sqrt(20))) is a valid argument.
 
 - Conditional statements
-    if (arguments), elseif (arguments), else (arguments) is a work in progress, currently simple version functional. 
+    Conditional statements check arguments within parentheses and returns true or false, according to the arguments. If true, runs lines within the curly brackets { }.
+    - if (arguments)
+    - elseif (arguments), only runs conditional argument if all other "if" and "elseif" statements were false.
+    - else (arguments), only runs if all other "if" and "elseif" were false.
     
 - Operators
     - == (Equals)
@@ -44,6 +47,12 @@ INCLUDES (WORK IN PROGRESS):
 DEMO: 
     foo = 50
     dev = sqrt(sqrt(50))
+    if (foo != 50) {
+        x = dev
+    }
+    elseif (foo == 50) {
+        x = dev * 5
+    }
 */
 
 namespace pLdevTest
@@ -52,6 +61,7 @@ namespace pLdevTest
     {
         private static List<string> lines;
         private static bool ifConclusion;
+        private static bool ifStarted;
 
         // Built in functions, need to list built in functions in ExpressionElements.cs aswell.
         public static readonly string[] builtInFunctions =
@@ -92,7 +102,7 @@ namespace pLdevTest
 
                 if (segments[0] == "if" || segments[0] == "elseif" || segments[0] == "else")
                 {
-                    HandleConditionStatement(lineIndex, stopIndex);
+                    HandleConditionStatement(lineIndex, stopIndex, segments[0]);
                     return;
                 }
             }
@@ -103,18 +113,37 @@ namespace pLdevTest
         }
 
         // Handles conditional statements.
-        private static void HandleConditionStatement(int lineIndex, int stopIndex)
+        private static void HandleConditionStatement(int lineIndex, int stopIndex, string version)
         {
 
             /* TODO
              * Add && and || support
-             * Make else () and elseif () properly functional
             */
 
-            bool ifCondition = HandleCondition.ConditionHandler(lineIndex, stopIndex, lines);
+            bool ifCondition = false;
+
+            // If "if" and other "elseif" conditions were false, run "elseif" condition
+            if (version == "elseif" && !ifConclusion && ifStarted)
+            {
+                ifCondition = HandleCondition.ConditionHandler(lineIndex, stopIndex, lines);
+            }
+
+            // If all "if" and "elseif" conditions were false, run "else" condition
+            else if(version == "else" && !ifConclusion && ifStarted)
+            {
+                ifCondition = true;
+            } 
+            else if(version == "if")
+            {
+                ifCondition = HandleCondition.ConditionHandler(lineIndex, stopIndex, lines);
+                ifConclusion = false;
+                ifStarted = true;
+            }
+
             if (ifCondition)
             {
-                // If condition was true: Run next line
+                // If condition was true: Run next line, and DON'T run next "elseif" and "else" conditions
+                ifConclusion = true;
                 RunLines(lines, lineIndex +1, stopIndex);
             } else
             {

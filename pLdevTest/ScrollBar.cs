@@ -52,7 +52,6 @@ namespace pLdevTest
                 grip.Y = Convert.ToInt32(bounds.Y + mouseRelative);
                 finalValue = Convert.ToInt32((mouseRelative / (bounds.Height - grip.Height)) * gripMax);
             }
-            Debug.WriteLine(finalValue);
         }
         public void Draw(SpriteBatch spriteBatch)
         {

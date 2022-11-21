@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Runtime.CompilerServices;
 
 namespace pLdevTest
 {
@@ -20,11 +21,13 @@ namespace pLdevTest
         private MouseState lastMouseState;
         private Color bagColor;
         private bool bagState;
-        private int newBagY;
+        private Vector2 newBagPos;
         private bool unpressableButton;
+        private double elapsedTime;
 
         private Color darkerGrey;
         private Color customAqua;
+        private double desiredDuration;
 
         private int varBagWidth;
         private ScrollBar scrollBar;
@@ -37,6 +40,7 @@ namespace pLdevTest
             varBagWidth = 250;
             variableBag = new Rectangle(_graphics.Viewport.Width - varBagWidth - 50, _graphics.Viewport.Height - 50, varBagWidth, Convert.ToInt32(_graphics.Viewport.Height * 0.75));
 
+            desiredDuration = 0.5f;
             bagTexture = new Texture2D(_graphics, 1, 1);
             bagColor = new Color(240, 247, 244);
             bagTexture.SetData(new[] { bagColor });
@@ -67,54 +71,59 @@ namespace pLdevTest
             {
                 if (!bagState)
                 {
-                    newBagY = Convert.ToInt32(_graphics.Viewport.Height * 0.25);
+                    newBagPos = new Vector2(varBagWidth, Convert.ToInt32(_graphics.Viewport.Height * 0.25));
                     bagState = true;
-                    AnimateBagY(newBagY);
+                    AnimateBag(newBagPos, gameTime);
                 }
                 else if (bagState)
                 {
-                    newBagY = Convert.ToInt32(_graphics.Viewport.Height - 50);
+                    newBagPos = new Vector2(varBagWidth, Convert.ToInt32(_graphics.Viewport.Height - 50));
                     bagState = false;
-                    AnimateBagY(newBagY);
+                    AnimateBag(newBagPos, gameTime);
                 }
             }
             _matrix = Matrix.CreateTranslation(new Vector3(_scrollOffset, 0));
+
+            // Scrolling for variables bag.
             if (enterButton())
             {
-                if (mouseState.ScrollWheelValue > 0)
+                // Check if scroll wheel value has updated
+                if (mouseState.ScrollWheelValue != lastMouseState.ScrollWheelValue)
                 {
-                        _scrollOffset.Y -= 1;
+                    // Check if new scroll wheel value is negative or positive
+                    if(mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
+                    {
+                        _scrollOffset.Y -= 10;
+                    }
+                    else if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue)
+                    {
+                        _scrollOffset.Y += 10;
+                    }
+
                 }
-                else if (mouseState.ScrollWheelValue < 0)
-                {
-                        _scrollOffset.Y += 1;
-                }
+
             }
             lastMouseState = Mouse.GetState();
             scrollBar.Update();
+
         }
-        private async void AnimateBagY(int newY)
+        private async void AnimateBag(Vector2 newPos, GameTime gameTime)
         {
             unpressableButton = true;
-            if(newY < variableBag.Y)
+
+            Vector2 startingPos = new Vector2(variableBag.X, variableBag.Y);
+            while (newPos.Y != variableBag.Y)
             {
-                while (newY < variableBag.Y)
-                {
-                    await Task.Delay(1);
-                    variableBag.Y -= 10;
-                    scrollBar.UpdateProportions(variableBag);
-                }
-            } else
-            {
-                while (variableBag.Y < newY)
-                {
-                    await Task.Delay(1);
-                    variableBag.Y += 10;
-                    scrollBar.UpdateProportions(variableBag);
-                }
+                await Task.Delay(1);
+                elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
+                float percentageComplete = (float)elapsedTime / (float)desiredDuration;
+                variableBag.Y = (int)Vector2.Lerp(startingPos, newPos, MathHelper.SmoothStep(0, 1, percentageComplete)).Y;
+                scrollBar.UpdateProportions(variableBag);
             }
+            elapsedTime = 0;
             unpressableButton = false;
         }
+
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics, SpriteFont font)
         {
@@ -127,10 +136,12 @@ namespace pLdevTest
             spriteBatch.DrawString(font, "VARIABLES", new Vector2(variableTextPos.X, variableBag.Y), Color.Red);
             spriteBatch.DrawString(font, "---------------", new Vector2(variableBag.X, variableBag.Y+30), Color.Red);
             spriteBatch.End();
+
             RasterizerState oldState = spriteBatch.GraphicsDevice.RasterizerState;
             Rectangle currentScissorRect = spriteBatch.GraphicsDevice.ScissorRectangle;
+
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, rasterizerState: _rasterizerState, transformMatrix: _matrix);
-            spriteBatch.GraphicsDevice.ScissorRectangle = variableBag;
+            spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(variableBag.X, variableBag.Y+55, variableBag.Width, variableBag.Height);
             if (Interpreter.variables != null)
             {
                 Dictionary<string, double> variables = new Dictionary<string, double>(Interpreter.variables);
