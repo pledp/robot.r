@@ -72,6 +72,11 @@ namespace pLdevTest
             "cos"
         };
 
+        public static readonly string[] buildInMethods =
+        {
+            "print"
+        };
+
         public static readonly string[] operators =
         {
             "== ",
@@ -105,6 +110,17 @@ namespace pLdevTest
                     HandleConditionStatement(lineIndex, stopIndex, segments[0]);
                     return;
                 }
+
+                if (segments[0] == "loop")
+                {
+                    HandleLoop(lineIndex, stopIndex, segments[0]);
+                    return;
+                }
+
+                if (ArrayContainsString(buildInMethods, segments[0]))
+                {
+                    HandleBuiltInMethod(lineIndex, stopIndex, segments[0]);
+                }
             }
             if (lineIndex + 1 < stopIndex && lineIndex + 1 < lines.Count)
             {
@@ -112,6 +128,24 @@ namespace pLdevTest
             }
         }
 
+        private static void HandleBuiltInMethod(int lineIndex, int stopIndex, string version)
+        {
+            HandleMethod.RunMethod(version);
+        }
+
+        private static void HandleLoop(int lineIndex, int stopIndex, string version)
+        {
+            string currLine = GetInsideParentheses(lines[lineIndex]);
+
+            double loops = HandleExpression.GetResults(currLine, variables);
+            int bracketEnd = FindBracket(lineIndex);
+            for(int i = 0; i < loops; i++)
+            {
+                RunLines(lines, lineIndex + 1, bracketEnd);
+            }
+
+            RunLines(lines, bracketEnd + 1, stopIndex);
+        }
         // Handles conditional statements.
         private static void HandleConditionStatement(int lineIndex, int stopIndex, string version)
         {
@@ -151,9 +185,8 @@ namespace pLdevTest
                 int falseStartIndex = FindBracket(lineIndex);
                 RunLines(lines, falseStartIndex, stopIndex);
             }
-            
-
         }
+
         private static void HandleAssignment(int lineIndex, string varName)
         {
             string line = lines[lineIndex];
@@ -182,6 +215,13 @@ namespace pLdevTest
                 }
             }
             return false;
+        }
+        public static string GetInsideParentheses(string s)
+        {
+            string newString = s.Substring(s.IndexOf("(") + 1);
+            newString = newString.Substring(0, newString.LastIndexOf(")"));
+
+            return newString;
         }
 
         private static int FindBracket(int startIndex)

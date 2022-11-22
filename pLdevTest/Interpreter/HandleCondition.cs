@@ -11,7 +11,7 @@ namespace pLdevTest
     {
         public static bool ConditionHandler(int lineIndex, int stopIndex, List<String> lines)
         {
-            string currLine = lines[lineIndex].Substring(lines[lineIndex].IndexOf("(") + 1, lines[lineIndex].Substring(lines[lineIndex].IndexOf("(") + 1).Length - 3);
+            string currLine = Interpreter.GetInsideParentheses(lines[lineIndex]);
             string[] splitByArguments = currLine.Split(Interpreter.operators, StringSplitOptions.None);
             List<Double> arguments = new List<Double>();
             List<ArgumentOperators> elements = new List<ArgumentOperators>();
