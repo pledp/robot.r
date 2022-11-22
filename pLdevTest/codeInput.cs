@@ -46,7 +46,8 @@ namespace pLdevTest
         private Color darkeyGrey;
 
         private static GraphicsDevice staticGraphicsDevice;
-        private VariablesBag variablesBag;
+        private BuildBag variablesBag;
+        private BuildBag consoleBag;
         public codeInput()
         {
             typeWriterString = "pLdev!";
@@ -82,7 +83,9 @@ namespace pLdevTest
             playButton = new PlayCodeButton(graphicsDevice, 10, 10);
 
             // Initialize bag for variables
-            variablesBag = new VariablesBag(graphicsDevice);
+            variablesBag = new BuildBag(graphicsDevice, 250, "VARIABLES", 0);
+            consoleBag = new BuildBag(graphicsDevice, 250, "CONSOLE", 1);
+
             darkeyGrey = new Color(65, 65, 63);
         }
 
@@ -129,6 +132,7 @@ namespace pLdevTest
             }
             playButton.Update(graphics, gameTime, this);
             variablesBag.Update(graphics.GraphicsDevice, gameTime);
+            consoleBag.Update(graphics.GraphicsDevice, gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
@@ -171,8 +175,8 @@ namespace pLdevTest
             }
             spriteBatch.Draw(whiteRectangle, new Rectangle(cursorOffset + 40 + Convert.ToInt32(codeEditorOffset.X), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), 10, Convert.ToInt32(font.MeasureString("A").Y)), Color.White);
 
-            //_desktop.Render();
             variablesBag.Draw(spriteBatch, gameTime, graphics, font);
+            consoleBag.Draw(spriteBatch, gameTime, graphics, font);
             playButton.Draw(spriteBatch, gameTime, graphics);
         }
 
@@ -284,6 +288,7 @@ namespace pLdevTest
             if(variablesBag != null)
             {
                 variablesBag.UpdateProportions(graphicsDevice.GraphicsDevice);
+                consoleBag.UpdateProportions(graphicsDevice.GraphicsDevice);
             }
         }
     } 

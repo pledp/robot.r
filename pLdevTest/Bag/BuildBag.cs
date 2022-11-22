@@ -13,32 +13,43 @@ using System.Runtime.CompilerServices;
 
 namespace pLdevTest
 {
-    public class VariablesBag
+    public class BuildBag
     {
-        private Rectangle variableBag;
-        private Texture2D bagTexture;
         private MouseState mouseState;
         private MouseState lastMouseState;
-        private Color bagColor;
-        private bool bagState;
         private Vector2 newBagPos;
         private bool unpressableButton;
         private double elapsedTime;
+        private int xOffset;
 
         private Color darkerGrey;
         private Color customAqua;
         private double desiredDuration;
 
-        private int varBagWidth;
+        private Rectangle bag;
+        private Texture2D bagTexture;
+        private int bagWidth;
+        private int bagIndex;
+        private string bagText;
+        private Color bagColor;
+
+        private bool bagState;
+
         private ScrollBar scrollBar;
         private RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
         private Vector2 _scrollOffset = Vector2.Zero;
         private Matrix _matrix = Matrix.CreatePerspective(500, 50, 1, 2);
 
-        public VariablesBag(GraphicsDevice _graphics)
+        public BuildBag(GraphicsDevice _graphics, int width, string text, int index)
         {
-            varBagWidth = 250;
-            variableBag = new Rectangle(_graphics.Viewport.Width - varBagWidth - 50, _graphics.Viewport.Height - 50, varBagWidth, Convert.ToInt32(_graphics.Viewport.Height * 0.75));
+            bagWidth = width;
+            bagIndex = index;
+            bagText = text;
+            if(bagIndex > 0)
+            {
+                xOffset = 50;
+            }
+            bag = new Rectangle(_graphics.Viewport.Width - ((bagIndex +1) * bagWidth) - 50 - xOffset, _graphics.Viewport.Height - 50, bagWidth, Convert.ToInt32(_graphics.Viewport.Height * 0.75));
 
             desiredDuration = 0.5f;
             bagTexture = new Texture2D(_graphics, 1, 1);
@@ -50,14 +61,14 @@ namespace pLdevTest
             darkerGrey = new Color(65, 65, 63);
             customAqua = new Color(112, 171, 175);
 
-            scrollBar = new ScrollBar(new Rectangle(variableBag.X + variableBag.Width, variableBag.Y+50, 20, variableBag.Height-50), bagTexture, bagTexture, 10, 0);
+            scrollBar = new ScrollBar(new Rectangle(bag.X + bag.Width, bag.Y+50, 20, bag.Height-50), bagTexture, bagTexture, 10, 0);
         }
         public bool enterButton()
         {
-            if (mouseState.X < variableBag.X + variableBag.Width &&
-                mouseState.X > variableBag.X &&
-                mouseState.Y < variableBag.Y + variableBag.Height &&
-                mouseState.Y > variableBag.Y)
+            if (mouseState.X < bag.X + bag.Width &&
+                mouseState.X > bag.X &&
+                mouseState.Y < bag.Y + bag.Height &&
+                mouseState.Y > bag.Y)
             {
                 return true;
             }
@@ -71,13 +82,13 @@ namespace pLdevTest
             {
                 if (!bagState)
                 {
-                    newBagPos = new Vector2(varBagWidth, Convert.ToInt32(_graphics.Viewport.Height * 0.25));
+                    newBagPos = new Vector2(bagWidth, Convert.ToInt32(_graphics.Viewport.Height * 0.25));
                     bagState = true;
                     AnimateBag(newBagPos, gameTime);
                 }
                 else if (bagState)
                 {
-                    newBagPos = new Vector2(varBagWidth, Convert.ToInt32(_graphics.Viewport.Height - 50));
+                    newBagPos = new Vector2(bagWidth, Convert.ToInt32(_graphics.Viewport.Height - 50));
                     bagState = false;
                     AnimateBag(newBagPos, gameTime);
                 }
@@ -111,14 +122,14 @@ namespace pLdevTest
         {
             unpressableButton = true;
 
-            Vector2 startingPos = new Vector2(variableBag.X, variableBag.Y);
-            while (newPos.Y != variableBag.Y)
+            Vector2 startingPos = new Vector2(bag.X, bag.Y);
+            while (newPos.Y != bag.Y)
             {
                 await Task.Delay(1);
                 elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
                 float percentageComplete = (float)elapsedTime / (float)desiredDuration;
-                variableBag.Y = (int)Vector2.Lerp(startingPos, newPos, MathHelper.SmoothStep(0, 1, percentageComplete)).Y;
-                scrollBar.UpdateProportions(variableBag);
+                bag.Y = (int)Vector2.Lerp(startingPos, newPos, MathHelper.SmoothStep(0, 1, percentageComplete)).Y;
+                scrollBar.UpdateProportions(bag);
             }
             elapsedTime = 0;
             unpressableButton = false;
@@ -127,28 +138,28 @@ namespace pLdevTest
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics, SpriteFont font)
         {
-            spriteBatch.Draw(bagTexture, variableBag, bagColor);
+            spriteBatch.Draw(bagTexture, bag, bagColor);
             int variableIndex = 0;
 
-            Vector2 variableTextPos = new Vector2(variableBag.X, variableBag.Y);
-            variableTextPos.X = variableBag.X + (variableBag.Width - font.MeasureString("VARIABLES").X) / 1.9f;
+            Vector2 variableTextPos = new Vector2(bag.X, bag.Y);
+            variableTextPos.X = bag.X + (bag.Width - font.MeasureString(bagText).X) / 1.9f;
 
-            spriteBatch.DrawString(font, "VARIABLES", new Vector2(variableTextPos.X, variableBag.Y), Color.Red);
-            spriteBatch.DrawString(font, "---------------", new Vector2(variableBag.X, variableBag.Y+30), Color.Red);
+            spriteBatch.DrawString(font, bagText, new Vector2(variableTextPos.X, bag.Y), Color.Red);
+            spriteBatch.DrawString(font, "---------------", new Vector2(bag.X, bag.Y+30), Color.Red);
             spriteBatch.End();
 
             RasterizerState oldState = spriteBatch.GraphicsDevice.RasterizerState;
             Rectangle currentScissorRect = spriteBatch.GraphicsDevice.ScissorRectangle;
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, rasterizerState: _rasterizerState, transformMatrix: _matrix);
-            spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(variableBag.X, variableBag.Y+55, variableBag.Width, variableBag.Height);
+            spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(bag.X, bag.Y+55, bag.Width, bag.Height);
             if (Interpreter.variables != null)
             {
                 Dictionary<string, double> variables = new Dictionary<string, double>(Interpreter.variables);
                 foreach (KeyValuePair<string, double> variable in variables)
                 {
                     string printableValue = variable.Value.ToString();
-                    Rectangle rectangle = variableBag;
+                    Rectangle rectangle = bag;
                     Vector2 keyPos = new Vector2(rectangle.X, rectangle.Y);
                     Vector2 valuePos = new Vector2(rectangle.X, rectangle.Y);
 
@@ -172,9 +183,9 @@ namespace pLdevTest
                     keyPos.X = keyPos.X + (rectangle.Width - keySize.X) / 1.9f;
                     valuePos.X = valuePos.X + (rectangle.Width - valueSize.X) / 1.9f;
 
-                    spriteBatch.DrawString(font, "o", new Vector2(variableBag.X+10, variableBag.Y + variableIndex * 100 + 60), Color.Red);
-                    spriteBatch.DrawString(font, printThisKey, new Vector2(keyPos.X, variableBag.Y + variableIndex * 100 + 60), darkerGrey);
-                    spriteBatch.DrawString(font, printThisValue, new Vector2(valuePos.X, variableBag.Y + variableIndex * 100 + 100), customAqua);
+                    spriteBatch.DrawString(font, "o", new Vector2(bag.X+10, bag.Y + variableIndex * 100 + 60), Color.Red);
+                    spriteBatch.DrawString(font, printThisKey, new Vector2(keyPos.X, bag.Y + variableIndex * 100 + 60), darkerGrey);
+                    spriteBatch.DrawString(font, printThisValue, new Vector2(valuePos.X, bag.Y + variableIndex * 100 + 100), customAqua);
                     variableIndex++;
                 }
             }
@@ -185,18 +196,18 @@ namespace pLdevTest
 
         public void UpdateProportions(GraphicsDevice _graphics)
         {
-            variableBag.Height = Convert.ToInt32(_graphics.Viewport.Height * 0.75);
-            variableBag.X = _graphics.Viewport.Width - varBagWidth - 50;
+            bag.Height = Convert.ToInt32(_graphics.Viewport.Height * 0.75);
+            bag.X = _graphics.Viewport.Width - ((bagIndex + 1) * bagWidth) - 50 - xOffset;
 
             if (bagState)
             {
-                variableBag.Y = Convert.ToInt32(_graphics.Viewport.Height * 0.25);
+                bag.Y = Convert.ToInt32(_graphics.Viewport.Height * 0.25);
             }
             else if (!bagState)
             {
-                variableBag.Y = Convert.ToInt32(_graphics.Viewport.Height - 50);
+                bag.Y = Convert.ToInt32(_graphics.Viewport.Height - 50);
             }
-            scrollBar.UpdateProportions(variableBag);
+            scrollBar.UpdateProportions(bag);
         }
     }
 }

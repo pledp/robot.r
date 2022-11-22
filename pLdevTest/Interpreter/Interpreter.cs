@@ -144,7 +144,7 @@ namespace pLdevTest
                 RunLines(lines, lineIndex + 1, bracketEnd);
             }
 
-            RunLines(lines, bracketEnd + 1, stopIndex);
+            RunLines(lines, bracketEnd, stopIndex);
         }
         // Handles conditional statements.
         private static void HandleConditionStatement(int lineIndex, int stopIndex, string version)
