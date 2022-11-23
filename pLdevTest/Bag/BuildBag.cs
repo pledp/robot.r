@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 
 namespace pLdevTest
 {
@@ -32,6 +33,7 @@ namespace pLdevTest
         private int bagIndex;
         private string bagText;
         private Color bagColor;
+        private string bagContent;
 
         private bool bagState;
 
@@ -40,8 +42,9 @@ namespace pLdevTest
         private Vector2 _scrollOffset = Vector2.Zero;
         private Matrix _matrix = Matrix.CreatePerspective(500, 50, 1, 2);
 
-        public BuildBag(GraphicsDevice _graphics, int width, string text, int index)
+        public BuildBag(GraphicsDevice _graphics, int width, string text, int index, string content)
         {
+            bagContent = content;
             bagWidth = width;
             bagIndex = index;
             bagText = text;
@@ -153,7 +156,7 @@ namespace pLdevTest
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, rasterizerState: _rasterizerState, transformMatrix: _matrix);
             spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(bag.X, bag.Y+55, bag.Width, bag.Height);
-            if (Interpreter.variables != null)
+            if (Interpreter.variables != null && bagContent == "variables")
             {
                 Dictionary<string, double> variables = new Dictionary<string, double>(Interpreter.variables);
                 foreach (KeyValuePair<string, double> variable in variables)
@@ -186,6 +189,20 @@ namespace pLdevTest
                     spriteBatch.DrawString(font, "o", new Vector2(bag.X+10, bag.Y + variableIndex * 100 + 60), Color.Red);
                     spriteBatch.DrawString(font, printThisKey, new Vector2(keyPos.X, bag.Y + variableIndex * 100 + 60), darkerGrey);
                     spriteBatch.DrawString(font, printThisValue, new Vector2(valuePos.X, bag.Y + variableIndex * 100 + 100), customAqua);
+                    variableIndex++;
+                }
+            } 
+            else if(Interpreter.consoleText != null && bagContent == "console")
+            {
+                List<string> console = Interpreter.consoleText;
+                foreach (string text in console)
+                {
+                    Rectangle rectangle = bag;
+                    Vector2 textPos = new Vector2(rectangle.X, rectangle.Y);
+                    Vector2 textSize = font.MeasureString(text);
+                    textPos.X = textPos.X + (rectangle.Width - textSize.X) / 1.9f;
+                    spriteBatch.DrawString(font, text, new Vector2(textPos.X, bag.Y + variableIndex * 50 + 60), darkerGrey);
+
                     variableIndex++;
                 }
             }

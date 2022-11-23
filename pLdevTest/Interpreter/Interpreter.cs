@@ -12,7 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 /* 
-Semi-scuffed "Programming language" I've made for a internship project, I've named it pLang. The language does not currently have any error handling, but will come eventually.
+Semi-scuffed "Programming language" I've made for a internship project, I've named it pLang. The language does not currently have any error handling.
 The language works with the interpreter below. Written in C# with XNA (MonoGame).
 
 INCLUDES (WORK IN PROGRESS):
@@ -23,10 +23,13 @@ INCLUDES (WORK IN PROGRESS):
     A variable can be set to another variable, setting a variable to another variable will return the other variables value.
 
 - Built in functions
-    - Square root
-    - Sin
-    - Cos
-    - Tan
+    - Square root, sqrt(arguments)
+    - Sin, sin(arguments)
+    - Cos, cos(arguments)
+    - Tan, tan(arguments)
+
+- Built in methods
+    - print (arguments, arguments, ...), prints things to the console, can print variables, expressions and strings at the same time (split by commas). 
 
 - Expressions
     Expressions within and outside parentheses are split with spaces. Outside parentheses expressions might work without a space, but not inside.
@@ -37,6 +40,10 @@ INCLUDES (WORK IN PROGRESS):
     - if (arguments)
     - elseif (arguments), only runs conditional argument if all other "if" and "elseif" statements were false.
     - else (arguments), only runs if all other "if" and "elseif" were false.
+
+    Logical operators
+        - ||, the OR operator works in a chain (5 == 5 || 5 == 5 || 5 == 5 || 5 == 5) if ANY of these are true, return true for the entire chain.
+        - &&, the AND operator is a work in progress.
     
 - Operators
     - == (Equals)
@@ -84,12 +91,19 @@ namespace pLdevTest
             "< ",
             "> "
         };
+        public static readonly string[] logicalOperators =
+        {
+            "&&",
+            "||"
+        };
 
         public static Dictionary<string, double> variables;
+        public static List<string> consoleText;
 
         public static void StartInterprete(List<string> typedLines, int lineIndex, int stopIndex)
         {
             variables = new Dictionary<string, double>();
+            consoleText = new List<string>();
             lines = typedLines;
 
             RunLines(lines, lineIndex, stopIndex);
@@ -130,7 +144,7 @@ namespace pLdevTest
 
         private static void HandleBuiltInMethod(int lineIndex, int stopIndex, string version)
         {
-            HandleMethod.RunMethod(version);
+            HandleMethod.RunMethod(version, GetInsideParentheses(lines[lineIndex]));
         }
 
         private static void HandleLoop(int lineIndex, int stopIndex, string version)
@@ -151,7 +165,7 @@ namespace pLdevTest
         {
 
             /* TODO
-             * Add && and || support
+             * Add && support
             */
 
             bool ifCondition = false;
@@ -159,7 +173,7 @@ namespace pLdevTest
             // If "if" and other "elseif" conditions were false, run "elseif" condition
             if (version == "elseif" && !ifConclusion && ifStarted)
             {
-                ifCondition = HandleCondition.ConditionHandler(lineIndex, stopIndex, lines);
+                ifCondition = HandleCondition.GetResults(lineIndex, stopIndex, lines);
             }
 
             // If all "if" and "elseif" conditions were false, run "else" condition
@@ -169,7 +183,7 @@ namespace pLdevTest
             } 
             else if(version == "if")
             {
-                ifCondition = HandleCondition.ConditionHandler(lineIndex, stopIndex, lines);
+                ifCondition = HandleCondition.GetResults(lineIndex, stopIndex, lines);
                 ifConclusion = false;
                 ifStarted = true;
             }

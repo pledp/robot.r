@@ -83,8 +83,8 @@ namespace pLdevTest
             playButton = new PlayCodeButton(graphicsDevice, 10, 10);
 
             // Initialize bag for variables
-            variablesBag = new BuildBag(graphicsDevice, 250, "VARIABLES", 0);
-            consoleBag = new BuildBag(graphicsDevice, 250, "CONSOLE", 1);
+            variablesBag = new BuildBag(graphicsDevice, 250, "VARIABLES", 0, "variables");
+            consoleBag = new BuildBag(graphicsDevice, 250, "CONSOLE", 1, "console");
 
             darkeyGrey = new Color(65, 65, 63);
         }
@@ -137,7 +137,7 @@ namespace pLdevTest
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
-            spriteBatch.DrawString(font, typeWriterStringType, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - font.MeasureString(typeWriterString).X / 2, graphics.GraphicsDevice.Viewport.Height / 2 - font.MeasureString(typeWriterString).Y / 2), Color.Black);
+            //spriteBatch.DrawString(font, typeWriterStringType, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - font.MeasureString(typeWriterString).X / 2, graphics.GraphicsDevice.Viewport.Height / 2 - font.MeasureString(typeWriterString).Y / 2), Color.Black);
 
             
             pos = new Vector2(10 / 2, 0 /2);

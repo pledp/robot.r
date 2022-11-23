@@ -9,15 +9,41 @@ namespace pLdevTest
 {
     static class HandleMethod
     {
-        public static void RunMethod(string method)
+        public static void RunMethod(string method, string printString)
         {
-            List<ExpressionElements> methods;
-            methods = new List<ExpressionElements>();
+            List<BuiltInMethods> methods;
+            methods = new List<BuiltInMethods>();
 
             switch (method)
             {
                 case "print":
-                    Debug.WriteLine("print");
+                    methods.Add(BuiltInMethods.Print);
+                    break;
+            }
+
+            switch (methods[0])
+            {
+                case BuiltInMethods.Print:
+                    string[] printSegments = printString.Split(",");
+                    string formattedPrintString = "";
+
+                    for(int x = 0; x < printSegments.Length; x++)
+                    {
+                        if (printSegments[x].Contains('"'))
+                        {
+                            string newString = printSegments[x].Substring(printSegments[x].IndexOf('"') + 1);
+                            newString = newString.Substring(0, newString.LastIndexOf('"'));
+
+                            formattedPrintString += newString;
+                        }
+                        else
+                        {
+                            formattedPrintString += HandleExpression.GetResults(printSegments[x], Interpreter.variables);
+                        }
+                    }
+                    Interpreter.consoleText.Add(formattedPrintString);
+                    Debug.WriteLine(formattedPrintString);
+                    //Debug.WriteLine(HandleExpression.GetResults(printString, Interpreter.variables));
                     break;
             }
         }
