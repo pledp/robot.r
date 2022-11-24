@@ -13,62 +13,42 @@ namespace pLdevTest
         {
             string currLine = Interpreter.GetInsideParentheses(lines[lineIndex]);
 
-            // Split by logical operators (|| and &&)
-            string[] splitByLogic = currLine.Split(Interpreter.logicalOperators, StringSplitOptions.TrimEntries);
+            // Split by AND (&&) operator
+            string[] splitANDs = currLine.Split(" && ", StringSplitOptions.TrimEntries);
 
-            // Get the logical operators (|| and &&)
-            string[] splitLogics = currLine.Split(splitByLogic, StringSplitOptions.RemoveEmptyEntries);
             List<bool> logicResults = new List<bool>();
 
-            // If logical operators exist, convert values with logical operators
-            if (splitLogics.Length > 0)
+            for (int z = 0; z < splitANDs.Length; z++)
             {
-                bool[] results = new bool[splitByLogic.Length];
-
                 bool orLogic = false;
 
-                Debug.WriteLine(splitByLogic[0]);
+                // Split by OR || operators
+                string[] splitByLogic = splitANDs[z].Split(" || ", StringSplitOptions.TrimEntries);
 
-                // Check condition for each statement, return TRUE if true, return FALSE if false
+                bool[] results = new bool[splitByLogic.Length];
+
+                // Get results for each argument split by ||
                 for (int x = 0; x < splitByLogic.Length; x++)
                 {
                     results[x] = ConditionHandler(lineIndex, stopIndex, splitByLogic[x]);
                 }
-
-                for (int x = 0; x < splitLogics.Length; x++)
+                for(int x = 0; x < splitByLogic.Length; x++)
                 {
-                    orLogic = false;
-                    if (splitLogics[x] == " || ")
+                    if (results[x])
                     {
-                        // Find the amount of repetitive || operators in a row, if any any of them are TRUE return 1 TRUE
-                        int amountOfANDs = FindRepetitiveOR(splitLogics, x);
-                        Debug.WriteLine(amountOfANDs);
-                        for (int y = x; y < amountOfANDs + x + 1; y++)
-                        {
-                            if (results[y])
-                            {
-                                Debug.WriteLine(splitByLogic[y]);
-                                orLogic = true;
-                            }
-                        }
-                        if (orLogic)
-                        {
-                            logicResults.Add(true);
-                        }
-                        else
-                        {
-                            logicResults.Add(false);
-                        }
-                        x += amountOfANDs;
+                        orLogic = true;
                     }
                 }
+                if (orLogic)
+                {
+                    logicResults.Add(true);
+                }
+                else
+                {
+                    logicResults.Add(false);
+                }
             }
-            // If no logical operators exist, return currLine's conditional value
-            else
-            {
-                logicResults.Add(ConditionHandler(lineIndex, stopIndex, currLine));
-            }
-
+           
             // If ANY of the logical operations were false, return FALSE. Otherwise return TRUE
             if (logicResults.Contains(false))
             {
@@ -77,22 +57,6 @@ namespace pLdevTest
             {
                 return true;
             }
-        }
-        private static int FindRepetitiveOR(string[] splitLogics, int startIndex)
-        {
-            int amount = 0;
-
-            for(int x = startIndex; x < splitLogics.Length; x++)
-            {
-                if(splitLogics[x] == " || ")
-                {
-                    amount++;
-                } else
-                {
-                    return amount;
-                }
-            }
-            return amount;
         }
 
         public static bool ConditionHandler(int lineIndex, int stopIndex, string currLine)

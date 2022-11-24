@@ -15,6 +15,9 @@ using Microsoft.Xna.Framework.Graphics;
 Semi-scuffed "Programming language" I've made for a internship project, I've named it pLang. The language does not currently have any error handling.
 The language works with the interpreter below. Written in C# with XNA (MonoGame).
 
+Indentation in the programming language does not matter whatsoever.
+
+
 INCLUDES (WORK IN PROGRESS):
 
 - Memory 
@@ -41,9 +44,18 @@ INCLUDES (WORK IN PROGRESS):
     - elseif (arguments), only runs conditional argument if all other "if" and "elseif" statements were false.
     - else (arguments), only runs if all other "if" and "elseif" were false.
 
-    Logical operators
-        - ||, the OR operator works in a chain (5 == 5 || 5 == 5 || 5 == 5 || 5 == 5) if ANY of these are true, return true for the entire chain.
-        - &&, the AND operator is a work in progress.
+    - Logical operators
+        - ||, the OR operator checks if 2 or more arguments are true, if ANY of them are true, return true for the entire segment.
+            DEMO:
+                if (5 == 1 || 6 == 6) {
+                    print ("Hello, World!")
+                }
+
+        - &&, the AND operator splits an statement into 2 "segments", then checks if BOTH of the "segments" return true. These "segments" can contain OR operators as in the DEMO below.
+            DEMO:
+                if (5 == 5 && 6 == 7 || 1 == 1) {
+                    print ("Hello, World!")
+                }
     
 - Operators
     - == (Equals)
@@ -90,11 +102,6 @@ namespace pLdevTest
             "!= ",
             "< ",
             "> "
-        };
-        public static readonly string[] logicalOperators =
-        {
-            "&&",
-            "||"
         };
 
         public static Dictionary<string, double> variables;
