@@ -63,6 +63,17 @@ INCLUDES (WORK IN PROGRESS):
     - < (Smaller than)
     - > (Bigger than)
 
+- Built in variables (Sort of classes) 
+    - Built in variables have a GET and SET property (They can be assigned and expressed). Currently they can only be SET to integers. They are callable by naming the class, then the variable, split by dots.
+    
+    - robot, controls the robot (player) on the playground.
+        - x, x cordinate of the robot.
+        - y, y cordinate of the robot.
+
+    DEMO: 
+        robot.x = 5
+        test = robot.y
+
 DEMO: 
     foo = 50
     dev = sqrt(sqrt(50))
@@ -96,6 +107,8 @@ namespace pLdevTest
             "print"
         };
 
+        public static Dictionary<string, Dictionary<string, int>> builtInVariables;
+
         public static readonly string[] operators =
         {
             "== ",
@@ -105,11 +118,23 @@ namespace pLdevTest
         };
 
         public static Dictionary<string, double> variables;
+        public static Dictionary<string, int> robot;
         public static List<string> consoleText;
 
         public static void StartInterprete(List<string> typedLines, int lineIndex, int stopIndex)
         {
             variables = new Dictionary<string, double>();
+            Game1.playground.player.playerY = 0;
+            Game1.playground.player.playerX = 0;
+
+            // Create a dictionary of dictionaries for built in static classes. Key of the dictionary holds dictionaries of the built in variables for the classes.
+            builtInVariables = new Dictionary<string, Dictionary<string, int>>();
+
+            robot = new Dictionary<string, int>();
+            robot.Add("x", 0);
+            robot.Add("y", 0);
+            builtInVariables.Add("robot", robot);
+
             consoleText = new List<string>();
             lines = typedLines;
 
@@ -170,11 +195,6 @@ namespace pLdevTest
         // Handles conditional statements.
         private static void HandleConditionStatement(int lineIndex, int stopIndex, string version)
         {
-
-            /* TODO
-             * Add && support
-            */
-
             bool ifCondition = false;
 
             // If "if" and other "elseif" conditions were false, run "elseif" condition
@@ -210,19 +230,29 @@ namespace pLdevTest
 
         private static void HandleAssignment(int lineIndex, string varName)
         {
+            bool builtInVariableComplete = false;
             string line = lines[lineIndex];
+            string key = line.Split(" = ")[0];
             string expression = line.Split(" = ")[1];
 
             // Handle expressions for numeric variables
             double value = HandleExpression.GetResults(expression, variables);
-            
-            // If variable does not exist, make new variable, otherwise update existing variable value.
-            if (!variables.ContainsKey(varName))
+
+            if (key.Contains("."))
             {
-                variables.Add(varName, 0);
+                builtInVariableComplete = HandleBuiltInVariables.GetResults(key, value);
             }
-            variables[varName] = value;
-            Debug.WriteLine(variables[varName]);
+
+            // If variable does not exist, make new variable, otherwise update existing variable value.
+            if (!builtInVariableComplete)
+            {
+                if (!variables.ContainsKey(varName))
+                {
+                    variables.Add(varName, 0);
+                }
+                variables[varName] = value;
+                Debug.WriteLine(variables[varName]);
+            }
         }
 
         // Check if string[] and string have any matches. Generally used for built in functions.

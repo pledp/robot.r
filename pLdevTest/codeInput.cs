@@ -48,7 +48,7 @@ namespace pLdevTest
         private static GraphicsDevice staticGraphicsDevice;
         private BuildBag variablesBag;
         private BuildBag consoleBag;
-        public codeInput()
+        public codeInput(SpriteFont pixelFont)
         {
             typeWriterString = "pLdev!";
             typeWriterStringType = "";
@@ -56,6 +56,9 @@ namespace pLdevTest
             numberOfLines = 1;
             currentChar = 0;
             cursorOffset = 0;
+
+            font = pixelFont;
+            fontGlyphs = font.GetGlyphs();
 
             size = new Vector2();
             pos = new Vector2();
@@ -73,9 +76,6 @@ namespace pLdevTest
         public void LoadContent(ContentManager Content, GraphicsDevice graphicsDevice)
         {
             staticGraphicsDevice = graphicsDevice;
-            font = Content.Load<SpriteFont>("font");
-            fontGlyphs = font.GetGlyphs();
-
 
             whiteRectangle = new Texture2D(graphicsDevice, 1, 1);
             whiteRectangle.SetData(new[] { Color.White });

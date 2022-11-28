@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
 using System.Collections;
+using info.lundin.math;
+using Microsoft.Xna.Framework.Input;
 
 namespace pLdevTest
 {
@@ -107,6 +109,21 @@ namespace pLdevTest
             {
                 string value = variables[expression].ToString();
                 return value;
+            }
+
+            // Check for built in variables, if it exists, get its value
+            else if (expression.Contains("."))
+            {
+                string variableName = expression.Split(".")[0];
+                string variableName2 = expression.Split(".")[1];
+                if (Interpreter.builtInVariables.ContainsKey(variableName))
+                {
+                    if (Interpreter.builtInVariables[variableName].ContainsKey(variableName2))
+                    {
+                        string value = Interpreter.builtInVariables[variableName][variableName2].ToString();
+                        return value;
+                    }
+                }
             }
             return expression;
         }

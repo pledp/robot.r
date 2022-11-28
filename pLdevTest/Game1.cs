@@ -14,7 +14,10 @@ namespace pLdevTest
         public GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         public static GameWindow gw;
+        public static PlayGround playground;
+
         MouseState currentMouseState;
+        public static SpriteFont font;
 
         codeInput codeTextBar;
         Color background;
@@ -34,9 +37,6 @@ namespace pLdevTest
             
 
             IsMouseVisible = true;
-
-            codeTextBar = new codeInput();
-
         }
 
         protected override void Initialize()
@@ -56,6 +56,7 @@ namespace pLdevTest
         private void ProcessWindowSizeChange(object sender, EventArgs e)
         {
             codeTextBar.UpdateEditorProportions(_graphics);
+            playground.UpdateProportions(_graphics.GraphicsDevice);
         }
         public void ProcessTextInput(object sender, TextInputEventArgs e)
         {
@@ -71,13 +72,15 @@ namespace pLdevTest
         
         protected override void LoadContent()
         {
-            codeTextBar.LoadContent(Content, GraphicsDevice);
+            font = Content.Load<SpriteFont>("font");
             gw = Window;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             background = new Color(50, 41, 47);
-            // Load stylesheet
 
+            codeTextBar = new codeInput(font);
+            codeTextBar.LoadContent(Content, GraphicsDevice);
 
+            playground = new PlayGround(_graphics.GraphicsDevice, 550);
         }
 
         protected override void Update(GameTime gameTime)
@@ -86,6 +89,7 @@ namespace pLdevTest
                 Exit();
             // TODO: Add your update logic here
             codeTextBar.Update(gameTime, _graphics);
+            playground.Update(gameTime);
             Camera.Instance.Update();
             base.Update(gameTime);
             currentMouseState = Mouse.GetState();
@@ -96,7 +100,10 @@ namespace pLdevTest
         {
             GraphicsDevice.Clear(background);
             _spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.Instance.ViewMatrix);
+
+            playground.Draw(_spriteBatch, gameTime, _graphics);
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
+
             _spriteBatch.End();
 
             // TODO: Add your drawing code here
