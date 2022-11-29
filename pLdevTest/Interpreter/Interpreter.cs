@@ -139,6 +139,8 @@ namespace pLdevTest
             lines = typedLines;
 
             RunLines(lines, lineIndex, stopIndex);
+
+            MissionHandler.CheckForMission();
         }
         private static void RunLines(List<string> lines, int lineIndex, int stopIndex)
         {

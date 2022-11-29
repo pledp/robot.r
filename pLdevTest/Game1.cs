@@ -100,7 +100,7 @@ namespace pLdevTest
         {
             GraphicsDevice.Clear(background);
             _spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.Instance.ViewMatrix);
-
+            _spriteBatch.DrawString(font, "Mission: " + MissionHandler.Mission, new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 405), Color.White);
             playground.Draw(_spriteBatch, gameTime, _graphics);
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
 
