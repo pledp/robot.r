@@ -22,6 +22,8 @@ namespace pLdevTest
         codeInput codeTextBar;
         Color background;
 
+        Texture2D whiteRectangle;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this)
@@ -51,6 +53,8 @@ namespace pLdevTest
             IsFixedTimeStep = true;
             TargetElapsedTime = TimeSpan.FromSeconds(1 / 144.0f);
 
+            whiteRectangle = new Texture2D(_graphics.GraphicsDevice, 1, 1);
+            whiteRectangle.SetData(new[] { Color.White });
         }
 
         private void ProcessWindowSizeChange(object sender, EventArgs e)
@@ -100,7 +104,9 @@ namespace pLdevTest
         {
             GraphicsDevice.Clear(background);
             _spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.Instance.ViewMatrix);
-            _spriteBatch.DrawString(font, "Mission: " + MissionHandler.Mission, new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 405), Color.White);
+            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 650, 0, 650, _graphics.GraphicsDevice.Viewport.Height), Color.White);
+            _spriteBatch.DrawString(font, MissionHandler.Missions[MissionHandler.Mission], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 405), playground.pgColor);
+            _spriteBatch.DrawString(font, "Mission: " + MissionHandler.Mission + "/" + MissionHandler.Missions.Length, new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 435), Color.Black);
             playground.Draw(_spriteBatch, gameTime, _graphics);
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
 

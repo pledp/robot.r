@@ -48,6 +48,13 @@ namespace pLdevTest
         private static GraphicsDevice staticGraphicsDevice;
         private BuildBag variablesBag;
         private BuildBag consoleBag;
+
+        private RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
+        private Vector2 _scrollOffset = Vector2.Zero;
+        private Matrix _matrix = Matrix.CreatePerspective(500, 50, 1, 2);
+        private MouseState mouseState;
+        private MouseState lastMouseState;
+
         public codeInput(SpriteFont pixelFont)
         {
             typeWriterString = "pLdev!";
@@ -69,7 +76,7 @@ namespace pLdevTest
             typing.Add("");
             lineCounter.Add(numberOfLines);
 
-            codeEditorOffset = new Vector2(50, 10);
+            codeEditorOffset = new Vector2(70, 10);
 
         }
 
@@ -119,6 +126,25 @@ namespace pLdevTest
                     arrowTimer = 0;
                 }
             }
+
+            _matrix = Matrix.CreateTranslation(new Vector3(_scrollOffset, 0));
+            mouseState = Mouse.GetState();
+            // Check if scroll wheel value has updated
+            if (mouseState.ScrollWheelValue != lastMouseState.ScrollWheelValue)
+            {
+                // Check if new scroll wheel value is negative or positive
+                if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
+                {
+                    _scrollOffset.Y -= 20;
+                }
+                else if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue && _scrollOffset.Y < 0)
+                {
+                    _scrollOffset.Y += 20;
+                }
+
+            }
+            lastMouseState = mouseState;
+
             lastPressedKeys = kbState.GetPressedKeys();
 
             if (typeWriterStringType.Length < typeWriterString.Length)
@@ -139,7 +165,13 @@ namespace pLdevTest
         {
             //spriteBatch.DrawString(font, typeWriterStringType, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - font.MeasureString(typeWriterString).X / 2, graphics.GraphicsDevice.Viewport.Height / 2 - font.MeasureString(typeWriterString).Y / 2), Color.Black);
 
-            
+
+            RasterizerState oldState = spriteBatch.GraphicsDevice.RasterizerState;
+            Rectangle currentScissorRect = spriteBatch.GraphicsDevice.ScissorRectangle;
+
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, rasterizerState: _rasterizerState, transformMatrix: _matrix);
+            spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(0, 0, graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
             pos = new Vector2(10 / 2, 0 /2);
             Vector2 origin = size * 0.5f;
             
@@ -174,6 +206,8 @@ namespace pLdevTest
                     break;
             }
             spriteBatch.Draw(whiteRectangle, new Rectangle(cursorOffset + 40 + Convert.ToInt32(codeEditorOffset.X), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), 10, Convert.ToInt32(font.MeasureString("A").Y)), Color.White);
+            spriteBatch.End();
+            spriteBatch.Begin();
 
             variablesBag.Draw(spriteBatch, gameTime, graphics, font);
             consoleBag.Draw(spriteBatch, gameTime, graphics, font);

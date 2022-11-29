@@ -16,6 +16,18 @@ namespace pLdevTest
             set { mission = value; }
         }
 
+        private readonly static string[] missions =
+        {
+            "vertical movement basics",
+            "horizontal movement basics",
+            "TUTORIAL COMPLETE! WOHOO!"
+        };
+
+        public static string[] Missions
+        {
+            get { return missions; }
+        }
+
 
         public static void CheckForMission()
         {

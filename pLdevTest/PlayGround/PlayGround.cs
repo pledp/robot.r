@@ -15,7 +15,7 @@ namespace pLdevTest
         private Rectangle playground;
         private int width;
         private Texture2D pgTexture;
-        private Color pgColor;
+        public Color pgColor;
 
         public PlaygroundPlayer player;
         public PlayGround(GraphicsDevice _graphics, int playgroundWidth)
