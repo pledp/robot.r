@@ -25,6 +25,7 @@ namespace pLdevTest
         private int cursorOffset;
         private int lineCounterOffset;
         private Dictionary<char, SpriteFont.Glyph> fontGlyphs;
+        string indentString = "   ";
 
         Texture2D whiteRectangle;
 
@@ -33,6 +34,9 @@ namespace pLdevTest
         {
             get { return typing; }
         }
+        private List<String> formattedCode;
+        private List<int> lineIndent;
+
         private List<int> lineCounter;
         private double typeWriterTimer;
         private double arrowTimer;
@@ -54,6 +58,8 @@ namespace pLdevTest
         private Matrix _matrix = Matrix.CreatePerspective(500, 50, 1, 2);
         private MouseState mouseState;
         private MouseState lastMouseState;
+
+        private int spaceSize;
 
         public codeInput(SpriteFont pixelFont)
         {
@@ -94,6 +100,8 @@ namespace pLdevTest
             consoleBag = new BuildBag(graphicsDevice, 250, "CONSOLE", 1, "console");
 
             darkeyGrey = new Color(65, 65, 63);
+
+            spaceSize = (int)Game1.font.MeasureString(indentString).X;
         }
 
         public void Update(GameTime gameTime, GraphicsDeviceManager graphics)
@@ -126,6 +134,8 @@ namespace pLdevTest
                     arrowTimer = 0;
                 }
             }
+
+            formattedCode = FormatIndenting();
 
             _matrix = Matrix.CreateTranslation(new Vector3(_scrollOffset, 0));
             mouseState = Mouse.GetState();
@@ -188,7 +198,7 @@ namespace pLdevTest
 
                 lineCounterOffset = Convert.ToInt32(font.MeasureString(lineCounter[line-1].ToString()).X);
                 // Draw code
-                spriteBatch.DrawString(font, typing[line - 1], new Vector2(60 + codeEditorOffset.X, line * 50 + codeEditorOffset.Y - 50), Color.White);
+                spriteBatch.DrawString(font, formattedCode[line - 1], new Vector2(60 + codeEditorOffset.X, line * 50 + codeEditorOffset.Y - 50), Color.White);
 
                 // Draw line counter
                 spriteBatch.DrawString(font, line.ToString(), new Vector2(codeEditorOffset.X + pos.X, (line - 1) * 50 + codeEditorOffset.Y + 20), darkeyGrey, 0, origin, 1, SpriteEffects.None, 0);
@@ -205,7 +215,7 @@ namespace pLdevTest
                     cursorOffset = Convert.ToInt32(font.MeasureString(currentCharString).X) + Convert.ToInt32(font.MeasureString(typing[currentLine].Remove(currentChar)).X);
                     break;
             }
-            spriteBatch.Draw(whiteRectangle, new Rectangle(cursorOffset + 40 + Convert.ToInt32(codeEditorOffset.X), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), 10, Convert.ToInt32(font.MeasureString("A").Y)), Color.White);
+            spriteBatch.Draw(whiteRectangle, new Rectangle((cursorOffset + 40 + Convert.ToInt32(codeEditorOffset.X)) + (lineIndent[currentLine] * spaceSize), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), 10, Convert.ToInt32(font.MeasureString("A").Y)), Color.White);
             spriteBatch.End();
             spriteBatch.Begin();
 
@@ -246,11 +256,13 @@ namespace pLdevTest
                     lineCounter[i] = lineCounter[i] + 1;
                 }
             }
+
             numberOfLines++;
             currentLine++;
-            currentChar = 0;
             lineCounter.Insert(currentLine, currentLine+1);
             typing.Insert(currentLine, "");
+
+            currentChar = typing[currentLine].Length;
         }
         private void SwapCodeLine(Keys key)
         {
@@ -315,6 +327,40 @@ namespace pLdevTest
                 currentChar--;
                 typing[currentLine] = typing[currentLine].Remove(currentChar, 1);
             }
+        }
+        private List<String> FormatIndenting()
+        {
+            List<String> formattedCode = new List<String>();
+            List<int> lineIndentCounter = new List<int>();
+
+            int indentLevel = 0;
+            for (int i = 0; i < typing.Count; i++)
+            {
+                string line = typing[i];
+                if (line.Contains("}"))
+                {
+                    indentLevel--;
+                }
+
+                //int originalLineLength = line.Length;
+                //line = line.TrimStart (' ');
+
+                for (int j = 0; j < indentLevel; j++)
+                {
+                    line = indentString + line;
+                }
+
+                formattedCode.Add(line);
+                lineIndentCounter.Add(indentLevel);
+
+                if (line.Contains("{"))
+                {
+                    indentLevel++;
+                }
+            }
+
+            lineIndent = lineIndentCounter;
+            return formattedCode;
         }
 
         public void UpdateEditorProportions(GraphicsDeviceManager graphicsDevice)
