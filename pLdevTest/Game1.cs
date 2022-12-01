@@ -22,6 +22,7 @@ namespace pLdevTest
 
         codeInput codeTextBar;
         public static Color background;
+        private Texture2D backgroundTexture;
 
         public Game1()
         {
@@ -76,12 +77,15 @@ namespace pLdevTest
             gw = Window;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             background = new Color(50, 41, 47);
+            backgroundTexture = new Texture2D(GraphicsDevice, 1, 1);
+            backgroundTexture.SetData(new[] { background });
 
             codeTextBar = new codeInput(font);
             codeTextBar.LoadContent(Content, GraphicsDevice);
 
             playground = new PlayGround(_graphics.GraphicsDevice, 550);
             missionInfo = new MissionInfo(_graphics.GraphicsDevice);
+            playground.LoadContent(Content, GraphicsDevice);
         }
 
         protected override void Update(GameTime gameTime)
@@ -101,8 +105,13 @@ namespace pLdevTest
         {
             GraphicsDevice.Clear(background);
             _spriteBatch.Begin(SpriteSortMode.Immediate, null, null, null, null, null, Camera.Instance.ViewMatrix);
-            missionInfo.Draw(_spriteBatch, gameTime, _graphics);
             playground.Draw(_spriteBatch, gameTime, _graphics);
+            _spriteBatch.End();
+            GraphicsDevice.Clear(background);
+
+            _spriteBatch.Begin();
+            missionInfo.Draw(_spriteBatch, gameTime, _graphics);
+            playground.Draw2(_spriteBatch, gameTime, _graphics);
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
 
             _spriteBatch.End();
