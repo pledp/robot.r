@@ -30,10 +30,18 @@ namespace pLdevTest
                             {
                                 case "x":
                                     Game1.playground.player.playerX = Interpreter.builtInVariables["robot"]["x"];
+                                    if (MissionHandler.Mission == 1)
+                                    {
+                                        MissionHandler.MissionsComplete[1] = true;
+                                    }
                                     break;
 
                                 case "y":
                                     Game1.playground.player.playerY = Interpreter.builtInVariables["robot"]["y"];
+                                    if (MissionHandler.Mission == 0)
+                                    {
+                                        MissionHandler.MissionsComplete[0] = true;
+                                    }
                                     break;
                             }    
                         }

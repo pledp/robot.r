@@ -13,14 +13,16 @@ namespace pLdevTest
         public static int Mission
         {
             get { return mission; }
-            set { mission = value; }
         }
 
         private readonly static string[] missions =
         {
-            "vertical movement basics",
-            "horizontal movement basics",
-            "TUTORIAL COMPLETE! WOHOO!"
+            "Up and Down!",
+            "Left and Right!",
+            "Declaration of...",
+            "If only...",
+            "Else:",
+            "Only if else..."
         };
 
         public static string[] Missions
@@ -28,26 +30,20 @@ namespace pLdevTest
             get { return missions; }
         }
 
+        public static bool[] MissionsComplete =
+        {
+            false,
+            false,
+            false,
+            false,
+        };
 
         public static void CheckForMission()
         {
             bool missionComplete = false;
-            switch(mission)
+            if (MissionsComplete[mission])
             {
-                case 0:
-                    if(Game1.playground.player.playerY == 4)
-                    {
-                        Debug.WriteLine("Mission 1 complete!");
-                        missionComplete = true;
-                    }
-                    break;
-                case 1:
-                    if(Game1.playground.player.playerX == 4)
-                    {
-                        Debug.WriteLine("Mission 2 complete!");
-                        missionComplete = true;
-                    }
-                    break;
+                missionComplete = true;
             }
 
             if(missionComplete)

@@ -69,7 +69,7 @@ namespace pLdevTest
             // Create light mask
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
             Vector2 lightSize = new Vector2(300, 300);
-            spriteBatch.Draw(lightMask, new Rectangle(playground.X + (player.playerX * 25) - ((int)lightSize.X/2) + 12, playground.Y + (player.playerY * 25) - ((int)lightSize.Y / 2) + 6, (int)lightSize.X, (int)lightSize.Y),  Color.Yellow);
+            spriteBatch.Draw(lightMask, new Rectangle(playground.X + (player.playerX * 25) - ((int)lightSize.X/2) + 12, playground.Y + (player.playerY * 25) - ((int)lightSize.Y / 2) + 6, (int)lightSize.X, (int)lightSize.Y),  Color.White);
             spriteBatch.End();
 
             // Draw to render texture

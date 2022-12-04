@@ -34,3 +34,5 @@ C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\obj\Release\net6
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\obj\Release\net6.0\ref\pLdevTest.dll
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Release\net6.0\Content\effect1.xnb
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Release\net6.0\Content\lightmask.xnb
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Release\net6.0\Content\MaskShader.xnb
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Release\net6.0\Content\transistionMask.xnb

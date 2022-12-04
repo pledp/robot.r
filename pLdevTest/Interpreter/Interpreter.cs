@@ -221,6 +221,12 @@ namespace pLdevTest
             {
                 // If condition was true: Run next line, and DON'T run next "elseif" and "else" conditions
                 ifConclusion = true;
+
+                if(MissionHandler.Mission == 3)
+                {
+                    MissionHandler.MissionsComplete[3] = true;
+                }
+
                 RunLines(lines, lineIndex +1, stopIndex);
             } else
             {
@@ -254,6 +260,11 @@ namespace pLdevTest
                 }
                 variables[varName] = value;
                 Debug.WriteLine(variables[varName]);
+
+                if(MissionHandler.Mission == 2)
+                {
+                    MissionHandler.MissionsComplete[2] = true;
+                }
             }
         }
 

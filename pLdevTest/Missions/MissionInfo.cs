@@ -22,7 +22,8 @@ namespace pLdevTest
         public void Draw(SpriteBatch _spriteBatch, GameTime gameTime, GraphicsDeviceManager _graphics)
         {
             Vector2 offset = Vector2.Zero;
-            missionCounterText[1] = MissionHandler.Mission.ToString();
+            int missionFormat = MissionHandler.Mission + 1;
+            missionCounterText[1] = missionFormat.ToString();
             missionCounterText[3] = MissionHandler.Missions.Length.ToString();
 
             // Draw frame
