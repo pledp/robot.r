@@ -24,7 +24,10 @@ INCLUDES (WORK IN PROGRESS):
     All variables are technically doubles (floats). But all variables can be used as integers also.
     All variables are stored in a dictionary of <strings as keys, doubles as values>.
     A variable can be set to another variable, setting a variable to another variable will return the other variables value.
-
+    DEMO:
+        helloworld = 5
+    (Spaces between = are VERY IMPORTANT)
+    
 - Built in functions
     - Square root, sqrt(arguments)
     - Sin, sin(arguments)
@@ -40,21 +43,21 @@ INCLUDES (WORK IN PROGRESS):
 
 - Conditional statements
     Conditional statements check arguments within parentheses and returns true or false, according to the arguments. If true, runs lines within the curly brackets { }.
-    - if (arguments)
-    - elseif (arguments), only runs conditional argument if all other "if" and "elseif" statements were false.
-    - else (arguments), only runs if all other "if" and "elseif" were false.
+    - if(arguments)
+    - elseif(arguments), only runs conditional argument if all other "if" and "elseif" statements were false.
+    - else(arguments), only runs if all other "if" and "elseif" were false.
 
     - Logical operators
         - ||, the OR operator checks if 2 or more arguments are true, if ANY of them are true, return true for the entire segment.
             DEMO:
-                if (5 == 1 || 6 == 6) {
-                    print ("Hello, World!")
+                if(5 == 1 || 6 == 6) {
+                    print("Hello, World!")
                 }
 
         - &&, the AND operator splits an statement into 2 "segments", then checks if BOTH of the "segments" return true. These "segments" can contain OR operators as in the DEMO below.
             DEMO:
-                if (5 == 5 && 6 == 7 || 1 == 1) {
-                    print ("Hello, World!")
+                if(5 == 5 && 6 == 7 || 1 == 1) {
+                    print("Hello, World!")
                 }
     
 - Operators
@@ -77,10 +80,10 @@ INCLUDES (WORK IN PROGRESS):
 DEMO: 
     foo = 50
     dev = sqrt(sqrt(50))
-    if (foo != 50) {
+    if(foo != 50) {
         x = dev
     }
-    elseif (foo == 50) {
+    elseif(foo == 50) {
         x = dev * 5
     }
 */
