@@ -33,6 +33,7 @@ namespace pLdevTest
             _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 600, _graphics.GraphicsDevice.Viewport.Height - 140, 550, 5), Game1.background);
             _spriteBatch.DrawString(Game1.font, MissionHandler.Missions[MissionHandler.Mission], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 410), PlayGround.pgColor);
 
+            _spriteBatch.DrawString(Game1.smallerFont, MissionHandler.MissionsInfoText[MissionHandler.Mission,0][0], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 600), MissionHandler.MissionsInfoColor[MissionHandler.Mission,0][0]);
             for(int x = 0; x < missionCounterText.Length; x++)
             {
                 _spriteBatch.DrawString(Game1.font, missionCounterText[x], new Vector2((_graphics.GraphicsDevice.Viewport.Width) - 600 + offset.X, _graphics.GraphicsDevice.Viewport.Height - 115), colors[x]);

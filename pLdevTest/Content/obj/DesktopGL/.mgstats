@@ -1,2 +1,2 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/MaskShader.fx","C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/bin/DesktopGL/MaskShader.xnb","EffectProcessor","CompiledEffectContent",856,676,0,3177712
+"C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/File.spritefont","C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/bin/DesktopGL/smallerFont.xnb","FontDescriptionProcessor","SpriteFontContent",2073,37919,0,1631056

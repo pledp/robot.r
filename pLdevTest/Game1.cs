@@ -18,6 +18,7 @@ namespace pLdevTest
 
         MouseState currentMouseState;
         public static SpriteFont font;
+        public static SpriteFont smallerFont;
 
         codeInput codeTextBar;
         public static Color background;
@@ -77,6 +78,7 @@ namespace pLdevTest
         protected override void LoadContent()
         {
             font = Content.Load<SpriteFont>("font");
+            smallerFont = Content.Load<SpriteFont>("smallerFont");
          
             gw = Window;
             _spriteBatch = new SpriteBatch(GraphicsDevice);

@@ -116,6 +116,11 @@ namespace pLdevTest
             "< ",
             "> "
         };
+        public static readonly string[] initialSplit =
+        {
+            "(",
+            " "
+        };
 
         public static Dictionary<string, double> variables;
         public static Dictionary<string, int> robot;
@@ -145,7 +150,7 @@ namespace pLdevTest
         private static void RunLines(List<string> lines, int lineIndex, int stopIndex)
         {
             // Interprate every line, split segment by spaces.
-            string[] segments = lines[lineIndex].Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            string[] segments = lines[lineIndex].Split(initialSplit, StringSplitOptions.RemoveEmptyEntries);
             if (segments.Length > 1)
             {
                 if (segments[1] == "=")

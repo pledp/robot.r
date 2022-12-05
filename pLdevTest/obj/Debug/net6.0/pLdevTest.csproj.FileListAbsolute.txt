@@ -88,3 +88,4 @@ C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Content\lightmask.xnb
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Content\MaskShader.xnb
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Content\transistionMask.xnb
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Content\smallerFont.xnb

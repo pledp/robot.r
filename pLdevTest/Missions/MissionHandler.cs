@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -23,6 +24,40 @@ namespace pLdevTest
             "If only...",
             "Else:",
             "Only if else..."
+        };
+        public readonly static String[,][] MissionsInfoText =
+        {
+            {
+                new[]
+                {
+                    "Move the robot vertically with:",
+                    "robot.x = 4"
+                }
+            },
+            {
+                new[]
+                {
+                    "Move the robot horizontally with:",
+                    "robot.y = 4"
+                }
+            }
+        };
+        public readonly static Color[,][] MissionsInfoColor =
+{
+            {
+                new[]
+                {
+                    Color.Black,
+                    PlayGround.pgColor
+                }
+            },
+            {
+                new[]
+                {
+                    Color.Black,
+                    PlayGround.pgColor
+                }
+            }
         };
 
         public static string[] Missions
