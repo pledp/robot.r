@@ -31,14 +31,14 @@ namespace pLdevTest
                 new[]
                 {
                     "Move the robot vertically with:",
-                    "robot.x = 4"
+                    "robot.y = 4"
                 }
             },
             {
                 new[]
                 {
                     "Move the robot horizontally with:",
-                    "robot.y = 4"
+                    "robot.x = 4"
                 }
             }
         };

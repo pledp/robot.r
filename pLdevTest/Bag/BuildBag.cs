@@ -20,12 +20,12 @@ namespace pLdevTest
         private MouseState lastMouseState;
         private Vector2 newBagPos;
         private bool unpressableButton;
-        private double elapsedTime;
+        private double elapsedTime = 0;
         private int xOffset;
 
         private Color darkerGrey;
         private Color customAqua;
-        private double desiredDuration;
+        private double desiredDuration = 1f;
 
         private Rectangle bag;
         private Texture2D bagTexture;
@@ -34,8 +34,10 @@ namespace pLdevTest
         private string bagText;
         private Color bagColor;
         private string bagContent;
+        Vector2 startingPos;
 
         private bool bagState;
+        private bool buttonPressed;
 
         private ScrollBar scrollBar;
         private RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
@@ -54,7 +56,6 @@ namespace pLdevTest
             }
             bag = new Rectangle(_graphics.Viewport.Width - ((bagIndex +1) * bagWidth) - 50 - xOffset, _graphics.Viewport.Height - 50, bagWidth, Convert.ToInt32(_graphics.Viewport.Height * 0.75));
 
-            desiredDuration = 0.5f;
             bagTexture = new Texture2D(_graphics, 1, 1);
             bagColor = new Color(240, 247, 244);
             bagTexture.SetData(new[] { bagColor });
@@ -65,8 +66,9 @@ namespace pLdevTest
             customAqua = new Color(112, 171, 175);
 
             scrollBar = new ScrollBar(new Rectangle(bag.X + bag.Width, bag.Y+50, 20, bag.Height-50), bagTexture, bagTexture, 10, 0);
+            startingPos = new Vector2(bag.X, bag.Y);
         }
-        public bool enterButton()
+        private bool enterButton()
         {
             if (mouseState.X < bag.X + bag.Width &&
                 mouseState.X > bag.X &&
@@ -83,16 +85,19 @@ namespace pLdevTest
             mouseState = Mouse.GetState();
             if (enterButton() && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed && !unpressableButton)
             {
+                buttonPressed = true;
+            }
+
+            if(buttonPressed)
+            {
                 if (!bagState)
                 {
                     newBagPos = new Vector2(bagWidth, Convert.ToInt32(_graphics.Viewport.Height * 0.25));
-                    bagState = true;
                     AnimateBag(newBagPos, gameTime);
                 }
                 else if (bagState)
                 {
                     newBagPos = new Vector2(bagWidth, Convert.ToInt32(_graphics.Viewport.Height - 50));
-                    bagState = false;
                     AnimateBag(newBagPos, gameTime);
                 }
             }
@@ -121,21 +126,31 @@ namespace pLdevTest
             scrollBar.Update();
 
         }
-        private async void AnimateBag(Vector2 newPos, GameTime gameTime)
+        private void AnimateBag(Vector2 newPos, GameTime gameTime)
         {
             unpressableButton = true;
+            elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
+            float percentageComplete = (float)elapsedTime / (float)desiredDuration;
+            bag.Y = (int)Vector2.Lerp(startingPos, newPos, MathHelper.SmoothStep(0, 1, percentageComplete)).Y;
+            scrollBar.UpdateProportions(bag);
+            Debug.WriteLine("test");
 
-            Vector2 startingPos = new Vector2(bag.X, bag.Y);
-            while (newPos.Y != bag.Y)
+            if (bag.Y == newPos.Y)
             {
-                await Task.Delay(1);
-                elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-                float percentageComplete = (float)desiredDuration * (float)elapsedTime;
-                bag.Y = Convert.ToInt32(Vector2.Lerp(startingPos, newPos, MathHelper.SmoothStep(0, 1, percentageComplete)).Y);
-                scrollBar.UpdateProportions(bag);
+                startingPos = new Vector2(bag.X, bag.Y);
+                unpressableButton = false;
+                elapsedTime = 0;
+                buttonPressed = false;
+
+                if(bagState)
+                {
+                    bagState = false;
+                }
+                else
+                {
+                    bagState = true;
+                }
             }
-            elapsedTime = 0;
-            unpressableButton = false;
         }
 
 
