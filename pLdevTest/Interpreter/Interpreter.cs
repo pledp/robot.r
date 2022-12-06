@@ -23,7 +23,7 @@ INCLUDES (WORK IN PROGRESS):
 - Memory 
     All variables are technically doubles (floats). But all variables can be used as integers also.
     All variables are stored in a dictionary of <strings as keys, doubles as values>.
-    A variable can be set to another variable, setting a variable to another variable will return the other variables value.
+    All variables have GET and SET properties.
     DEMO:
         helloworld = 5
     (Spaces between = are VERY IMPORTANT)

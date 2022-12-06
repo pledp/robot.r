@@ -54,7 +54,7 @@ namespace pLdevTest
             }
             bag = new Rectangle(_graphics.Viewport.Width - ((bagIndex +1) * bagWidth) - 50 - xOffset, _graphics.Viewport.Height - 50, bagWidth, Convert.ToInt32(_graphics.Viewport.Height * 0.75));
 
-            desiredDuration = 1f;
+            desiredDuration = 0.5f;
             bagTexture = new Texture2D(_graphics, 1, 1);
             bagColor = new Color(240, 247, 244);
             bagTexture.SetData(new[] { bagColor });
@@ -130,8 +130,8 @@ namespace pLdevTest
             {
                 await Task.Delay(1);
                 elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-                float percentageComplete = (float)elapsedTime / (float)desiredDuration;
-                bag.Y = (int)Vector2.Lerp(startingPos, newPos, MathHelper.SmoothStep(0, 1, percentageComplete)).Y;
+                float percentageComplete = (float)desiredDuration * (float)elapsedTime;
+                bag.Y = Convert.ToInt32(Vector2.Lerp(startingPos, newPos, MathHelper.SmoothStep(0, 1, percentageComplete)).Y);
                 scrollBar.UpdateProportions(bag);
             }
             elapsedTime = 0;

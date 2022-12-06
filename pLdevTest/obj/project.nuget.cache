@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "R+yLZ/ZGwS60/gKpUrWEH7TGgsOsez18+IN8ItFWZnEP9kJqNyuSH4/esw2eqrGN34nJ48SmVTJItbFBIXnbSw==",
+  "dgSpecHash": "M/kYi7q1gMeo9Gm/esXLvzETV1cLksamM3+L8/N2OdMQ2SA5Bx8Zf/KqFyie5FjMi7REKAX3ytVE+LLQ3tbkQQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\lasse\\source\\repos\\pLdev\\pLdevTest\\pLdevTest.csproj",
+  "projectFilePath": "C:\\Users\\lasse\\source\\repos\\pLdevTest\\pLdevTest\\pLdev\\pLdevTest\\pLdevTest.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lasse\\.nuget\\packages\\cyotek.drawing.bitmapfont\\2.0.4\\cyotek.drawing.bitmapfont.2.0.4.nupkg.sha512",
     "C:\\Users\\lasse\\.nuget\\packages\\fontstashsharp.base\\1.1.8\\fontstashsharp.base.1.1.8.nupkg.sha512",

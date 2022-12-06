@@ -326,11 +326,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\lasse\\source\\repos\\pLdev\\pLdevTest\\pLdevTest.csproj",
+      "projectUniqueName": "C:\\Users\\lasse\\source\\repos\\pLdevTest\\pLdevTest\\pLdev\\pLdevTest\\pLdevTest.csproj",
       "projectName": "pLdevTest",
-      "projectPath": "C:\\Users\\lasse\\source\\repos\\pLdev\\pLdevTest\\pLdevTest.csproj",
+      "projectPath": "C:\\Users\\lasse\\source\\repos\\pLdevTest\\pLdevTest\\pLdev\\pLdevTest\\pLdevTest.csproj",
       "packagesPath": "C:\\Users\\lasse\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\lasse\\source\\repos\\pLdev\\pLdevTest\\obj\\",
+      "outputPath": "C:\\Users\\lasse\\source\\repos\\pLdevTest\\pLdevTest\\pLdev\\pLdevTest\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
