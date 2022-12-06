@@ -166,9 +166,6 @@ namespace pLdevTest
             spriteBatch.DrawString(font, "---------------", new Vector2(bag.X, bag.Y+30), Color.Red);
             spriteBatch.End();
 
-            RasterizerState oldState = spriteBatch.GraphicsDevice.RasterizerState;
-            Rectangle currentScissorRect = spriteBatch.GraphicsDevice.ScissorRectangle;
-
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, rasterizerState: _rasterizerState, transformMatrix: _matrix);
             spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(bag.X, bag.Y+55, bag.Width, bag.Height);
             if (Interpreter.variables != null && bagContent == "variables")

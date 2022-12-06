@@ -27,7 +27,7 @@ namespace pLdevTest
         Vector2 openingTransistion;
 
         bool transistionComplete;
-        bool playTransistion = true;
+        public bool playTransistion = true;
 
         public CircleScreenTransistion(GraphicsDevice _graphics)
         {
@@ -100,7 +100,6 @@ namespace pLdevTest
 
             _graphics.SetRenderTarget(null);
             _spriteBatch.Begin();
-
         }
 
         public void Draw(SpriteBatch _spriteBatch, GraphicsDevice _graphics)

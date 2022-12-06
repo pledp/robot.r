@@ -1,8 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using FontStashSharp;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +16,7 @@ namespace pLdevTest
         Texture2D whiteRectangle;
         string[] missionCounterText = { "Mission: ", "", "/", ""};
         Color[] colors = { Color.Black, PlayGround.pgColor, Color.Black, PlayGround.pgColor };
+
         public MissionInfo(GraphicsDevice _graphics)
         {
             whiteRectangle = new Texture2D(_graphics, 1, 1);
@@ -35,7 +38,7 @@ namespace pLdevTest
 
             for(int x = 0; x < MissionHandler.MissionsInfoText[MissionHandler.Mission,0].Length; x++)
             {
-                _spriteBatch.DrawString(Game1.smallerFont, MissionHandler.MissionsInfoText[MissionHandler.Mission, 0][x], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 500 + (x * 50)), MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x]);
+                _spriteBatch.DrawString(MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x] == Color.Black ? Game1.smallerFont : Game1.font, MissionHandler.formattedStrings[x], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 500 + (x * 50)), MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x]);
             }
             for(int x = 0; x < missionCounterText.Length; x++)
             {

@@ -32,10 +32,6 @@ namespace pLdevTest
             {
 
             };
-            /*_graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            _graphics.IsFullScreen = true;
-            _graphics.ApplyChanges();*/
             Content.RootDirectory = "Content";
             Window.AllowUserResizing = true;
             
@@ -51,9 +47,13 @@ namespace pLdevTest
             base.Initialize();
             Camera.Instance.SetFocalPoint(new Vector2(50, 0), _graphics);
 
-            // Cap FPS to 144 FPS
+            // Cap FPS to 60 FPS
             IsFixedTimeStep = true;
-            TargetElapsedTime = TimeSpan.FromSeconds(1 / 144.0f);
+            TargetElapsedTime = TimeSpan.FromSeconds(1 / 60.0f);
+            /*_graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            _graphics.IsFullScreen = true;
+            _graphics.ApplyChanges();*/
         }
 
         private void ProcessWindowSizeChange(object sender, EventArgs e)
@@ -90,6 +90,7 @@ namespace pLdevTest
             codeTextBar.LoadContent(Content, GraphicsDevice);
 
             playground = new PlayGround(_graphics.GraphicsDevice, 550);
+            MissionHandler.FormatMissionText();
             missionInfo = new MissionInfo(_graphics.GraphicsDevice);
             transistion = new CircleScreenTransistion(_graphics.GraphicsDevice);
             playground.LoadContent(Content, GraphicsDevice);
@@ -115,21 +116,22 @@ namespace pLdevTest
             GraphicsDevice.Clear(background);
             _spriteBatch.Begin();
             playground.Draw(_spriteBatch, gameTime, _graphics);
-            transistion.DrawTransistionRenderTarget(_spriteBatch, gameTime, _graphics.GraphicsDevice);
-            _spriteBatch.End();
-            _graphics.GraphicsDevice.SetRenderTarget(null);
+            if(transistion.playTransistion)
+            {
+                transistion.DrawTransistionRenderTarget(_spriteBatch, gameTime, _graphics.GraphicsDevice);
+            }
+
             GraphicsDevice.Clear(background);
 
-            _spriteBatch.Begin();
             missionInfo.Draw(_spriteBatch, gameTime, _graphics);
             playground.Draw2(_spriteBatch, gameTime, _graphics);
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
 
-            // Draw transistion, TODO: move to class
-            transistion.Draw(_spriteBatch, _graphics.GraphicsDevice);
+            if (transistion.playTransistion)
+            {
+                transistion.Draw(_spriteBatch, _graphics.GraphicsDevice);
+            }
             _spriteBatch.End();
-
-            // TODO: Add your drawing code here
 
             base.Draw(gameTime);
         }

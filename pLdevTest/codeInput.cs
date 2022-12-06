@@ -175,10 +175,6 @@ namespace pLdevTest
         {
             //spriteBatch.DrawString(font, typeWriterStringType, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - font.MeasureString(typeWriterString).X / 2, graphics.GraphicsDevice.Viewport.Height / 2 - font.MeasureString(typeWriterString).Y / 2), Color.Black);
 
-
-            RasterizerState oldState = spriteBatch.GraphicsDevice.RasterizerState;
-            Rectangle currentScissorRect = spriteBatch.GraphicsDevice.ScissorRectangle;
-
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, rasterizerState: _rasterizerState, transformMatrix: _matrix);
             spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(0, 0, graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
