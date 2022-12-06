@@ -36,7 +36,7 @@ namespace pLdevTest
 
             transistionPos = new Rectangle(_graphics.Viewport.Width / 2 - 100, _graphics.Viewport.Height / 2 - 100, 200, 200);
             startingSize = new Vector2(transistionPos.Width, transistionPos.Height);
-            openingTransistion = new Vector2(_graphics.Viewport.Width + 400, _graphics.Viewport.Width + 400);
+            openingTransistion = new Vector2(_graphics.Viewport.Width + _graphics.Viewport.Height, _graphics.Viewport.Width + _graphics.Viewport.Height);
 
             ResizeRenderTarget(_graphics);
         }
@@ -48,7 +48,7 @@ namespace pLdevTest
             mainTarget = new RenderTarget2D(
                _graphics, pp.BackBufferWidth, pp.BackBufferHeight);
 
-            openingTransistion = new Vector2(_graphics.Viewport.Width + 400, _graphics.Viewport.Width + 400);
+            openingTransistion = new Vector2(_graphics.Viewport.Width + _graphics.Viewport.Height, _graphics.Viewport.Width + _graphics.Viewport.Height);
             if(transistionComplete)
             {
                 transistionPos.Width = (int)openingTransistion.X;

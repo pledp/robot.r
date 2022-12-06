@@ -89,3 +89,16 @@ C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Content\MaskShader.xnb
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Content\transistionMask.xnb
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Content\smallerFont.xnb
+C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\Content\effect1.xnb
+C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\Content\lightmask.xnb
+C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\Content\MaskShader.xnb
+C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\Content\smallerFont.xnb
+C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\Content\transistionMask.xnb
+C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\Cyotek.Drawing.BitmapFont.dll
+C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\FontStashSharp.Base.dll
+C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\FontStashSharp.MonoGame.dll
+C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\FontStashSharp.Rasterizers.StbTrueTypeSharp.dll
+C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\info.lundin.math.dll
+C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\Myra.dll
+C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\StbImageSharp.dll
+C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\StbTrueTypeSharp.dll

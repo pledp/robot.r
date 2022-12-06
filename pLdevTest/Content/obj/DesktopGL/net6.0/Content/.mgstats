@@ -1,1 +1,7 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"C:/Users/lasse/source/repos/pLdev/pLdevTest/Content/effect1.fx","C:/Users/lasse/source/repos/pLdev/pLdevTest/Content/bin/DesktopGL/Content/effect1.xnb","EffectProcessor","CompiledEffectContent",419,665,1.7563264
+"C:/Users/lasse/source/repos/pLdev/pLdevTest/Content/File.spritefont","C:/Users/lasse/source/repos/pLdev/pLdevTest/Content/bin/DesktopGL/Content/smallerFont.xnb","FontDescriptionProcessor","SpriteFontContent",2073,37919,0.455005
+"C:/Users/lasse/source/repos/pLdev/pLdevTest/Content/font.spritefont","C:/Users/lasse/source/repos/pLdev/pLdevTest/Content/bin/DesktopGL/Content/font.xnb","FontDescriptionProcessor","SpriteFontContent",2075,70687,0.1379909
+"C:/Users/lasse/source/repos/pLdev/pLdevTest/Content/lightmask.png","C:/Users/lasse/source/repos/pLdev/pLdevTest/Content/bin/DesktopGL/Content/lightmask.xnb","TextureProcessor","Texture2DContent",38735,250085,0.1786609
+"C:/Users/lasse/source/repos/pLdev/pLdevTest/Content/lightmaskhard.png","C:/Users/lasse/source/repos/pLdev/pLdevTest/Content/bin/DesktopGL/Content/transistionMask.xnb","TextureProcessor","Texture2DContent",5483,360085,0.0340344
+"C:/Users/lasse/source/repos/pLdev/pLdevTest/Content/MaskShader.fx","C:/Users/lasse/source/repos/pLdev/pLdevTest/Content/bin/DesktopGL/Content/MaskShader.xnb","EffectProcessor","CompiledEffectContent",856,676,0.9236274

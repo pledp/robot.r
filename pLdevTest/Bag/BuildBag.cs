@@ -54,7 +54,7 @@ namespace pLdevTest
             }
             bag = new Rectangle(_graphics.Viewport.Width - ((bagIndex +1) * bagWidth) - 50 - xOffset, _graphics.Viewport.Height - 50, bagWidth, Convert.ToInt32(_graphics.Viewport.Height * 0.75));
 
-            desiredDuration = 0.5f;
+            desiredDuration = 1f;
             bagTexture = new Texture2D(_graphics, 1, 1);
             bagColor = new Color(240, 247, 244);
             bagTexture.SetData(new[] { bagColor });
