@@ -25,12 +25,15 @@ namespace pLdevTest
         private MouseState lastMouseState;
         private Rectangle area;
         private Texture2D clipboard;
+        private Color clipboardColor;
 
         public MissionInfo(GraphicsDevice _graphics)
         {
             whiteRectangle = new Texture2D(_graphics, 1, 1);
             whiteRectangle.SetData(new[] { Color.White });
             area = new Rectangle(_graphics.Viewport.Width - 600, 465, 600, _graphics.Viewport.Height - (140 + 465));
+            clipboardColor = new Color(139, 97, 64);
+
         }
 
         public void Update(GameTime gameTime)
@@ -76,13 +79,17 @@ namespace pLdevTest
 
             _spriteBatch.DrawString(Game1.font, MissionHandler.Missions[MissionHandler.Mission], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 410), PlayGround.pgColor);
 
-            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 625, 490, 600, (_graphics.GraphicsDevice.Viewport.Height - 60) - 490), Color.BurlyWood);
+            // Draw clipboard and paper
+            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 625, 490, 600, (_graphics.GraphicsDevice.Viewport.Height - 60) - 490), clipboardColor);
+
+            // Paper shadow
+            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 600 + 10, 525 +10, 550, (_graphics.GraphicsDevice.Viewport.Height - 60) - 540), new Color(123, 52, 11));
             _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 600, 525, 550, (_graphics.GraphicsDevice.Viewport.Height - 60) - 540), Color.White);
             _spriteBatch.Draw(clipboard, new Vector2((_graphics.GraphicsDevice.Viewport.Width - 650) + (650/2) - (clipboard.Width/2), 450), Color.White);
 
             for (int x = 0; x < missionCounterText.Length; x++)
             {
-                _spriteBatch.DrawString(Game1.font, missionCounterText[x], new Vector2((_graphics.GraphicsDevice.Viewport.Width) - 580 + offset.X, _graphics.GraphicsDevice.Viewport.Height - 115), colors[x]);
+                _spriteBatch.DrawString(Game1.font, missionCounterText[x], new Vector2((_graphics.GraphicsDevice.Viewport.Width) - 280 + offset.X, 440), colors[x]);
                 offset.X += Game1.font.MeasureString(missionCounterText[x]).X; 
             }
 
@@ -90,7 +97,7 @@ namespace pLdevTest
 
             // Create scrollable info segment
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, rasterizerState: _rasterizerState, transformMatrix: _matrix);
-            _spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 600, 555, 550, (_graphics.GraphicsDevice.Viewport.Height - 60) - 600);
+            _spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 600, 555, 550, (_graphics.GraphicsDevice.Viewport.Height - 60) - 580);
             int overallOffset = 0;
             for(int x = 0; x < MissionHandler.MissionsInfoText[MissionHandler.Mission,0].Length; x++)
             {

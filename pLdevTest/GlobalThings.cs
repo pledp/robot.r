@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,6 @@ namespace pLdevTest
     {
         public static bool EnterArea(Rectangle area, MouseState mouseState)
         {
-            Debug.WriteLine("test");
             if (mouseState.X < area.X + area.Width &&
                 mouseState.X > area.X &&
                 mouseState.Y < area.Y + area.Height &&

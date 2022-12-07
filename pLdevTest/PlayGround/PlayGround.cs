@@ -41,8 +41,6 @@ namespace pLdevTest
             // Create a player on the playground. Move in a 21x15 grid.
             player = new PlaygroundPlayer(_graphics, playground.X, playground.Y);
 
-            blackRectangle = new Texture2D(_graphics, 1, 1);
-            blackRectangle.SetData(new[] { Color.Black });
         }
         public void LoadContent(ContentManager Content, GraphicsDevice _graphics)
         {

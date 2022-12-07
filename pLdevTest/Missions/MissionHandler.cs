@@ -13,7 +13,7 @@ namespace pLdevTest
         public static string[] formattedStrings;
         public static int lineBreaks;
 
-        private static int mission = 4;
+        private static int mission = 0;
         public static int Mission
         {
             get { return mission; }
