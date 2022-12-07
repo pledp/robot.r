@@ -1,2 +1,2 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/File.spritefont","C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/bin/DesktopGL/smallerFont.xnb","FontDescriptionProcessor","SpriteFontContent",2073,37919,0,1631056
+"C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/robot.png","C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/bin/DesktopGL/robot.xnb","TextureProcessor","Texture2DContent",389,2585,0,1358032

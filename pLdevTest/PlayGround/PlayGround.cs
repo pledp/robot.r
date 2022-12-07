@@ -55,6 +55,7 @@ namespace pLdevTest
             mainTarget = new RenderTarget2D(
                 _graphics, pp.BackBufferWidth, pp.BackBufferHeight);
 
+            player.LoadContent(Content);
         }
         public void Update(GameTime gameTime)
         {

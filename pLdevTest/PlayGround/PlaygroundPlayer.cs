@@ -19,8 +19,10 @@ namespace pLdevTest
         private int playerHeight = 25;
 
         private Texture2D playerTexture;
+        private Texture2D robotTexture;
         private Color playerColor;
         private Vector2 playerPos;
+
         public PlaygroundPlayer(GraphicsDevice _graphics, int posX, int posY)
         {
             playerPos = new Vector2(posX, posY);
@@ -32,9 +34,13 @@ namespace pLdevTest
         {
 
         }
+        public void LoadContent(ContentManager Content)
+        {
+            robotTexture = Content.Load<Texture2D>("robot");
+        }
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
-            spriteBatch.Draw(playerTexture, new Rectangle((int)playerPos.X + (playerX * 25), (int)playerPos.Y + (playerY * 25), playerWidth, playerHeight), playerColor);
+            spriteBatch.Draw(robotTexture, new Rectangle((int)playerPos.X + (playerX * 25), (int)playerPos.Y + (playerY * 25), playerWidth, playerHeight), playerColor);
         }
         public void UpdateProportions(GraphicsDevice _graphics, int newX)
         {
