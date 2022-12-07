@@ -211,12 +211,22 @@ namespace pLdevTest
             if (version == "elseif" && !ifConclusion && ifStarted)
             {
                 ifCondition = HandleCondition.GetResults(lineIndex, stopIndex, lines);
+
+                if(MissionHandler.Mission == 4)
+                {
+                    MissionHandler.MissionsComplete[4] = true;
+                }
             }
 
             // If all "if" and "elseif" conditions were false, run "else" condition
             else if(version == "else" && !ifConclusion && ifStarted)
             {
                 ifCondition = true;
+
+                if (MissionHandler.Mission == 4)
+                {
+                    MissionHandler.MissionsComplete[4] = true;
+                }
             } 
             else if(version == "if")
             {

@@ -98,7 +98,17 @@ namespace pLdevTest
             }
             string joinedString = string.Join(" ", expressions);
             joinedString = joinedString.Replace(",", ".");
-            double value = Convert.ToDouble(dt.Compute(joinedString, ""));
+
+            double value = 0;
+            try
+            {
+                value = Convert.ToDouble(dt.Compute(joinedString, ""));
+            }
+            catch (Exception ex)
+            {
+                // TODO: 
+                Debug.WriteLine(ex);
+            }
 
             return value;   
         }

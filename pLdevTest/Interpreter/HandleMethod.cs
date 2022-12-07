@@ -42,7 +42,6 @@ namespace pLdevTest
                         }
                     }
                     Interpreter.consoleText.Add(formattedPrintString);
-                    Debug.WriteLine(formattedPrintString);
                     //Debug.WriteLine(HandleExpression.GetResults(printString, Interpreter.variables));
                     break;
             }

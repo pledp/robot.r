@@ -60,6 +60,12 @@ namespace pLdevTest
         {
             player.Update(gameTime);
         }
+
+        public void DrawBoard(SpriteBatch _spriteBatch, GameTime gameTime, GraphicsDeviceManager _graphics)
+        {
+            _spriteBatch.Draw(pgTexture, playground, pgColor);
+            player.Draw(_spriteBatch, gameTime, _graphics);
+        }
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager _graphics)
         {
             spriteBatch.End();
@@ -76,8 +82,7 @@ namespace pLdevTest
             _graphics.GraphicsDevice.SetRenderTarget(mainTarget);
             _graphics.GraphicsDevice.Clear(Color.Transparent);
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-            spriteBatch.Draw(pgTexture, playground, pgColor);
-            player.Draw(spriteBatch, gameTime, _graphics);
+            DrawBoard(spriteBatch, gameTime, _graphics);
             spriteBatch.End();
 
             _graphics.GraphicsDevice.SetRenderTarget(null);

@@ -133,7 +133,6 @@ namespace pLdevTest
             float percentageComplete = (float)elapsedTime / (float)desiredDuration;
             bag.Y = (int)Vector2.Lerp(startingPos, newPos, MathHelper.SmoothStep(0, 1, percentageComplete)).Y;
             scrollBar.UpdateProportions(bag);
-            Debug.WriteLine("test");
 
             if (bag.Y == newPos.Y)
             {
@@ -237,6 +236,10 @@ namespace pLdevTest
                 bag.Y = Convert.ToInt32(_graphics.Viewport.Height - 50);
             }
             scrollBar.UpdateProportions(bag);
+            if(!unpressableButton)
+            {
+                startingPos = new Vector2(bag.X, bag.Y);
+            }
         }
     }
 }

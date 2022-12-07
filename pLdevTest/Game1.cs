@@ -22,6 +22,7 @@ namespace pLdevTest
 
         codeInput codeTextBar;
         public static Color background;
+        public static Color orange;
         private Texture2D backgroundTexture;
 
         CircleScreenTransistion transistion;
@@ -60,6 +61,7 @@ namespace pLdevTest
         {
             codeTextBar.UpdateEditorProportions(_graphics);
             playground.UpdateProportions(_graphics.GraphicsDevice);
+            missionInfo.UpdateProportions(_graphics.GraphicsDevice);
 
             transistion.ResizeRenderTarget(_graphics.GraphicsDevice);
         }
@@ -83,6 +85,7 @@ namespace pLdevTest
             gw = Window;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             background = new Color(50, 41, 47);
+            orange = new Color(255, 165, 0);
             backgroundTexture = new Texture2D(GraphicsDevice, 1, 1);
             backgroundTexture.SetData(new[] { background });
 
@@ -106,6 +109,7 @@ namespace pLdevTest
             codeTextBar.Update(gameTime, _graphics);
             playground.Update(gameTime);
             transistion.Update(gameTime, _graphics.GraphicsDevice);
+            missionInfo.Update(gameTime);
             Camera.Instance.Update();
             base.Update(gameTime);
             currentMouseState = Mouse.GetState();
@@ -115,7 +119,10 @@ namespace pLdevTest
         {
             GraphicsDevice.Clear(background);
             _spriteBatch.Begin();
-            playground.Draw(_spriteBatch, gameTime, _graphics);
+            if(MissionHandler.Mission > 7)
+            {
+                playground.Draw(_spriteBatch, gameTime, _graphics);
+            }
             if(transistion.playTransistion)
             {
                 transistion.DrawTransistionRenderTarget(_spriteBatch, gameTime, _graphics.GraphicsDevice);
@@ -124,7 +131,16 @@ namespace pLdevTest
             GraphicsDevice.Clear(background);
 
             missionInfo.Draw(_spriteBatch, gameTime, _graphics);
-            playground.Draw2(_spriteBatch, gameTime, _graphics);
+
+            if(MissionHandler.Mission > 7)
+            {
+                playground.Draw2(_spriteBatch, gameTime, _graphics);
+            } 
+            else
+            {
+                playground.DrawBoard(_spriteBatch, gameTime, _graphics);
+            }
+            
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
 
             if (transistion.playTransistion)
