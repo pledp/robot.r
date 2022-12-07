@@ -13,7 +13,7 @@ namespace pLdevTest
         public static string[] formattedStrings;
         public static int lineBreaks;
 
-        private static int mission = 0;
+        private static int mission = 4;
         public static int Mission
         {
             get { return mission; }
@@ -203,7 +203,7 @@ namespace pLdevTest
                     {
                         int stringWidth = (int)Game1.smallerFont.MeasureString(splitBySpaces[y]).X;
                         lineWidth = lineWidth + stringWidth;
-                        if (lineWidth > 500)
+                        if (lineWidth > 480)
                         {
                             formattedString = formattedString + "\n";
                             lineWidth = stringWidth;

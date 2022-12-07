@@ -90,14 +90,16 @@ namespace pLdevTest
             backgroundTexture.SetData(new[] { background });
 
             codeTextBar = new codeInput(font);
-            codeTextBar.LoadContent(Content, GraphicsDevice);
 
             playground = new PlayGround(_graphics.GraphicsDevice, 550);
             MissionHandler.FormatMissionText();
             missionInfo = new MissionInfo(_graphics.GraphicsDevice);
             transistion = new CircleScreenTransistion(_graphics.GraphicsDevice);
+
             playground.LoadContent(Content, GraphicsDevice);
             transistion.LoadContent(Content, GraphicsDevice);
+            codeTextBar.LoadContent(Content, GraphicsDevice);
+            missionInfo.LoadContet(Content);
             
         }
 
