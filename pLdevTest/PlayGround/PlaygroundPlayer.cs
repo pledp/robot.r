@@ -45,11 +45,5 @@ namespace pLdevTest
         {
             playerPos.X = newX;
         }
-
-        public void UpdatePos()
-        {
-            playerX = (int)Interpreter.oldPlayerPos[Interpreter.currentLine].X;
-            playerY = (int)Interpreter.oldPlayerPos[Interpreter.currentLine].Y;
-        }
     }
 }

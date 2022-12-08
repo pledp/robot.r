@@ -137,6 +137,8 @@ namespace pLdevTest
         public static int defaultDelay = 100;
         static int lastIndex;
 
+        static List<Task> tasks;
+
         public static void StartInterprete(List<string> typedLines, int lineIndex, int stopIndex, GameTime gameTime)
         {
             lastIndex = stopIndex;
@@ -214,7 +216,7 @@ namespace pLdevTest
             HandleMethod.RunMethod(version, GetInsideParentheses(lines[lineIndex]));
         }
 
-        private static void HandleLoop(int lineIndex, int stopIndex, string version, GameTime gameTime)
+        private static async void HandleLoop(int lineIndex, int stopIndex, string version, GameTime gameTime)
         {
             string currLine = GetInsideParentheses(lines[lineIndex]);
 
@@ -227,25 +229,38 @@ namespace pLdevTest
 
             for(int i = 0; i < loops; i++)
             {
+                await MakeDelay();
                 RunLines(lines, lineIndex+1, bracketEnd, gameTime, false);
             }
             RunLines(lines, bracketEnd, stopIndex, gameTime, true);
         }
-        private static void HandleWhileLoop(int lineIndex, int stopIndex, string version, GameTime gameTime)
+        private static async void HandleWhileLoop(int lineIndex, int stopIndex, string version, GameTime gameTime)
         {
-            bool ifCondition = HandleCondition.GetResults(lineIndex, stopIndex, lines);
+            string currLine = GetInsideParentheses(lines[lineIndex]);
 
+            bool loops = HandleCondition.GetResults(lineIndex, stopIndex, lines);
             int bracketEnd = FindBracket(lineIndex);
 
-            while (ifCondition)
+            if (loops) 
             {
-                RunLines(lines, lineIndex+1, bracketEnd, gameTime, false);
-                ifCondition = HandleCondition.GetResults(lineIndex, stopIndex, lines);
+                int times = 1;
+                for (int i = 0; i < times; i++)
+                {
+                    await MakeDelay();
+                    RunLines(lines, lineIndex + 1, bracketEnd, gameTime, false);
+                    Debug.WriteLine("UpdateCond");
+                    loops = HandleCondition.GetResults(lineIndex, stopIndex, lines);
+                    if(loops)
+                    {
+                        times++;
+                    }
+                }
             }
+
             RunLines(lines, bracketEnd, stopIndex, gameTime, true);
         }
         // Handles conditional statements.
-        private static void HandleConditionStatement(int lineIndex, int stopIndex, string version, GameTime gameTime)
+        private static async void HandleConditionStatement(int lineIndex, int stopIndex, string version, GameTime gameTime)
         {
             bool ifCondition = false;
 
@@ -286,18 +301,18 @@ namespace pLdevTest
                 {
                     MissionHandler.MissionsComplete[3] = true;
                 }
-
+                await MakeDelay();
                 RunLines(lines, lineIndex +1, stopIndex, gameTime, true);
             } else
             {
                 // If condition was false: Find closing brackets and read line after closing brackets.
                 int falseStartIndex = FindBracket(lineIndex);
-
+                await MakeDelay();
                 RunLines(lines, falseStartIndex, stopIndex, gameTime, true);
             }
         }
 
-        private static async void HandleAssignment(int lineIndex, string varName, GameTime gameTime)
+        private static void HandleAssignment(int lineIndex, string varName, GameTime gameTime)
         {
             bool builtInVariableComplete = false;
             string line = lines[lineIndex];
@@ -311,7 +326,7 @@ namespace pLdevTest
             {
                 builtInVariableComplete = HandleBuiltInVariables.GetResults(key, value);
             }
-
+            Debug.WriteLine("ASSING");
             // If variable does not exist, make new variable, otherwise update existing variable value.
             if (!builtInVariableComplete)
             {
@@ -379,7 +394,8 @@ namespace pLdevTest
         }
         private static async Task MakeDelay()
         {
-            await Task.Delay(defaultDelay);
-        } 
+            await Task.Delay(CurrentDelay);
+            CurrentDelay = 0;
+        }
     }
 }
