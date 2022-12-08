@@ -27,7 +27,8 @@ namespace pLdevTest
             "If only...",
             "Only if else...",
             "Repetetitition",
-            "placeholder"
+            "If only... (Ft. Loops)",
+            "Goal"
         };
         public readonly static String[,][] MissionsInfoText =
         {
@@ -35,7 +36,7 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Move the robot vertically.",
-                    "You can move the robot vertically with:",
+                    "You can Move The Robot vertically with:",
                     "robot.y = 3"
 
                 }
@@ -44,7 +45,7 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Move the robot horizontally.",
-                    "Additionally, you can also move the robot horizontally with:",
+                    "Additionally, you can also Move The Robot horizontally with:",
                     "robot.x = 4"
 
                 }
@@ -53,7 +54,7 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Declare a variable.",
-                    "You can declare a variable like this:",
+                    "You can Declare a Variable like this:",
                     "helloWorld = 5"
 
                 }
@@ -63,7 +64,7 @@ namespace pLdevTest
                 {
                     "PASS: Use a conditional statement.",
                     "Conditional statements execute the lines within the curly brackets ONLY if a certain condition is met.",
-                    "You can use conditional statements like this:",
+                    "You can use a Conditional Statement like this:",
                     "if(helloWorld == 5) {\n   print(\"hello world!\")\n}"
                 }
             },
@@ -72,7 +73,7 @@ namespace pLdevTest
                 {
                     "PASS: Use any secondary conditional statement.",
                     "Conditional statements also have additional functionality:",
-                    "if(helloWorld != 5) {\n   print(\"hello world!\")\n}",
+                    "if(helloWorld != 2 + 2 + 1) {\n   print(\"hello world!\")\n}",
                     "elseif(helloWorld < 5) {\n   print(sqrt(5))\n}",
                     "else {\n   print(helloWord)\n}"
                 }
@@ -82,14 +83,23 @@ namespace pLdevTest
                 {
                     "PASS: Use a loop.",
                     "Loops repeat the lines within the curly brackets as many times as the arguments say.",
-                    "You can use a loop like this:",
-                    "loop(20) {\n   robot.x = robot.x + 1\n}"
+                    "You can use a Loop like this:",
+                    "loop(10) {\n   robot.x = robot.x + 1\n}"
                 }
             },
             {
                 new[]
                 {
-                    "PLACEHOLDER MISSION"
+                    "PASS: Use a while loop.",
+                    "While loops repeat lines withing the curly brackets as long as a conditional statement is true.",
+                    "You can use a While-loop like this:",
+                    "while(robot.x != 10) {\n   robot.x = robot.x + 1\n}"
+                }
+            },
+            {
+                new[]
+                {
+                    "PASS: Reach the flag by any means.",
                 }
             }
         };
@@ -151,6 +161,15 @@ namespace pLdevTest
                 new[]
                 {
                     PlayGround.pgColor,
+                    Color.Black,
+                    Color.Black,
+                    Game1.orange,
+                }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
                 }
             }
         };
@@ -167,12 +186,26 @@ namespace pLdevTest
             false,
             false,
             false,
+            false,
+            false,
             false
         };
 
         public static void CheckForMission()
         {
+            Debug.WriteLine("missioncheck");
             bool missionComplete = false;
+
+            switch(mission)
+            {
+                case 7:
+                    if(Game1.playground.player.playerX == Game1.playground.finishFlag.flagX && Game1.playground.player.playerY == Game1.playground.finishFlag.flagY)
+                    {
+                        MissionsComplete[mission] = true;
+                    }
+                    break;
+            }
+
             if (MissionsComplete[mission])
             {
                 missionComplete = true;
@@ -203,7 +236,7 @@ namespace pLdevTest
                     {
                         int stringWidth = (int)Game1.smallerFont.MeasureString(splitBySpaces[y]).X;
                         lineWidth = lineWidth + stringWidth;
-                        if (lineWidth > 480)
+                        if (lineWidth > 460)
                         {
                             formattedString = formattedString + "\n";
                             lineWidth = stringWidth;

@@ -5,11 +5,15 @@ using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Threading;
+using Myra.Graphics2D.UI.Styles;
+using System.Net.NetworkInformation;
 
 /* 
 Semi-scuffed "Programming language" I've made for a internship project, I've named it pLang. The language does not currently have any error handling.
@@ -107,7 +111,8 @@ namespace pLdevTest
 
         public static readonly string[] buildInMethods =
         {
-            "print"
+            "print",
+            "sleep"
         };
 
         public static Dictionary<string, Dictionary<string, int>> builtInVariables;
@@ -128,9 +133,13 @@ namespace pLdevTest
         public static Dictionary<string, double> variables;
         public static Dictionary<string, int> robot;
         public static List<string> consoleText;
+        public static int CurrentDelay = 0;
+        public static int defaultDelay = 100;
+        static int lastIndex;
 
-        public static void StartInterprete(List<string> typedLines, int lineIndex, int stopIndex)
+        public static void StartInterprete(List<string> typedLines, int lineIndex, int stopIndex, GameTime gameTime)
         {
+            lastIndex = stopIndex;
             variables = new Dictionary<string, double>();
             Game1.playground.player.playerY = 0;
             Game1.playground.player.playerX = 0;
@@ -146,64 +155,97 @@ namespace pLdevTest
             consoleText = new List<string>();
             lines = typedLines;
 
-            RunLines(lines, lineIndex, stopIndex);
+            RunLines(lines, lineIndex, stopIndex, gameTime, true);
 
-            MissionHandler.CheckForMission();
         }
-        private static void RunLines(List<string> lines, int lineIndex, int stopIndex)
+ 
+        private static void RunLines(List<string> lines, int lineIndex, int stopIndex, GameTime gameTime, bool qualify)
         {
             // Interprate every line, split segment by spaces.
             string[] segments = lines[lineIndex].Split(initialSplit, StringSplitOptions.RemoveEmptyEntries);
+            codeInput.readingLine = lineIndex + 1;
             if (segments.Length > 1)
             {
                 if (segments[1] == "=")
                 {
-                    HandleAssignment(lineIndex, segments[0]);
+                    HandleAssignment(lineIndex, segments[0], gameTime);
                 }
 
                 if (segments[0] == "if" || segments[0] == "elseif" || segments[0] == "else")
                 {
-                    HandleConditionStatement(lineIndex, stopIndex, segments[0]);
+                    HandleConditionStatement(lineIndex, stopIndex, segments[0], gameTime);
                     return;
                 }
 
                 if (segments[0] == "loop")
                 {
-                    HandleLoop(lineIndex, stopIndex, segments[0]);
+                    HandleLoop(lineIndex, stopIndex, segments[0], gameTime);
+                    return;
+                }
+                if (segments[0] == "while")
+                {
+                    HandleWhileLoop(lineIndex, stopIndex, segments[0], gameTime);
                     return;
                 }
 
                 if (ArrayContainsString(buildInMethods, segments[0]))
                 {
-                    HandleBuiltInMethod(lineIndex, stopIndex, segments[0]);
+                    HandleBuiltInMethod(lineIndex, stopIndex, segments[0], gameTime);
                 }
             }
             if (lineIndex + 1 < stopIndex && lineIndex + 1 < lines.Count)
             {
-                RunLines(lines, lineIndex + 1, stopIndex);
+                codeInput.readingLine = lineIndex + 1;
+                RunLines(lines, lineIndex + 1, stopIndex, gameTime, true);
+                return;
+            }
+            else if(qualify && lineIndex == lastIndex-1)
+            {
+                Debug.WriteLine("end: " + lines[lineIndex]);
+                codeInput.readingLine = lineIndex + 1;
+                PlayCodeButton.unpressableButton = false;
+                MissionHandler.CheckForMission();
+                return;
             }
         }
 
-        private static void HandleBuiltInMethod(int lineIndex, int stopIndex, string version)
+        private static void HandleBuiltInMethod(int lineIndex, int stopIndex, string version, GameTime gameTime)
         {
             HandleMethod.RunMethod(version, GetInsideParentheses(lines[lineIndex]));
         }
 
-        private static void HandleLoop(int lineIndex, int stopIndex, string version)
+        private static void HandleLoop(int lineIndex, int stopIndex, string version, GameTime gameTime)
         {
             string currLine = GetInsideParentheses(lines[lineIndex]);
 
             double loops = HandleExpression.GetResults(currLine, variables);
             int bracketEnd = FindBracket(lineIndex);
-            for(int i = 0; i < loops; i++)
+            if(MissionHandler.Mission == 5)
             {
-                RunLines(lines, lineIndex + 1, bracketEnd);
+                MissionHandler.MissionsComplete[5] = true;
             }
 
-            RunLines(lines, bracketEnd, stopIndex);
+            for(int i = 0; i < loops; i++)
+            {
+                RunLines(lines, lineIndex+1, bracketEnd, gameTime, false);
+            }
+            RunLines(lines, bracketEnd, stopIndex, gameTime, true);
+        }
+        private static void HandleWhileLoop(int lineIndex, int stopIndex, string version, GameTime gameTime)
+        {
+            bool ifCondition = HandleCondition.GetResults(lineIndex, stopIndex, lines);
+
+            int bracketEnd = FindBracket(lineIndex);
+
+            while (ifCondition)
+            {
+                RunLines(lines, lineIndex+1, bracketEnd, gameTime, false);
+                ifCondition = HandleCondition.GetResults(lineIndex, stopIndex, lines);
+            }
+            RunLines(lines, bracketEnd, stopIndex, gameTime, true);
         }
         // Handles conditional statements.
-        private static void HandleConditionStatement(int lineIndex, int stopIndex, string version)
+        private static void HandleConditionStatement(int lineIndex, int stopIndex, string version, GameTime gameTime)
         {
             bool ifCondition = false;
 
@@ -245,16 +287,17 @@ namespace pLdevTest
                     MissionHandler.MissionsComplete[3] = true;
                 }
 
-                RunLines(lines, lineIndex +1, stopIndex);
+                RunLines(lines, lineIndex +1, stopIndex, gameTime, true);
             } else
             {
                 // If condition was false: Find closing brackets and read line after closing brackets.
                 int falseStartIndex = FindBracket(lineIndex);
-                RunLines(lines, falseStartIndex, stopIndex);
+
+                RunLines(lines, falseStartIndex, stopIndex, gameTime, true);
             }
         }
 
-        private static void HandleAssignment(int lineIndex, string varName)
+        private static async void HandleAssignment(int lineIndex, string varName, GameTime gameTime)
         {
             bool builtInVariableComplete = false;
             string line = lines[lineIndex];
@@ -277,7 +320,6 @@ namespace pLdevTest
                     variables.Add(varName, 0);
                 }
                 variables[varName] = value;
-                Debug.WriteLine(variables[varName]);
 
                 if(MissionHandler.Mission == 2)
                 {
@@ -335,5 +377,9 @@ namespace pLdevTest
             }
             return startIndex;
         }
+        private static async Task MakeDelay()
+        {
+            await Task.Delay(defaultDelay);
+        } 
     }
 }

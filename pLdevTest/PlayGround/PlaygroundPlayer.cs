@@ -12,8 +12,8 @@ namespace pLdevTest
 {
     public class PlaygroundPlayer
     {
-        public int playerX;
-        public int playerY;
+        public int playerX = 0;
+        public int playerY = 0;
 
         private int playerWidth = 25;
         private int playerHeight = 25;
@@ -32,7 +32,6 @@ namespace pLdevTest
         }
         public void Update(GameTime gameTime)
         {
-
         }
         public void LoadContent(ContentManager Content)
         {
@@ -45,6 +44,12 @@ namespace pLdevTest
         public void UpdateProportions(GraphicsDevice _graphics, int newX)
         {
             playerPos.X = newX;
+        }
+
+        public void UpdatePos()
+        {
+            playerX = (int)Interpreter.oldPlayerPos[Interpreter.currentLine].X;
+            playerY = (int)Interpreter.oldPlayerPos[Interpreter.currentLine].Y;
         }
     }
 }

@@ -28,6 +28,7 @@ namespace pLdevTest
         Texture2D blackRectangle;
 
         public PlaygroundPlayer player;
+        public FinishFlag finishFlag;
         public PlayGround(GraphicsDevice _graphics, int playgroundWidth)
         {
             // Create a playground
@@ -40,7 +41,7 @@ namespace pLdevTest
 
             // Create a player on the playground. Move in a 21x15 grid.
             player = new PlaygroundPlayer(_graphics, playground.X, playground.Y);
-
+            finishFlag = new FinishFlag(_graphics, playground.X, playground.Y, 10,10);
         }
         public void LoadContent(ContentManager Content, GraphicsDevice _graphics)
         {
@@ -54,15 +55,18 @@ namespace pLdevTest
                 _graphics, pp.BackBufferWidth, pp.BackBufferHeight);
 
             player.LoadContent(Content);
+            finishFlag.LoadContent(Content);
         }
         public void Update(GameTime gameTime)
         {
             player.Update(gameTime);
+            finishFlag.Update(gameTime);
         }
 
         public void DrawBoard(SpriteBatch _spriteBatch, GameTime gameTime, GraphicsDeviceManager _graphics)
         {
             _spriteBatch.Draw(pgTexture, playground, pgColor);
+            finishFlag.Draw(_spriteBatch, gameTime, _graphics);
             player.Draw(_spriteBatch, gameTime, _graphics);
         }
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager _graphics)
@@ -104,6 +108,7 @@ namespace pLdevTest
         {
             playground.X = _graphics.Viewport.Width - width - 50;
             player.UpdateProportions(_graphics, playground.X);
+            finishFlag.UpdateProportions(_graphics, playground.X);
 
             lightsTarget = new RenderTarget2D(
                 _graphics,_graphics.Viewport.Width, _graphics.Viewport.Height);

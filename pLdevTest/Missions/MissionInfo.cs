@@ -83,13 +83,13 @@ namespace pLdevTest
             _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 625, 490, 600, _graphics.GraphicsDevice.Viewport.Height - 490), clipboardColor);
 
             // Paper shadow
-            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 590 + 10, 525 - 10, 530, _graphics.GraphicsDevice.Viewport.Height - 525), new Color(123, 52, 11));
+            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 590 + 15, 525 + 15, 530, _graphics.GraphicsDevice.Viewport.Height - 525), new Color(123, 52, 11));
             _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 590, 525, 530, _graphics.GraphicsDevice.Viewport.Height - 525), Color.White);
             _spriteBatch.Draw(clipboard, new Vector2((_graphics.GraphicsDevice.Viewport.Width - 650) + (650/2) - (clipboard.Width/2), 450), Color.White);
 
             for (int x = 0; x < missionCounterText.Length; x++)
             {
-                _spriteBatch.DrawString(Game1.font, missionCounterText[x], new Vector2((_graphics.GraphicsDevice.Viewport.Width) - 280 + offset.X, 440), colors[x]);
+                _spriteBatch.DrawString(Game1.font, missionCounterText[x], new Vector2((_graphics.GraphicsDevice.Viewport.Width) - 280 + offset.X, 443), colors[x]);
                 offset.X += Game1.font.MeasureString(missionCounterText[x]).X; 
             }
 
@@ -114,7 +114,7 @@ namespace pLdevTest
                 overallOffset += breakLineOffset * breakLineSize;
                 if (MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x] != Game1.orange)
                 {
-                    _spriteBatch.DrawString(Game1.smallerFont, "o", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 585, 548 + overallOffset), Color.Red);
+                    _spriteBatch.DrawString(Game1.smallerFont, "o", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 583, 546 + overallOffset), Color.Red);
                 }
                 _spriteBatch.DrawString(MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x] == Color.Black ? Game1.smallerFont : Game1.smallerFont, MissionHandler.formattedStrings[x], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 550 + overallOffset), MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x]);
                 

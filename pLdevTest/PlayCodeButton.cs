@@ -21,6 +21,7 @@ namespace pLdevTest
 
         private MouseState mouseState;
         private MouseState lastMouseState;
+        public static bool unpressableButton = false;
         public PlayCodeButton(GraphicsDevice graphicsDevice, int buttonX, int buttonY)
         {
             int rectX = 30;
@@ -49,14 +50,14 @@ namespace pLdevTest
             return false;
         }
 
-        public void Update(GraphicsDeviceManager graphics, GameTime gameTime, codeInput inputText)
+        public async void Update(GraphicsDeviceManager graphics, GameTime gameTime, codeInput inputText)
         {
             mouseState = Mouse.GetState();
-            if (enterButton() && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
+            if (enterButton() && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed && !unpressableButton)
             {
-                Interpreter.StartInterprete(codeInput.Typing, 0, codeInput.Typing.Count);
+                unpressableButton = true;
+                Interpreter.StartInterprete(codeInput.Typing, 0, codeInput.Typing.Count, gameTime);
                 inputText.UpdateEditorProportions(graphics);
-
             }
             lastMouseState = Mouse.GetState();
         }

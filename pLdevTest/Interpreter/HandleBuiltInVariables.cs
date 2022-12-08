@@ -18,7 +18,6 @@ namespace pLdevTest
             if (Interpreter.builtInVariables.ContainsKey(builtInVariableKey))
             {
                 string variableName = key.Split(".")[1];
-                Debug.WriteLine(variableName);
                 switch (builtInVariableKey)
                 {
                     case "robot":

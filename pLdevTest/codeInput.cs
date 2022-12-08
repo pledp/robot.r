@@ -16,6 +16,8 @@ namespace pLdevTest
     public class codeInput
     {
         public static SpriteFont font;
+        public static int readingLine;
+
         private string typeWriterString;
         private string typeWriterStringType;
         private string currentCharString;
@@ -197,7 +199,7 @@ namespace pLdevTest
                 spriteBatch.DrawString(font, formattedCode[line - 1], new Vector2(60 + codeEditorOffset.X, line * 50 + codeEditorOffset.Y - 50), Color.White);
 
                 // Draw line counter
-                spriteBatch.DrawString(font, line.ToString(), new Vector2(codeEditorOffset.X + pos.X, (line - 1) * 50 + codeEditorOffset.Y + 20), darkeyGrey, 0, origin, 1, SpriteEffects.None, 0);
+                spriteBatch.DrawString(font, line.ToString(), new Vector2(codeEditorOffset.X + pos.X, (line - 1) * 50 + codeEditorOffset.Y + 20), line == readingLine ? Color.Green : darkeyGrey, 0, origin, 1, SpriteEffects.None, 0);
             }
 
             // Typing cursor indicator
