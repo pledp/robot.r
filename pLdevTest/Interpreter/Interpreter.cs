@@ -133,8 +133,8 @@ namespace pLdevTest
         public static Dictionary<string, double> variables;
         public static Dictionary<string, int> robot;
         public static List<string> consoleText;
-        public static int CurrentDelay = 0;
-        public static int defaultDelay = 100;
+        public static int CurrentDelay;
+        public static int defaultDelay;
         static int lastIndex;
 
         static List<Task> tasks;
@@ -161,7 +161,7 @@ namespace pLdevTest
 
         }
  
-        private static void RunLines(List<string> lines, int lineIndex, int stopIndex, GameTime gameTime, bool qualify)
+        private static async Task RunLines(List<string> lines, int lineIndex, int stopIndex, GameTime gameTime, bool qualify)
         {
             // Interprate every line, split segment by spaces.
             string[] segments = lines[lineIndex].Split(initialSplit, StringSplitOptions.RemoveEmptyEntries);
@@ -198,6 +198,7 @@ namespace pLdevTest
             if (lineIndex + 1 < stopIndex && lineIndex + 1 < lines.Count)
             {
                 codeInput.readingLine = lineIndex + 1;
+                await MakeDelay();
                 RunLines(lines, lineIndex + 1, stopIndex, gameTime, true);
                 return;
             }
@@ -230,7 +231,7 @@ namespace pLdevTest
             for(int i = 0; i < loops; i++)
             {
                 await MakeDelay();
-                RunLines(lines, lineIndex+1, bracketEnd, gameTime, false);
+                await RunLines(lines, lineIndex+1, bracketEnd, gameTime, true);
             }
             RunLines(lines, bracketEnd, stopIndex, gameTime, true);
         }
@@ -241,20 +242,14 @@ namespace pLdevTest
             bool loops = HandleCondition.GetResults(lineIndex, stopIndex, lines);
             int bracketEnd = FindBracket(lineIndex);
 
-            if (loops) 
+            while(true)
             {
-                int times = 1;
-                for (int i = 0; i < times; i++)
+                if (!HandleCondition.GetResults(lineIndex, stopIndex, lines))
                 {
-                    await MakeDelay();
-                    RunLines(lines, lineIndex + 1, bracketEnd, gameTime, false);
-                    Debug.WriteLine("UpdateCond");
-                    loops = HandleCondition.GetResults(lineIndex, stopIndex, lines);
-                    if(loops)
-                    {
-                        times++;
-                    }
-                }
+                    break;
+                };
+                await MakeDelay();
+                await RunLines(lines, lineIndex + 1, bracketEnd, gameTime, false);
             }
 
             RunLines(lines, bracketEnd, stopIndex, gameTime, true);
@@ -302,12 +297,11 @@ namespace pLdevTest
                     MissionHandler.MissionsComplete[3] = true;
                 }
                 await MakeDelay();
-                RunLines(lines, lineIndex +1, stopIndex, gameTime, true);
+                await RunLines(lines, lineIndex +1, stopIndex, gameTime, true);
             } else
             {
                 // If condition was false: Find closing brackets and read line after closing brackets.
                 int falseStartIndex = FindBracket(lineIndex);
-                await MakeDelay();
                 RunLines(lines, falseStartIndex, stopIndex, gameTime, true);
             }
         }
@@ -341,6 +335,7 @@ namespace pLdevTest
                     MissionHandler.MissionsComplete[2] = true;
                 }
             }
+            return;
         }
 
         // Check if string[] and string have any matches. Generally used for built in functions.
