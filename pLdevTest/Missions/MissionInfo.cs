@@ -80,11 +80,11 @@ namespace pLdevTest
             _spriteBatch.DrawString(Game1.font, MissionHandler.Missions[MissionHandler.Mission], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 410), PlayGround.pgColor);
 
             // Draw clipboard and paper
-            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 625, 490, 600, (_graphics.GraphicsDevice.Viewport.Height - 60) - 490), clipboardColor);
+            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 625, 490, 600, _graphics.GraphicsDevice.Viewport.Height - 490), clipboardColor);
 
             // Paper shadow
-            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 600 + 10, 525 +10, 550, (_graphics.GraphicsDevice.Viewport.Height - 60) - 540), new Color(123, 52, 11));
-            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 600, 525, 550, (_graphics.GraphicsDevice.Viewport.Height - 60) - 540), Color.White);
+            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 590 + 10, 525 - 10, 530, _graphics.GraphicsDevice.Viewport.Height - 525), new Color(123, 52, 11));
+            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 590, 525, 530, _graphics.GraphicsDevice.Viewport.Height - 525), Color.White);
             _spriteBatch.Draw(clipboard, new Vector2((_graphics.GraphicsDevice.Viewport.Width - 650) + (650/2) - (clipboard.Width/2), 450), Color.White);
 
             for (int x = 0; x < missionCounterText.Length; x++)
@@ -97,7 +97,7 @@ namespace pLdevTest
 
             // Create scrollable info segment
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, rasterizerState: _rasterizerState, transformMatrix: _matrix);
-            _spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 600, 555, 550, (_graphics.GraphicsDevice.Viewport.Height - 60) - 580);
+            _spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 600, 555, 550, (_graphics.GraphicsDevice.Viewport.Height - 555) - 60);
             int overallOffset = 0;
             for(int x = 0; x < MissionHandler.MissionsInfoText[MissionHandler.Mission,0].Length; x++)
             {
@@ -112,7 +112,11 @@ namespace pLdevTest
                     }
                 }
                 overallOffset += breakLineOffset * breakLineSize;
-                _spriteBatch.DrawString(MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x] == Color.Black ? Game1.smallerFont : Game1.smallerFont, MissionHandler.formattedStrings[x], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 580, 550 + overallOffset), MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x]);
+                if (MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x] != Game1.orange)
+                {
+                    _spriteBatch.DrawString(Game1.smallerFont, "o", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 585, 548 + overallOffset), Color.Red);
+                }
+                _spriteBatch.DrawString(MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x] == Color.Black ? Game1.smallerFont : Game1.smallerFont, MissionHandler.formattedStrings[x], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 550 + overallOffset), MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x]);
                 
                 if(x == 0)
                 {
