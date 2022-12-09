@@ -29,6 +29,7 @@ namespace pLdevTest
         bool transistionComplete;
         Color transistionColor;
         public static bool playTransistion = true;
+        public static bool keepScreen = false;
 
         public CircleScreenTransistion(GraphicsDevice _graphics)
         {

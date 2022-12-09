@@ -29,17 +29,17 @@ namespace pLdevTest
                             {
                                 case "x":
                                     Game1.playground.player.playerX = Interpreter.builtInVariables["robot"]["x"];
-                                    if (MissionHandler.Mission == 1)
+                                    if (MissionHandler.Mission == 1 && MissionHandler.World == 1)
                                     {
-                                        MissionHandler.MissionsComplete[1] = true;
+                                        MissionHandler.MissionComplete = true;
                                     }
                                     break;
 
                                 case "y":
                                     Game1.playground.player.playerY = Interpreter.builtInVariables["robot"]["y"];
-                                    if (MissionHandler.Mission == 0)
+                                    if (MissionHandler.Mission == 0 && MissionHandler.World == 1)
                                     {
-                                        MissionHandler.MissionsComplete[0] = true;
+                                        MissionHandler.MissionComplete = true;
                                     }
                                     break;
                             }    

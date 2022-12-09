@@ -239,9 +239,9 @@ namespace pLdevTest
 
             double loops = HandleExpression.GetResults(currLine, variables);
             int bracketEnd = FindBracket(lineIndex);
-            if(MissionHandler.Mission == 5)
+            if(MissionHandler.Mission == 5 && MissionHandler.World == 1)
             {
-                MissionHandler.MissionsComplete[5] = true;
+                MissionHandler.MissionComplete = true;
             }
 
             for(int i = 0; i < loops; i++)
@@ -257,9 +257,9 @@ namespace pLdevTest
 
             bool loops = HandleCondition.GetResults(lineIndex, stopIndex, lines);
             int bracketEnd = FindBracket(lineIndex);
-            if(MissionHandler.Mission == 6)
+            if(MissionHandler.Mission == 6 && MissionHandler.World == 1)
             {
-                MissionHandler.MissionsComplete[6] = true;
+                MissionHandler.MissionComplete = true;
             }
 
             int x = 0;
@@ -286,9 +286,9 @@ namespace pLdevTest
             {
                 ifCondition = HandleCondition.GetResults(lineIndex, stopIndex, lines);
 
-                if(MissionHandler.Mission == 4)
+                if(MissionHandler.Mission == 4 && MissionHandler.World == 1)
                 {
-                    MissionHandler.MissionsComplete[4] = true;
+                    MissionHandler.MissionComplete = true;
                 }
             }
 
@@ -297,9 +297,9 @@ namespace pLdevTest
             {
                 ifCondition = true;
 
-                if (MissionHandler.Mission == 4)
+                if (MissionHandler.Mission == 4 && MissionHandler.World == 1)
                 {
-                    MissionHandler.MissionsComplete[4] = true;
+                    MissionHandler.MissionComplete = true;
                 }
             } 
             else if(version == "if")
@@ -314,9 +314,9 @@ namespace pLdevTest
                 // If condition was true: Run next line, and DON'T run next "elseif" and "else" conditions
                 ifConclusion = true;
 
-                if(MissionHandler.Mission == 3)
+                if(MissionHandler.Mission == 3 && MissionHandler.World == 1)
                 {
-                    MissionHandler.MissionsComplete[3] = true;
+                    MissionHandler.MissionComplete = true;
                 }
                 await MakeDelay();
                 await RunLines(lines, lineIndex +1, stopIndex, gameTime, true);
@@ -352,9 +352,9 @@ namespace pLdevTest
                 }
                 variables[varName] = value;
 
-                if(MissionHandler.Mission == 2)
+                if(MissionHandler.Mission == 2 && MissionHandler.World == 1)
                 {
-                    MissionHandler.MissionsComplete[2] = true;
+                    MissionHandler.MissionComplete = true;
                 }
             }
             return;

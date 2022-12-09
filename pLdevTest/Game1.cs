@@ -92,9 +92,10 @@ namespace pLdevTest
             codeTextBar = new codeInput(font);
 
             playground = new PlayGround(_graphics.GraphicsDevice, 550);
-            MissionHandler.FormatMissionText();
             missionInfo = new MissionInfo(_graphics.GraphicsDevice);
             transistion = new CircleScreenTransistion(_graphics.GraphicsDevice);
+            MissionHandler.SetWorld();
+            MissionHandler.FormatMissionText();
 
             playground.LoadContent(Content, GraphicsDevice);
             transistion.LoadContent(Content, GraphicsDevice);
@@ -125,7 +126,7 @@ namespace pLdevTest
             {
                 playground.Draw(_spriteBatch, gameTime, _graphics);
             }
-            if(CircleScreenTransistion.playTransistion)
+            if(CircleScreenTransistion.playTransistion || CircleScreenTransistion.keepScreen)
             {
                 transistion.DrawTransistionRenderTarget(_spriteBatch, gameTime, _graphics.GraphicsDevice);
             }
@@ -145,7 +146,7 @@ namespace pLdevTest
             
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
 
-            if (CircleScreenTransistion.playTransistion)
+            if (CircleScreenTransistion.playTransistion || CircleScreenTransistion.keepScreen)
             {
                 transistion.Draw(_spriteBatch, _graphics.GraphicsDevice);
             }

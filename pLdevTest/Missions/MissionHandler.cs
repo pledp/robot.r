@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using StbImageSharp;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,7 +21,16 @@ namespace pLdevTest
             get { return mission; }
         }
 
-        private readonly static string[] missions =
+        private static string[] missions;
+        public static string[] Missions
+        {
+            get { return missions; }
+        }
+        public static String[,][] MissionsInfoText;
+        public static Color[,][] MissionsInfoColor;
+        public static bool MissionComplete;
+
+        private readonly static string[] TutorialMissions =
         {
             "Up and Down!",
             "Left and Right!",
@@ -32,7 +42,7 @@ namespace pLdevTest
             "Delay",
             "Goal"
         };
-        public readonly static String[,][] MissionsInfoText =
+        public readonly static String[,][] TutorialMissionsInfoText =
         {
             {
                 new[]
@@ -115,8 +125,8 @@ namespace pLdevTest
                 }
             }
         };
-        public readonly static Color[,][] MissionsInfoColor =
-{
+        public readonly static Color[,][] TutorialMissionsInfoColor =
+        {
             {
                 new[]
                 {
@@ -195,23 +205,14 @@ namespace pLdevTest
             }
         };
 
-        public static string[] Missions
+        public static void SetWorld()
         {
-            get { return missions; }
-        }
+            World++;
+            MissionsInfoText = TutorialMissionsInfoText;
+            MissionsInfoColor = TutorialMissionsInfoColor;
+            missions = TutorialMissions;
 
-        public static bool[] MissionsComplete =
-        {
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false
-        };
+        }
 
         public static void CheckForMission()
         {
@@ -223,12 +224,14 @@ namespace pLdevTest
                 case 8:
                     if(Game1.playground.player.playerX == Game1.playground.finishFlag.flagX && Game1.playground.player.playerY == Game1.playground.finishFlag.flagY)
                     {
-                        MissionsComplete[mission] = true;
+                        MissionComplete = true;
+                        WorldTransistion();
+
                     }
                     break;
             }
 
-            if (MissionsComplete[mission])
+            if (MissionComplete)
             {
                 missionComplete = true;
             }
@@ -268,6 +271,16 @@ namespace pLdevTest
                     formattedStrings[i] = formattedString;
                 }
             }
+        }
+        private static async void WorldTransistion()
+        {
+            await Task.Delay(500);
+            CircleScreenTransistion.keepScreen = true;
+            CircleScreenTransistion.playTransistion = true;
+
+            await Task.Delay(5000);
+            CircleScreenTransistion.playTransistion = true;
+
         }
     }
 }

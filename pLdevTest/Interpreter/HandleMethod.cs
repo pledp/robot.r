@@ -50,9 +50,9 @@ namespace pLdevTest
                     break;
                 case BuiltInMethods.Sleep:
 
-                    if(MissionHandler.Mission == 7)
+                    if(MissionHandler.Mission == 7 && MissionHandler.World == 1)
                     {
-                        MissionHandler.MissionsComplete[7] = true;
+                        MissionHandler.MissionComplete = true;
                     }
                     Interpreter.CurrentDelay = (int)HandleExpression.GetResults(arguments, Interpreter.variables);
                     break;
