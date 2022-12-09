@@ -27,7 +27,8 @@ namespace pLdevTest
         Vector2 openingTransistion;
 
         bool transistionComplete;
-        public bool playTransistion = true;
+        Color transistionColor;
+        public static bool playTransistion = true;
 
         public CircleScreenTransistion(GraphicsDevice _graphics)
         {
@@ -39,6 +40,7 @@ namespace pLdevTest
             openingTransistion = new Vector2(_graphics.Viewport.Width + _graphics.Viewport.Height, _graphics.Viewport.Width + _graphics.Viewport.Height);
 
             ResizeRenderTarget(_graphics);
+            transistionColor = new Color(153, 243, 159);
         }
         public void ResizeRenderTarget(GraphicsDevice _graphics)
         {
@@ -95,7 +97,7 @@ namespace pLdevTest
             _graphics.SetRenderTarget(mainTarget);
             _graphics.Clear(Color.Transparent);
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-            _spriteBatch.Draw(transistionTexture, new Rectangle(0, 0, _graphics.Viewport.Width, _graphics.Viewport.Height), Color.Black);
+            _spriteBatch.Draw(transistionTexture, new Rectangle(0, 0, _graphics.Viewport.Width, _graphics.Viewport.Height), transistionColor);
             _spriteBatch.End();
 
             _graphics.SetRenderTarget(null);
@@ -104,10 +106,10 @@ namespace pLdevTest
 
         public void Draw(SpriteBatch _spriteBatch, GraphicsDevice _graphics)
         {
-            _spriteBatch.Draw(transistionTexture, new Rectangle(0, 0, _graphics.Viewport.Width, transistionPos.Y), Color.Black);
-            _spriteBatch.Draw(transistionTexture, new Rectangle(0, transistionPos.Y + transistionPos.Height, _graphics.Viewport.Width, _graphics.Viewport.Width - (transistionPos.Y + transistionPos.Height)), Color.Black);
-            _spriteBatch.Draw(transistionTexture, new Rectangle(0, transistionPos.Y, transistionPos.X, transistionPos.Height), Color.Black);
-            _spriteBatch.Draw(transistionTexture, new Rectangle(transistionPos.X + transistionPos.Width, transistionPos.Y, _graphics.Viewport.Width - (transistionPos.X + transistionPos.Width), transistionPos.Height), Color.Black);
+            _spriteBatch.Draw(transistionTexture, new Rectangle(0, 0, _graphics.Viewport.Width, transistionPos.Y), transistionColor);
+            _spriteBatch.Draw(transistionTexture, new Rectangle(0, transistionPos.Y + transistionPos.Height, _graphics.Viewport.Width, _graphics.Viewport.Width - (transistionPos.Y + transistionPos.Height)), transistionColor);
+            _spriteBatch.Draw(transistionTexture, new Rectangle(0, transistionPos.Y, transistionPos.X, transistionPos.Height), transistionColor);
+            _spriteBatch.Draw(transistionTexture, new Rectangle(transistionPos.X + transistionPos.Width, transistionPos.Y, _graphics.Viewport.Width - (transistionPos.X + transistionPos.Width), transistionPos.Height), transistionColor);
 
             _spriteBatch.End();
             _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);

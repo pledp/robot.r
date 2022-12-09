@@ -121,11 +121,11 @@ namespace pLdevTest
         {
             GraphicsDevice.Clear(background);
             _spriteBatch.Begin();
-            if(MissionHandler.Mission > 7)
+            if(MissionHandler.World == 2)
             {
                 playground.Draw(_spriteBatch, gameTime, _graphics);
             }
-            if(transistion.playTransistion)
+            if(CircleScreenTransistion.playTransistion)
             {
                 transistion.DrawTransistionRenderTarget(_spriteBatch, gameTime, _graphics.GraphicsDevice);
             }
@@ -134,7 +134,7 @@ namespace pLdevTest
 
             missionInfo.Draw(_spriteBatch, gameTime, _graphics);
 
-            if(MissionHandler.Mission > 7)
+            if(MissionHandler.World == 2)
             {
                 playground.Draw2(_spriteBatch, gameTime, _graphics);
             } 
@@ -145,7 +145,7 @@ namespace pLdevTest
             
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
 
-            if (transistion.playTransistion)
+            if (CircleScreenTransistion.playTransistion)
             {
                 transistion.Draw(_spriteBatch, _graphics.GraphicsDevice);
             }

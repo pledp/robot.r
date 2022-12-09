@@ -42,6 +42,8 @@ namespace pLdevTest
             // Create a player on the playground. Move in a 21x15 grid.
             player = new PlaygroundPlayer(_graphics, playground.X, playground.Y);
             finishFlag = new FinishFlag(_graphics, playground.X, playground.Y, 10,10);
+            blackRectangle = new Texture2D(_graphics, 1, 1);
+            blackRectangle.SetData(new[] { Color.Black });
         }
         public void LoadContent(ContentManager Content, GraphicsDevice _graphics)
         {
@@ -77,7 +79,7 @@ namespace pLdevTest
 
             // Create light mask
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
-            Vector2 lightSize = new Vector2(300, 300);
+            Vector2 lightSize = new Vector2(1000, 1000);
             spriteBatch.Draw(lightMask, new Rectangle(playground.X + (player.playerX * 25) - ((int)lightSize.X/2) + 12, playground.Y + (player.playerY * 25) - ((int)lightSize.Y / 2) + 6, (int)lightSize.X, (int)lightSize.Y),  Color.White);
             spriteBatch.End();
 

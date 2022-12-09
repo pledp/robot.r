@@ -50,7 +50,7 @@ namespace pLdevTest
             return false;
         }
 
-        public async void Update(GraphicsDeviceManager graphics, GameTime gameTime, codeInput inputText)
+        public void Update(GraphicsDeviceManager graphics, GameTime gameTime, codeInput inputText)
         {
             mouseState = Mouse.GetState();
             if (enterButton() && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed && !unpressableButton)

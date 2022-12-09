@@ -40,6 +40,7 @@ INCLUDES (WORK IN PROGRESS):
 
 - Built in methods
     - print (arguments, arguments, ...), prints things to the console, can print variables, expressions and strings at the same time (split by commas). 
+    - sleep(expressions), adds delay according to the expressions.
 
 - Expressions
     Expressions within and outside parentheses are split with spaces. Outside parentheses expressions might work without a space, but not inside.
@@ -69,6 +70,21 @@ INCLUDES (WORK IN PROGRESS):
     - != (Does not equal)
     - < (Smaller than)
     - > (Bigger than)
+
+- Loops
+    - loop(expressions)
+        Loops repeat the lines within the curly brackets as many times as argued.
+        DEMO:
+            loop(20) {
+                robot.x = robot.x + 1
+            }
+
+    - while(conditions)
+        While loops repeat the lines as long as a conditional statement is true.
+        DEMO:
+            while(robot.x < 10) {
+                robot.x = robot.x + 1
+            }   
 
 - Built in variables (Sort of classes) 
     - Built in variables have a GET and SET property (They can be assigned and expressed). Currently they can only be SET to integers. They are callable by naming the class, then the variable, split by dots.
@@ -241,13 +257,19 @@ namespace pLdevTest
 
             bool loops = HandleCondition.GetResults(lineIndex, stopIndex, lines);
             int bracketEnd = FindBracket(lineIndex);
+            if(MissionHandler.Mission == 6)
+            {
+                MissionHandler.MissionsComplete[6] = true;
+            }
 
+            int x = 0;
             while(true)
             {
-                if (!HandleCondition.GetResults(lineIndex, stopIndex, lines))
+                if (!HandleCondition.GetResults(lineIndex, stopIndex, lines) || x == 1000)
                 {
                     break;
                 };
+                x++;
                 await MakeDelay();
                 await RunLines(lines, lineIndex + 1, bracketEnd, gameTime, false);
             }
@@ -391,6 +413,7 @@ namespace pLdevTest
         {
             await Task.Delay(CurrentDelay);
             CurrentDelay = 0;
+            return;
         }
     }
 }

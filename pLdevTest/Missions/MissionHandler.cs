@@ -13,7 +13,8 @@ namespace pLdevTest
         public static string[] formattedStrings;
         public static int lineBreaks;
 
-        private static int mission = 0;
+        private static int mission = 8;
+        public static int World = 0;
         public static int Mission
         {
             get { return mission; }
@@ -28,6 +29,7 @@ namespace pLdevTest
             "Only if else...",
             "Repetetitition",
             "If only... (Ft. Loops)",
+            "Delay",
             "Goal"
         };
         public readonly static String[,][] MissionsInfoText =
@@ -93,7 +95,17 @@ namespace pLdevTest
                     "PASS: Use a while loop.",
                     "While loops repeat lines withing the curly brackets as long as a conditional statement is true.",
                     "You can use a While-loop like this:",
-                    "while(robot.x != 10) {\n   robot.x = robot.x + 1\n}"
+                    "while(robot.y != 10) {\n   robot.y = robot.y + 1\n}"
+                }
+            },
+            {
+                new[]
+                {
+                    "PASS: Use the sleep() function.",
+                    "The sleep() function adds a delay. ",
+                    "You can use it in loops to slow things down and see more clearly whats going on.",
+                    "loop(10) {\n   sleep(100)\n   robot.x = robot.x + 1\n   robot.y = robot.y + 1\n}"
+
                 }
             },
             {
@@ -170,6 +182,15 @@ namespace pLdevTest
                 new[]
                 {
                     PlayGround.pgColor,
+                    Color.Black,
+                    Color.Black,
+                    Game1.orange,
+                }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
                 }
             }
         };
@@ -188,6 +209,7 @@ namespace pLdevTest
             false,
             false,
             false,
+            false,
             false
         };
 
@@ -198,7 +220,7 @@ namespace pLdevTest
 
             switch(mission)
             {
-                case 7:
+                case 8:
                     if(Game1.playground.player.playerX == Game1.playground.finishFlag.flagX && Game1.playground.player.playerY == Game1.playground.finishFlag.flagY)
                     {
                         MissionsComplete[mission] = true;
@@ -236,7 +258,7 @@ namespace pLdevTest
                     {
                         int stringWidth = (int)Game1.smallerFont.MeasureString(splitBySpaces[y]).X;
                         lineWidth = lineWidth + stringWidth;
-                        if (lineWidth > 460)
+                        if (lineWidth > 440)
                         {
                             formattedString = formattedString + "\n";
                             lineWidth = stringWidth;

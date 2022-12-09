@@ -77,7 +77,10 @@ namespace pLdevTest
             // Draw frame
             _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 650, 0, 650, _graphics.GraphicsDevice.Viewport.Height), Color.White);
 
-            _spriteBatch.DrawString(Game1.font, MissionHandler.Missions[MissionHandler.Mission], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 410), PlayGround.pgColor);
+            if (MissionHandler.Mission < 9)
+            {
+                _spriteBatch.DrawString(Game1.font, MissionHandler.Missions[MissionHandler.Mission], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 410), PlayGround.pgColor);
+            }
 
             // Draw clipboard and paper
             _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 625, 490, 600, _graphics.GraphicsDevice.Viewport.Height - 490), clipboardColor);
@@ -85,50 +88,55 @@ namespace pLdevTest
             // Paper shadow
             _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 590 + 15, 525 + 15, 530, _graphics.GraphicsDevice.Viewport.Height - 525), new Color(123, 52, 11));
             _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 590, 525, 530, _graphics.GraphicsDevice.Viewport.Height - 525), Color.White);
-            _spriteBatch.Draw(clipboard, new Vector2((_graphics.GraphicsDevice.Viewport.Width - 650) + (650/2) - (clipboard.Width/2), 450), Color.White);
+            _spriteBatch.Draw(clipboard, new Vector2((_graphics.GraphicsDevice.Viewport.Width - 650) + (650 / 2) - (clipboard.Width / 2), 450), Color.White);
 
-            for (int x = 0; x < missionCounterText.Length; x++)
+            if (MissionHandler.Mission < 9)
             {
-                _spriteBatch.DrawString(Game1.font, missionCounterText[x], new Vector2((_graphics.GraphicsDevice.Viewport.Width) - 280 + offset.X, 443), colors[x]);
-                offset.X += Game1.font.MeasureString(missionCounterText[x]).X; 
-            }
-
-            _spriteBatch.End();
-
-            // Create scrollable info segment
-            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, rasterizerState: _rasterizerState, transformMatrix: _matrix);
-            _spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 600, 555, 550, (_graphics.GraphicsDevice.Viewport.Height - 555) - 60);
-            int overallOffset = 0;
-            for(int x = 0; x < MissionHandler.MissionsInfoText[MissionHandler.Mission,0].Length; x++)
-            {
-                int breakLineOffset = 0;
-                int breakLineSize = 20;
-                if (x > 0)
-                {
-                    breakLineOffset = MissionHandler.formattedStrings[x - 1].Count(t => t == '\n');
-                    if (MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x-1] != Color.Black)
+                    for (int x = 0; x < missionCounterText.Length; x++)
                     {
-                        breakLineSize = 20;
+                        _spriteBatch.DrawString(Game1.font, missionCounterText[x], new Vector2((_graphics.GraphicsDevice.Viewport.Width) - 280 + offset.X, 443), colors[x]);
+                        offset.X += Game1.font.MeasureString(missionCounterText[x]).X;
+                    }
+                _spriteBatch.End();
+
+                // Create scrollable info segment
+                _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, rasterizerState: _rasterizerState, transformMatrix: _matrix);
+                _spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 600, 555, 550, (_graphics.GraphicsDevice.Viewport.Height - 555) - 60);
+                int overallOffset = 0;
+
+                for (int x = 0; x < MissionHandler.MissionsInfoText[MissionHandler.Mission, 0].Length; x++)
+                {
+                    int breakLineOffset = 0;
+                    int breakLineSize = 20;
+                    if (x > 0)
+                    {
+                        breakLineOffset = MissionHandler.formattedStrings[x - 1].Count(t => t == '\n');
+                        if (MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x - 1] != Color.Black)
+                        {
+                            breakLineSize = 20;
+                        }
+                    }
+                    overallOffset += breakLineOffset * breakLineSize;
+
+
+                    if (MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x] != Game1.orange)
+                    {
+                        _spriteBatch.DrawString(Game1.smallerFont, "o", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 583, 556 + overallOffset), Color.Red);
+                    }
+                    _spriteBatch.DrawString(MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x] == Color.Black ? Game1.smallerFont : Game1.smallerFont, MissionHandler.formattedStrings[x], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x]);
+
+                    if (x == 0)
+                    {
+                        overallOffset += 60;
+                    }
+                    else
+                    {
+                        overallOffset += 50;
                     }
                 }
-                overallOffset += breakLineOffset * breakLineSize;
-                if (MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x] != Game1.orange)
-                {
-                    _spriteBatch.DrawString(Game1.smallerFont, "o", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 583, 546 + overallOffset), Color.Red);
-                }
-                _spriteBatch.DrawString(MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x] == Color.Black ? Game1.smallerFont : Game1.smallerFont, MissionHandler.formattedStrings[x], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 550 + overallOffset), MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x]);
-                
-                if(x == 0)
-                {
-                    overallOffset += 60;
-                }
-                else
-                {
-                    overallOffset += 50;
-                }
+                _spriteBatch.End();
+                _spriteBatch.Begin();
             }
-            _spriteBatch.End();
-            _spriteBatch.Begin();
         }
 
         public void UpdateProportions(GraphicsDevice _graphics)
