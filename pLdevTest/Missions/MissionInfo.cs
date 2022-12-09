@@ -36,7 +36,7 @@ namespace pLdevTest
 
         }
 
-        public void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, GraphicsDevice _graphics)
         {
             _matrix = Matrix.CreateTranslation(new Vector3(_scrollOffset, 0));
             mouseState = Mouse.GetState();
@@ -45,7 +45,7 @@ namespace pLdevTest
             if (mouseState.ScrollWheelValue != lastMouseState.ScrollWheelValue)
             {
                 // Check if mouse is inside scroll area
-                if (GlobalThings.EnterArea(area, mouseState))
+                if (GlobalThings.EnterArea(new Rectangle(_graphics.Viewport.Width - 590, 525, 530, _graphics.Viewport.Height - 525), mouseState))
                 {
                     // Check if new scroll wheel value is negative or positive
                     if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)

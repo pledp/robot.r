@@ -112,7 +112,7 @@ namespace pLdevTest
             codeTextBar.Update(gameTime, _graphics);
             playground.Update(gameTime);
             transistion.Update(gameTime, _graphics.GraphicsDevice);
-            missionInfo.Update(gameTime);
+            missionInfo.Update(gameTime, _graphics.GraphicsDevice);
             Camera.Instance.Update();
             base.Update(gameTime);
             currentMouseState = Mouse.GetState();
