@@ -27,7 +27,7 @@ namespace pLdevTest
         Vector2 openingTransistion;
 
         bool transistionComplete;
-        Color transistionColor;
+        public static Color transistionColor;
         public static bool playTransistion = true;
         public static bool keepScreen = false;
 

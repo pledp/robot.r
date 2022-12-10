@@ -26,6 +26,7 @@ namespace pLdevTest
         private Texture2D backgroundTexture;
 
         CircleScreenTransistion transistion;
+        LevelCompleteTypewriter levelCompleteTypewriter;
 
         public Game1()
         {
@@ -93,8 +94,8 @@ namespace pLdevTest
 
             playground = new PlayGround(_graphics.GraphicsDevice, 550);
             missionInfo = new MissionInfo(_graphics.GraphicsDevice);
+            levelCompleteTypewriter = new LevelCompleteTypewriter();
             transistion = new CircleScreenTransistion(_graphics.GraphicsDevice);
-            MissionHandler.SetWorld();
             MissionHandler.FormatMissionText();
 
             playground.LoadContent(Content, GraphicsDevice);
@@ -113,6 +114,11 @@ namespace pLdevTest
             playground.Update(gameTime);
             transistion.Update(gameTime, _graphics.GraphicsDevice);
             missionInfo.Update(gameTime, _graphics.GraphicsDevice);
+            if(LevelCompleteTypewriter.play)
+            {
+                levelCompleteTypewriter.Update(gameTime);
+            }
+            
             Camera.Instance.Update();
             base.Update(gameTime);
             currentMouseState = Mouse.GetState();
@@ -143,7 +149,11 @@ namespace pLdevTest
             {
                 playground.DrawBoard(_spriteBatch, gameTime, _graphics);
             }
-            
+            if(LevelCompleteTypewriter.play)
+            {
+                levelCompleteTypewriter.Draw(_spriteBatch, gameTime, _graphics.GraphicsDevice);
+            }
+
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
 
             if (CircleScreenTransistion.playTransistion || CircleScreenTransistion.keepScreen)

@@ -15,22 +15,22 @@ namespace pLdevTest
         public static int lineBreaks;
 
         private static int mission = 8;
+        public static int CurrWorldMission = 1;
         public static int World = 0;
+        public static int[] WorldMissionCount =
+        {
+            9,
+            1
+        };
+
         public static int Mission
         {
             get { return mission; }
         }
 
-        private static string[] missions;
-        public static string[] Missions
-        {
-            get { return missions; }
-        }
-        public static String[,][] MissionsInfoText;
-        public static Color[,][] MissionsInfoColor;
         public static bool MissionComplete;
 
-        private readonly static string[] TutorialMissions =
+        private readonly static string[] missions =
         {
             "Up and Down!",
             "Left and Right!",
@@ -40,9 +40,14 @@ namespace pLdevTest
             "Repetetitition",
             "If only... (Ft. Loops)",
             "Delay",
-            "Goal"
+            "Goal",
+            "world2plaCeholder"
         };
-        public readonly static String[,][] TutorialMissionsInfoText =
+        public static string[] Missions
+        {
+            get { return missions; }
+        }
+        public readonly static String[,][] MissionsInfoText =
         {
             {
                 new[]
@@ -123,9 +128,15 @@ namespace pLdevTest
                 {
                     "PASS: Reach the flag by any means.",
                 }
+            },
+            {
+                new[]
+                {
+                    "WORLD 2 PLACEHOLDER",
+                }
             }
         };
-        public readonly static Color[,][] TutorialMissionsInfoColor =
+        public readonly static Color[,][] MissionsInfoColor =
         {
             {
                 new[]
@@ -202,17 +213,14 @@ namespace pLdevTest
                 {
                     PlayGround.pgColor,
                 }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
+                }
             }
         };
-
-        public static void SetWorld()
-        {
-            World++;
-            MissionsInfoText = TutorialMissionsInfoText;
-            MissionsInfoColor = TutorialMissionsInfoColor;
-            missions = TutorialMissions;
-
-        }
 
         public static void CheckForMission()
         {
@@ -239,6 +247,7 @@ namespace pLdevTest
             if(missionComplete)
             {
                 mission++;
+                CurrWorldMission++;
                 FormatMissionText();
             }
         }
@@ -274,11 +283,15 @@ namespace pLdevTest
         }
         private static async void WorldTransistion()
         {
-            await Task.Delay(500);
+            LevelCompleteTypewriter.play = true;
+            await Task.Delay(3000);
             CircleScreenTransistion.keepScreen = true;
             CircleScreenTransistion.playTransistion = true;
 
             await Task.Delay(5000);
+            LevelCompleteTypewriter.play = false;
+            World++;
+            CurrWorldMission = 1;
             CircleScreenTransistion.playTransistion = true;
 
         }
