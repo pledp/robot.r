@@ -85,7 +85,7 @@ namespace pLdevTest
             }
             else if(menuScene)
             {
-                mainMenu.Update(_graphics.GraphicsDevice, Content);
+                mainMenu.Update(_graphics.GraphicsDevice, Content, gameTime);
             }
             
             transistion.Update(gameTime, _graphics.GraphicsDevice);
@@ -94,6 +94,7 @@ namespace pLdevTest
 
         protected override void Draw(GameTime gameTime)
         {
+            _graphics.GraphicsDevice.Clear(Color.Black);
             _spriteBatch.Begin();
             if (CircleScreenTransistion.playTransistion || CircleScreenTransistion.keepScreen)
             {

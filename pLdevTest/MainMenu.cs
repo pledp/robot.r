@@ -14,22 +14,45 @@ namespace pLdevTest
     public class MainMenu
     {
         private Rectangle buttonPos;
+        private Vector2 startingPos;
+        Vector2 minPos;
         private Texture2D playButtonTexture;
         private MouseState mouseState;
         private MouseState lastMouseState;
+        private double elapsedTime = 0;
+        private double desiredDuration = 1f;
+
+        bool aniDone = false;
         public MainMenu(GraphicsDevice graphicsDevice)
         {
             playButtonTexture = new Texture2D(graphicsDevice, 1, 1);
             playButtonTexture.SetData(new[] { Color.Green }); 
 
             buttonPos = new Rectangle(50, 50, (int)GlobalThings.font.MeasureString("PLAY").X + 40, (int)GlobalThings.font.MeasureString("PLAY").Y + 10);
+            minPos = new Vector2((int)GlobalThings.font.MeasureString("PLAY").X + 40, (int)GlobalThings.font.MeasureString("PLAY").Y + 10);
+            startingPos = new Vector2(buttonPos.Width, buttonPos.Height);
         }
-        public void Update(GraphicsDevice _graphics, ContentManager Content)
+        public void Update(GraphicsDevice _graphics, ContentManager Content, GameTime gameTime)
         {
             mouseState = Mouse.GetState();
             if (GlobalThings.EnterArea(buttonPos, mouseState) && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
             {
                 GameSceneTransistion(_graphics, Content);
+            }
+            if (GlobalThings.EnterArea(buttonPos, mouseState))
+            {
+                AnimateMenuItem(new Vector2(minPos.X + 100, buttonPos.Height), gameTime);
+                aniDone = true;
+            }
+            else
+            {
+                if(aniDone)
+                {
+                    elapsedTime = 0;
+                    startingPos = new Vector2(buttonPos.Width, buttonPos.Height);
+                    aniDone = false;
+                }
+                AnimateMenuItem(minPos, gameTime);
             }
             lastMouseState = Mouse.GetState();
         }
@@ -37,6 +60,26 @@ namespace pLdevTest
         {
             _spriteBatch.Draw(playButtonTexture, new Rectangle(buttonPos.X-20, buttonPos.Y-5, buttonPos.Width, buttonPos.Height), Color.White);
             _spriteBatch.DrawString(GlobalThings.font, "PLAY", new Vector2(buttonPos.X, buttonPos.Y), Color.White);
+        }
+        private void AnimateMenuItem(Vector2 newPos, GameTime gameTime)
+        {
+            elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
+            float percentageComplete = (float)elapsedTime / (float)desiredDuration;
+            buttonPos.Width = (int)Vector2.Lerp(startingPos, newPos, MathHelper.SmoothStep(0, 1, percentageComplete)).X;
+
+            if (buttonPos.Width == newPos.X)
+            {
+                if(aniDone)
+                {
+                    aniDone = false;
+                }
+                else
+                {
+                    aniDone = true;
+                }
+                startingPos = new Vector2(buttonPos.Width, buttonPos.Height);
+                elapsedTime = 0;
+            }
         }
         public async void GameSceneTransistion(GraphicsDevice _graphics, ContentManager Content)
         {
