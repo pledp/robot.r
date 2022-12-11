@@ -239,7 +239,7 @@ namespace pLdevTest
 
             double loops = HandleExpression.GetResults(currLine, variables);
             int bracketEnd = FindBracket(lineIndex);
-            if(MissionHandler.Mission == 5 && MissionHandler.World == 1)
+            if(MissionHandler.Mission == 5)
             {
                 MissionHandler.MissionComplete = true;
             }
@@ -257,7 +257,7 @@ namespace pLdevTest
 
             bool loops = HandleCondition.GetResults(lineIndex, stopIndex, lines);
             int bracketEnd = FindBracket(lineIndex);
-            if(MissionHandler.Mission == 6 && MissionHandler.World == 1)
+            if(MissionHandler.Mission == 6)
             {
                 MissionHandler.MissionComplete = true;
             }
@@ -286,7 +286,7 @@ namespace pLdevTest
             {
                 ifCondition = HandleCondition.GetResults(lineIndex, stopIndex, lines);
 
-                if(MissionHandler.Mission == 4 && MissionHandler.World == 1)
+                if(MissionHandler.Mission == 4)
                 {
                     MissionHandler.MissionComplete = true;
                 }
@@ -314,7 +314,7 @@ namespace pLdevTest
                 // If condition was true: Run next line, and DON'T run next "elseif" and "else" conditions
                 ifConclusion = true;
 
-                if(MissionHandler.Mission == 3 && MissionHandler.World == 1)
+                if(MissionHandler.Mission == 3)
                 {
                     MissionHandler.MissionComplete = true;
                 }
@@ -352,7 +352,7 @@ namespace pLdevTest
                 }
                 variables[varName] = value;
 
-                if(MissionHandler.Mission == 2 && MissionHandler.World == 1)
+                if(MissionHandler.Mission == 2)
                 {
                     MissionHandler.MissionComplete = true;
                 }

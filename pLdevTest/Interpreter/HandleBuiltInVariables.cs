@@ -29,7 +29,7 @@ namespace pLdevTest
                             {
                                 case "x":
                                     GameScene.playground.player.playerX = Interpreter.builtInVariables["robot"]["x"];
-                                    if (MissionHandler.Mission == 1 && MissionHandler.World == 1)
+                                    if (MissionHandler.Mission == 1)
                                     {
                                         MissionHandler.MissionComplete = true;
                                     }
@@ -37,7 +37,7 @@ namespace pLdevTest
 
                                 case "y":
                                     GameScene.playground.player.playerY = Interpreter.builtInVariables["robot"]["y"];
-                                    if (MissionHandler.Mission == 0 && MissionHandler.World == 1)
+                                    if (MissionHandler.Mission == 0)
                                     {
                                         MissionHandler.MissionComplete = true;
                                     }

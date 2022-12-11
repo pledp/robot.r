@@ -50,7 +50,7 @@ namespace pLdevTest
                     break;
                 case BuiltInMethods.Sleep:
 
-                    if(MissionHandler.Mission == 7 && MissionHandler.World == 1)
+                    if(MissionHandler.Mission == 7)
                     {
                         MissionHandler.MissionComplete = true;
                     }

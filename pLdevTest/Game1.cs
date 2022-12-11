@@ -66,7 +66,7 @@ namespace pLdevTest
 
         protected override void Update(GameTime gameTime)
         {
-            //gameScene.Update(gameTime, _graphics);
+            gameScene.Update(gameTime, _graphics);
 
             base.Update(gameTime);
         }
