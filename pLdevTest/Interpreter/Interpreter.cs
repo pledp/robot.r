@@ -159,8 +159,8 @@ namespace pLdevTest
         {
             lastIndex = stopIndex;
             variables = new Dictionary<string, double>();
-            Game1.playground.player.playerY = 0;
-            Game1.playground.player.playerX = 0;
+            GameScene.playground.player.playerY = 0;
+            GameScene.playground.player.playerX = 0;
 
             // Create a dictionary of dictionaries for built in static classes. Key of the dictionary holds dictionaries of the built in variables for the classes.
             builtInVariables = new Dictionary<string, Dictionary<string, int>>();

@@ -14,7 +14,7 @@ namespace pLdevTest
         public static string[] formattedStrings;
         public static int lineBreaks;
 
-        private static int mission = 8;
+        private static int mission = 0;
         public static int CurrWorldMission = 1;
         public static int World = 0;
         public static int[] WorldMissionCount =
@@ -143,7 +143,7 @@ namespace pLdevTest
                 {
                     PlayGround.pgColor,
                     Color.Black,
-                    Game1.orange,
+                    GameScene.orange,
                 }
             },
             {
@@ -151,7 +151,7 @@ namespace pLdevTest
                 {
                     PlayGround.pgColor,
                     Color.Black,
-                    Game1.orange,
+                    GameScene.orange,
                 }
             },
             {
@@ -159,26 +159,7 @@ namespace pLdevTest
                 {
                     PlayGround.pgColor,
                     Color.Black,
-                    Game1.orange,
-                }
-            },
-            {
-                new[]
-                {
-                    PlayGround.pgColor,
-                    Color.Black,
-                    Color.Black,
-                    Game1.orange,
-                }
-            },
-            {
-                new[]
-                {
-                    PlayGround.pgColor,
-                    Color.Black,
-                    Game1.orange,
-                    Game1.orange,
-                    Game1.orange,
+                    GameScene.orange,
                 }
             },
             {
@@ -187,7 +168,17 @@ namespace pLdevTest
                     PlayGround.pgColor,
                     Color.Black,
                     Color.Black,
-                    Game1.orange,
+                    GameScene.orange,
+                }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
+                    Color.Black,
+                    GameScene.orange,
+                    GameScene.orange,
+                    GameScene.orange,
                 }
             },
             {
@@ -196,7 +187,7 @@ namespace pLdevTest
                     PlayGround.pgColor,
                     Color.Black,
                     Color.Black,
-                    Game1.orange,
+                    GameScene.orange,
                 }
             },
             {
@@ -205,7 +196,16 @@ namespace pLdevTest
                     PlayGround.pgColor,
                     Color.Black,
                     Color.Black,
-                    Game1.orange,
+                    GameScene.orange,
+                }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
+                    Color.Black,
+                    Color.Black,
+                    GameScene.orange,
                 }
             },
             {
@@ -230,7 +230,7 @@ namespace pLdevTest
             switch(mission)
             {
                 case 8:
-                    if(Game1.playground.player.playerX == Game1.playground.finishFlag.flagX && Game1.playground.player.playerY == Game1.playground.finishFlag.flagY)
+                    if(GameScene.playground.player.playerX == GameScene.playground.finishFlag.flagX && GameScene.playground.player.playerY == GameScene.playground.finishFlag.flagY)
                     {
                         MissionComplete = true;
                         WorldTransistion();
@@ -257,7 +257,7 @@ namespace pLdevTest
 
             for (int i = 0; i < MissionsInfoText[mission, 0].Length; i++)
             {
-                if (MissionsInfoColor[mission, 0][i] == Game1.orange)
+                if (MissionsInfoColor[mission, 0][i] == GameScene.orange)
                 {
                     formattedStrings[i] = MissionsInfoText[mission, 0][i];
                 }
@@ -268,7 +268,7 @@ namespace pLdevTest
                     string formattedString = "";
                     for (int y = 0; y < splitBySpaces.Length; y++)
                     {
-                        int stringWidth = (int)Game1.smallerFont.MeasureString(splitBySpaces[y]).X;
+                        int stringWidth = (int)GameScene.smallerFont.MeasureString(splitBySpaces[y]).X;
                         lineWidth = lineWidth + stringWidth;
                         if (lineWidth > 440)
                         {

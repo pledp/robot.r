@@ -28,7 +28,7 @@ namespace pLdevTest
         }
         public void Draw(SpriteBatch _spriteBatch,GameTime gameTime, GraphicsDevice _graphics)
         {
-            _spriteBatch.DrawString(Game1.font, typeWriterStringType, new Vector2(_graphics.Viewport.Width / 2 - Game1.font.MeasureString(typeWriterString).X / 2, _graphics.Viewport.Height / 2 - Game1.font.MeasureString(typeWriterString).Y / 2), CircleScreenTransistion.transistionColor);
+            _spriteBatch.DrawString(GameScene.font, typeWriterStringType, new Vector2(_graphics.Viewport.Width / 2 - GameScene.font.MeasureString(typeWriterString).X / 2, _graphics.Viewport.Height / 2 - GameScene.font.MeasureString(typeWriterString).Y / 2), CircleScreenTransistion.transistionColor);
         }
     }
 }

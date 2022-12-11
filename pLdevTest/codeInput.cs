@@ -103,7 +103,7 @@ namespace pLdevTest
 
             darkeyGrey = new Color(65, 65, 63);
 
-            spaceSize = (int)Game1.font.MeasureString(indentString).X;
+            spaceSize = (int)GameScene.font.MeasureString(indentString).X;
         }
 
         public void Update(GameTime gameTime, GraphicsDeviceManager graphics)
