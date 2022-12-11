@@ -13,7 +13,7 @@ namespace pLdevTest
 {
     public class PlayCodeButton
     {
-        private Vector2 buttonPos;
+        private Rectangle buttonPos;
         private Texture2D playButtonTexture;
 
         private MouseState mouseState;
@@ -21,36 +21,16 @@ namespace pLdevTest
         public static bool unpressableButton = false;
         public PlayCodeButton(GraphicsDevice graphicsDevice, int buttonX, int buttonY)
         {
-            int rectX = 30;
-            int rectY = 30;
-            playButtonTexture = new Texture2D(graphicsDevice, rectX, rectY);
-            Color[] data = new Color[rectX * rectY];
-            for (int i = 0; i < data.Length; ++i)
-                data[i] = Color.Green;
+            playButtonTexture = new Texture2D(graphicsDevice, 1, 1);
+            playButtonTexture.SetData(new[] { Color.Green });
 
-            playButtonTexture.SetData(data);
-
-
-            buttonPos.X = buttonX;
-            buttonPos.Y = buttonY;
-        }
-
-        public bool enterButton()
-        {
-            if (mouseState.X < buttonPos.X + playButtonTexture.Width &&
-                mouseState.X > buttonPos.X &&
-                mouseState.Y < buttonPos.Y + playButtonTexture.Height &&
-                mouseState.Y > buttonPos.Y)
-            {
-                return true;
-            }
-            return false;
+            buttonPos = new Rectangle(buttonX, buttonY, 30, 30);
         }
 
         public void Update(GraphicsDeviceManager graphics, GameTime gameTime, codeInput inputText)
         {
             mouseState = Mouse.GetState();
-            if (enterButton() && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed && !unpressableButton)
+            if (GlobalThings.EnterArea(buttonPos, mouseState) && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed && !unpressableButton)
             {
                 unpressableButton = true;
                 Interpreter.StartInterprete(codeInput.Typing, 0, codeInput.Typing.Count, gameTime);

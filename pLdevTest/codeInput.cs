@@ -15,7 +15,7 @@ namespace pLdevTest
 {
     public class codeInput
     {
-        public static SpriteFont font;
+        
         public static int readingLine;
 
         private string typeWriterString;
@@ -63,7 +63,7 @@ namespace pLdevTest
 
         private int spaceSize;
 
-        public codeInput(SpriteFont pixelFont)
+        public codeInput()
         {
             typeWriterString = "pLdev!";
             typeWriterStringType = "";
@@ -72,8 +72,7 @@ namespace pLdevTest
             currentChar = 0;
             cursorOffset = 0;
 
-            font = pixelFont;
-            fontGlyphs = font.GetGlyphs();
+            fontGlyphs = GlobalThings.font.GetGlyphs();
 
             size = new Vector2();
             pos = new Vector2();
@@ -103,7 +102,7 @@ namespace pLdevTest
 
             darkeyGrey = new Color(65, 65, 63);
 
-            spaceSize = (int)GameScene.font.MeasureString(indentString).X;
+            spaceSize = (int)GlobalThings.font.MeasureString(indentString).X;
         }
 
         public void Update(GameTime gameTime, GraphicsDeviceManager graphics)
@@ -175,7 +174,7 @@ namespace pLdevTest
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
-            //spriteBatch.DrawString(font, typeWriterStringType, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - font.MeasureString(typeWriterString).X / 2, graphics.GraphicsDevice.Viewport.Height / 2 - font.MeasureString(typeWriterString).Y / 2), Color.Black);
+            //spriteBatch.DrawString(GlobalThings.font, typeWriterStringType, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - GlobalThings.font.MeasureString(typeWriterString).X / 2, graphics.GraphicsDevice.Viewport.Height / 2 - GlobalThings.font.MeasureString(typeWriterString).Y / 2), Color.Black);
 
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, rasterizerState: _rasterizerState, transformMatrix: _matrix);
@@ -189,17 +188,17 @@ namespace pLdevTest
                 // Align text right
                 Rectangle rectangle = new Rectangle(10, 10, 55, 40);
                 pos = new Vector2(rectangle.Width / 2, rectangle.Height / 2);
-                size = font.MeasureString(lineCounter[line-1].ToString());
+                size = GlobalThings.font.MeasureString(lineCounter[line-1].ToString());
                 
                 origin = size * 0.5f;
                 origin.X -= rectangle.X/ 2 - size.X / 2;
 
-                lineCounterOffset = Convert.ToInt32(font.MeasureString(lineCounter[line-1].ToString()).X);
+                lineCounterOffset = Convert.ToInt32(GlobalThings.font.MeasureString(lineCounter[line-1].ToString()).X);
                 // Draw code
-                spriteBatch.DrawString(font, formattedCode[line - 1], new Vector2(60 + codeEditorOffset.X, line * 50 + codeEditorOffset.Y - 50), Color.White);
+                spriteBatch.DrawString(GlobalThings.font, formattedCode[line - 1], new Vector2(60 + codeEditorOffset.X, line * 50 + codeEditorOffset.Y - 50), Color.White);
 
                 // Draw line counter
-                spriteBatch.DrawString(font, line.ToString(), new Vector2(codeEditorOffset.X + pos.X, (line - 1) * 50 + codeEditorOffset.Y + 20), line == readingLine ? Color.Green : darkeyGrey, 0, origin, 1, SpriteEffects.None, 0);
+                spriteBatch.DrawString(GlobalThings.font, line.ToString(), new Vector2(codeEditorOffset.X + pos.X, (line - 1) * 50 + codeEditorOffset.Y + 20), line == readingLine ? Color.Green : darkeyGrey, 0, origin, 1, SpriteEffects.None, 0);
             }
 
             // Typing cursor indicator
@@ -210,15 +209,15 @@ namespace pLdevTest
                     break;
 
                 default:
-                    cursorOffset = Convert.ToInt32(font.MeasureString(currentCharString).X) + Convert.ToInt32(font.MeasureString(typing[currentLine].Remove(currentChar)).X);
+                    cursorOffset = Convert.ToInt32(GlobalThings.font.MeasureString(currentCharString).X) + Convert.ToInt32(GlobalThings.font.MeasureString(typing[currentLine].Remove(currentChar)).X);
                     break;
             }
-            spriteBatch.Draw(whiteRectangle, new Rectangle((cursorOffset + 40 + Convert.ToInt32(codeEditorOffset.X)) + (lineIndent[currentLine] * spaceSize), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), 10, Convert.ToInt32(font.MeasureString("A").Y)), Color.White);
+            spriteBatch.Draw(whiteRectangle, new Rectangle((cursorOffset + 40 + Convert.ToInt32(codeEditorOffset.X)) + (lineIndent[currentLine] * spaceSize), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), 10, Convert.ToInt32(GlobalThings.font.MeasureString("A").Y)), Color.White);
             spriteBatch.End();
             spriteBatch.Begin();
 
-            variablesBag.Draw(spriteBatch, gameTime, graphics, font);
-            consoleBag.Draw(spriteBatch, gameTime, graphics, font);
+            variablesBag.Draw(spriteBatch, gameTime, graphics, GlobalThings.font);
+            consoleBag.Draw(spriteBatch, gameTime, graphics, GlobalThings.font);
             playButton.Draw(spriteBatch, gameTime, graphics);
         }
 

@@ -14,7 +14,7 @@ namespace pLdevTest
         public static string[] formattedStrings;
         public static int lineBreaks;
 
-        private static int mission = 8;
+        private static int mission = 0;
         public static int CurrWorldMission = 1;
         public static int World = 0;
         public static int[] WorldMissionCount =
@@ -143,7 +143,7 @@ namespace pLdevTest
                 {
                     PlayGround.pgColor,
                     Color.Black,
-                    GameScene.orange,
+                    GlobalThings.orangeColor,
                 }
             },
             {
@@ -151,7 +151,7 @@ namespace pLdevTest
                 {
                     PlayGround.pgColor,
                     Color.Black,
-                    GameScene.orange,
+                    GlobalThings.orangeColor,
                 }
             },
             {
@@ -159,26 +159,7 @@ namespace pLdevTest
                 {
                     PlayGround.pgColor,
                     Color.Black,
-                    GameScene.orange,
-                }
-            },
-            {
-                new[]
-                {
-                    PlayGround.pgColor,
-                    Color.Black,
-                    Color.Black,
-                    GameScene.orange,
-                }
-            },
-            {
-                new[]
-                {
-                    PlayGround.pgColor,
-                    Color.Black,
-                    GameScene.orange,
-                    GameScene.orange,
-                    GameScene.orange,
+                    GlobalThings.orangeColor,
                 }
             },
             {
@@ -187,7 +168,17 @@ namespace pLdevTest
                     PlayGround.pgColor,
                     Color.Black,
                     Color.Black,
-                    GameScene.orange,
+                    GlobalThings.orangeColor,
+                }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
+                    Color.Black,
+                    GlobalThings.orangeColor,
+                    GlobalThings.orangeColor,
+                    GlobalThings.orangeColor,
                 }
             },
             {
@@ -196,7 +187,7 @@ namespace pLdevTest
                     PlayGround.pgColor,
                     Color.Black,
                     Color.Black,
-                    GameScene.orange,
+                    GlobalThings.orangeColor,
                 }
             },
             {
@@ -205,7 +196,16 @@ namespace pLdevTest
                     PlayGround.pgColor,
                     Color.Black,
                     Color.Black,
-                    GameScene.orange,
+                    GlobalThings.orangeColor,
+                }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
+                    Color.Black,
+                    Color.Black,
+                    GlobalThings.orangeColor,
                 }
             },
             {
@@ -232,9 +232,8 @@ namespace pLdevTest
                 case 8:
                     if(GameScene.playground.player.playerX == GameScene.playground.finishFlag.flagX && GameScene.playground.player.playerY == GameScene.playground.finishFlag.flagY)
                     {
-                        MissionComplete = true;
+                        missionComplete = true;
                         WorldTransistion();
-
                     }
                     break;
             }
@@ -247,6 +246,8 @@ namespace pLdevTest
             if(missionComplete)
             {
                 mission++;
+                MissionComplete = false;
+                missionComplete = false;
                 CurrWorldMission++;
                 FormatMissionText();
             }
@@ -257,7 +258,7 @@ namespace pLdevTest
 
             for (int i = 0; i < MissionsInfoText[mission, 0].Length; i++)
             {
-                if (MissionsInfoColor[mission, 0][i] == GameScene.orange)
+                if (MissionsInfoColor[mission, 0][i] == GlobalThings.orangeColor)
                 {
                     formattedStrings[i] = MissionsInfoText[mission, 0][i];
                 }
@@ -268,7 +269,7 @@ namespace pLdevTest
                     string formattedString = "";
                     for (int y = 0; y < splitBySpaces.Length; y++)
                     {
-                        int stringWidth = (int)GameScene.smallerFont.MeasureString(splitBySpaces[y]).X;
+                        int stringWidth = (int)GlobalThings.smallerFont.MeasureString(splitBySpaces[y]).X;
                         lineWidth = lineWidth + stringWidth;
                         if (lineWidth > 440)
                         {

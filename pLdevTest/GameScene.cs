@@ -23,14 +23,12 @@ namespace pLdevTest
         public static Color orange;
         private Texture2D backgroundTexture;
 
-        CircleScreenTransistion transistion;
         LevelCompleteTypewriter levelCompleteTypewriter;
 
-        public GameScene(GraphicsDeviceManager _graphics)
+        public GameScene(GraphicsDevice _graphics)
         {
-            playground = new PlayGround(_graphics.GraphicsDevice, 550);
-            missionInfo = new MissionInfo(_graphics.GraphicsDevice);
-            transistion = new CircleScreenTransistion(_graphics.GraphicsDevice);
+            playground = new PlayGround(_graphics, 550);
+            missionInfo = new MissionInfo(_graphics);
         }
 
         public void UpdateProprtions(object sender, EventArgs e, GraphicsDeviceManager _graphics)
@@ -39,7 +37,6 @@ namespace pLdevTest
             playground.UpdateProportions(_graphics.GraphicsDevice);
             missionInfo.UpdateProportions(_graphics.GraphicsDevice);
 
-            transistion.ResizeRenderTarget(_graphics.GraphicsDevice);
             Debug.WriteLine("test");
         }
         public void ProcessTextInput(object sender, TextInputEventArgs e)
@@ -55,23 +52,19 @@ namespace pLdevTest
             }
         }
 
-        public void LoadContent(ContentManager Content ,GraphicsDeviceManager _graphics)
+        public void LoadContent(ContentManager Content ,GraphicsDevice _graphics)
         {
-            font = Content.Load<SpriteFont>("font");
-            smallerFont = Content.Load<SpriteFont>("smallerFont");
             background = new Color(50, 41, 47);
-            orange = new Color(255, 165, 0);
-            backgroundTexture = new Texture2D(_graphics.GraphicsDevice, 1, 1);
+            backgroundTexture = new Texture2D(_graphics, 1, 1);
             backgroundTexture.SetData(new[] { background });
 
-            codeTextBar = new codeInput(font);
+            codeTextBar = new codeInput();
 
             levelCompleteTypewriter = new LevelCompleteTypewriter();
             MissionHandler.FormatMissionText();
 
-            playground.LoadContent(Content, _graphics.GraphicsDevice);
-            transistion.LoadContent(Content, _graphics.GraphicsDevice);
-            codeTextBar.LoadContent(Content, _graphics.GraphicsDevice);
+            playground.LoadContent(Content, _graphics);
+            codeTextBar.LoadContent(Content, _graphics);
             missionInfo.LoadContet(Content);
         }
 
@@ -81,7 +74,6 @@ namespace pLdevTest
             // TODO: Add your update logic here
             codeTextBar.Update(gameTime, _graphics);
             playground.Update(gameTime);
-            transistion.Update(gameTime, _graphics.GraphicsDevice);
             missionInfo.Update(gameTime, _graphics.GraphicsDevice);
             if (LevelCompleteTypewriter.play)
             {
@@ -93,15 +85,9 @@ namespace pLdevTest
 
         public void Draw(GameTime gameTime, SpriteBatch _spriteBatch, GraphicsDeviceManager _graphics)
         {
-            _graphics.GraphicsDevice.Clear(background);
-            _spriteBatch.Begin();
             if (MissionHandler.World == 2)
             {
                 playground.Draw(_spriteBatch, gameTime, _graphics);
-            }
-            if (CircleScreenTransistion.playTransistion || CircleScreenTransistion.keepScreen)
-            {
-                transistion.DrawTransistionRenderTarget(_spriteBatch, gameTime, _graphics.GraphicsDevice);
             }
 
             _graphics.GraphicsDevice.Clear(background);
@@ -123,11 +109,6 @@ namespace pLdevTest
 
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
 
-            if (CircleScreenTransistion.playTransistion || CircleScreenTransistion.keepScreen)
-            {
-                transistion.Draw(_spriteBatch, _graphics.GraphicsDevice);
-            }
-            _spriteBatch.End();
         }
     }
 }

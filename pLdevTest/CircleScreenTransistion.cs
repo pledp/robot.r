@@ -26,9 +26,9 @@ namespace pLdevTest
 
         Vector2 openingTransistion;
 
-        bool transistionComplete;
+        bool transistionComplete = true;
         public static Color transistionColor;
-        public static bool playTransistion = true;
+        public static bool playTransistion = false;
         public static bool keepScreen = false;
 
         public CircleScreenTransistion(GraphicsDevice _graphics)
@@ -37,8 +37,8 @@ namespace pLdevTest
             transistionTexture.SetData(new[] { Color.White });
 
             transistionPos = new Rectangle(_graphics.Viewport.Width / 2 - 100, _graphics.Viewport.Height / 2 - 100, 200, 200);
-            startingSize = new Vector2(transistionPos.Width, transistionPos.Height);
             openingTransistion = new Vector2(_graphics.Viewport.Width + _graphics.Viewport.Height, _graphics.Viewport.Width + _graphics.Viewport.Height);
+            startingSize = openingTransistion;
 
             ResizeRenderTarget(_graphics);
             transistionColor = new Color(153, 243, 159);
@@ -56,6 +56,8 @@ namespace pLdevTest
             {
                 transistionPos.Width = (int)openingTransistion.X;
                 transistionPos.Height = (int)openingTransistion.Y;
+
+                startingSize = openingTransistion;
             }
         }
 

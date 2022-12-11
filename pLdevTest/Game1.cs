@@ -6,6 +6,7 @@ using System;
 using System.Text;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
+using System.Transactions;
 
 namespace pLdevTest
 {
@@ -14,7 +15,10 @@ namespace pLdevTest
         public GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         public static GameWindow gw;
-        private GameScene gameScene;
+        public GameScene gameScene;
+        private MainMenu mainMenu;
+        public static CircleScreenTransistion transistion;
+        public static bool menuScene = true;
 
         public Game1()
         {
@@ -49,32 +53,70 @@ namespace pLdevTest
         private void ProcessWindowSizeChange(object sender, EventArgs e)
         {
             gameScene.UpdateProprtions(sender, e, _graphics);
+            transistion.ResizeRenderTarget(_graphics.GraphicsDevice);
         }
         public void ProcessTextInput(object sender, TextInputEventArgs e)
         {
-            gameScene.ProcessTextInput(sender, e);
+            if(!menuScene)
+            {   
+                gameScene.ProcessTextInput(sender, e);
+            }
+            
         }
         
         protected override void LoadContent()
         {
             gw = Window;
+            GlobalThings.LoadContent(Content);
             _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
-            gameScene = new GameScene(_graphics);
-            gameScene.LoadContent(Content, _graphics);
+            mainMenu = new MainMenu(_graphics.GraphicsDevice);
+            transistion = new CircleScreenTransistion(_graphics.GraphicsDevice);
 
+            transistion.LoadContent(Content, _graphics.GraphicsDevice);
+            gameScene = new GameScene(_graphics.GraphicsDevice);
+            gameScene.LoadContent(Content, _graphics.GraphicsDevice);
         }
 
         protected override void Update(GameTime gameTime)
         {
-            gameScene.Update(gameTime, _graphics);
-
+            if(!menuScene)
+            {
+                gameScene.Update(gameTime, _graphics);
+            }
+            else if(menuScene)
+            {
+                mainMenu.Update(_graphics.GraphicsDevice, Content);
+            }
+            
+            transistion.Update(gameTime, _graphics.GraphicsDevice);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            gameScene.Draw(gameTime, _spriteBatch, _graphics);
+            _spriteBatch.Begin();
+            if (CircleScreenTransistion.playTransistion || CircleScreenTransistion.keepScreen)
+            {
+                transistion.DrawTransistionRenderTarget(_spriteBatch, gameTime, _graphics.GraphicsDevice);
+            }
+
+            if (!menuScene)
+            {
+                gameScene.Draw(gameTime, _spriteBatch, _graphics);
+            }
+            else if(menuScene)
+            {
+                mainMenu.Draw(gameTime, _spriteBatch, _graphics);
+            }
+
+
+            if (CircleScreenTransistion.playTransistion || CircleScreenTransistion.keepScreen)
+            {
+                transistion.Draw(_spriteBatch, _graphics.GraphicsDevice);
+            }
+
             base.Draw(gameTime);
+            _spriteBatch.End();
         }
     }
 }
