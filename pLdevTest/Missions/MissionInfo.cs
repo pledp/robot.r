@@ -90,7 +90,16 @@ namespace pLdevTest
 
             for (int x = 0; x < missionCounterText.Length; x++)
             {
-                _spriteBatch.DrawString(GlobalThings.font, missionCounterText[x], new Vector2((_graphics.GraphicsDevice.Viewport.Width) - 280 + offset.X, 443), colors[x]);
+                int waveOffset = 0;
+                if(x == 1)
+                {
+                    waveOffset = (int)(Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 300) * 5);
+                }
+                else if(x == 3)
+                {
+                    waveOffset = (int)(Math.Cos(gameTime.TotalGameTime.TotalMilliseconds / 300) * 5);
+                }
+                _spriteBatch.DrawString(GlobalThings.font, missionCounterText[x], new Vector2((_graphics.GraphicsDevice.Viewport.Width) - 280 + offset.X, 443 + waveOffset), colors[x]);
                 offset.X += GlobalThings.font.MeasureString(missionCounterText[x]).X;
             }
             _spriteBatch.End();
