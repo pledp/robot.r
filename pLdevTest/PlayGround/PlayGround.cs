@@ -67,6 +67,9 @@ namespace pLdevTest
         }
         public void CreateTiles()
         {
+            player.objectPos = new Vector2(0, 0);
+            player.elapsedTime = 0;
+
             tilesMovement = new Vector2[22, 16];
             randomTime = new int[22, 16];
             tileOpacity = new float[22, 16];
@@ -101,6 +104,22 @@ namespace pLdevTest
         public void Update(GameTime gameTime)
         {
             player.Update(gameTime);
+
+            if (MissionHandler.Mission == 9 && gems != null)
+            {
+                foreach (Gem gem in gems)
+                {
+                    if (!gem.PickedUp)
+                    {
+                        gem.Update(gameTime);
+                    }
+
+                }
+            }
+            if (MissionHandler.Mission == 8)
+            {
+                finishFlag.Update(gameTime);
+            }
 
             /*if(!maxedOut)
             {
@@ -143,12 +162,12 @@ namespace pLdevTest
                             goDown[x,y] = true;
                             elapsedTime[x, y] = 0;
                         }
-                        tilesMovement[x, y] = tileTransistion(new Vector2(playground.X + (x * 25), playground.Y + (y * 25)), gameTime, new Vector2(playground.X + (x * 25), playground.Y + (y * 25) - randomTime[x, y]/2), x, y);
+                        tilesMovement[x, y] = TileTransistion(new Vector2(playground.X + (x * 25), playground.Y + (y * 25)), gameTime, new Vector2(playground.X + (x * 25), playground.Y + (y * 25) - randomTime[x, y]/2), elapsedTime[x, y], x, y);
                     }
                     else
                     {
-                        tilesMovement[x, y] = tileTransistion(new Vector2(playground.X + (x * 25), playground.Y + (y * 25) - randomTime[x, y]/2), gameTime, new Vector2(playground.X + (x * 25), playground.Y + (y * 25) + randomTime[x, y]), x, y);
-                        tileOpacity[x, y] = tileTransistion(new Vector2(1f, 0f), gameTime, new Vector2(0f), x, y).X;
+                        tilesMovement[x, y] = TileTransistion(new Vector2(playground.X + (x * 25), playground.Y + (y * 25) - randomTime[x, y]/2), gameTime, new Vector2(playground.X + (x * 25), playground.Y + (y * 25) + randomTime[x, y]), elapsedTime[x,y], x, y);
+                        tileOpacity[x, y] = TileTransistion(new Vector2(1f, 0f), gameTime, new Vector2(0f), elapsedTime[x,y], x, y).X;
                     }
                 }
             }
@@ -196,11 +215,11 @@ namespace pLdevTest
             }
 
             //_spriteBatch.Draw(pgTexture, playground, pgColor);
-
             if (MissionHandler.Mission == 8)
             {
                 finishFlag.Draw(_spriteBatch, gameTime, _graphics);
             }
+
             if(MissionHandler.Mission == 9 && gems != null)
             {
                 foreach(Gem gem in gems)
@@ -225,7 +244,7 @@ namespace pLdevTest
             // Create light mask
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
             Vector2 lightSize = new Vector2(1000, 1000);
-            spriteBatch.Draw(lightMask, new Rectangle(playground.X + (player.playerX * 25) - ((int)lightSize.X/2) + 12, playground.Y + (player.playerY * 25) - ((int)lightSize.Y / 2) + 6, (int)lightSize.X, (int)lightSize.Y),  Color.White);
+            spriteBatch.Draw(lightMask, new Rectangle(playground.X + (player.posX * 25) - ((int)lightSize.X/2) + 12, playground.Y + (player.posY * 25) - ((int)lightSize.Y / 2) + 6, (int)lightSize.X, (int)lightSize.Y),  Color.White);
             spriteBatch.End();
 
             // Draw to render texture
@@ -283,7 +302,8 @@ namespace pLdevTest
             player.UpdateProportions(_graphics, playground.X);
             finishFlag.UpdateProportions(_graphics, playground.X);
 
-            if (MissionHandler.Mission == 9)
+
+            if (MissionHandler.Mission == 9 && gems != null)
             {
                 foreach (Gem gem in gems)
                 {
@@ -296,11 +316,11 @@ namespace pLdevTest
             mainTarget = new RenderTarget2D(
                 _graphics, _graphics.Viewport.Width, _graphics.Viewport.Height);
         }
-        private Vector2 tileTransistion(Vector2 newPos, GameTime gameTime, Vector2 startingSize, int x, int y)
+        public Vector2 TileTransistion(Vector2 newPos, GameTime gameTime, Vector2 startingSize, double elapsedTime, int x, int y)
         {
             Vector2 updatedPos;
             float desiredDuration = ((x + y) * 0.1f);
-            float percentageComplete = (float)elapsedTime[x,y] / desiredDuration;
+            float percentageComplete = (float)elapsedTime / desiredDuration;
             updatedPos = Vector2.Lerp(startingSize, newPos, MathHelper.SmoothStep(0, 1, percentageComplete));
 
             return updatedPos;

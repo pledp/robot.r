@@ -35,8 +35,8 @@ namespace pLdevTest
                 unpressableButton = true;
 
                 // Reset playground
-                GameScene.playground.player.playerY = 0;
-                GameScene.playground.player.playerX = 0;
+                GameScene.playground.player.posY = 0;
+                GameScene.playground.player.posX = 0;
 
                 MissionHandler.AmountOfCoins = 0;
                 MissionHandler.Coins = 0;

@@ -28,7 +28,7 @@ namespace pLdevTest
                             switch (variableName)
                             {
                                 case "x":
-                                    GameScene.playground.player.playerX = Interpreter.builtInVariables["robot"]["x"];
+                                    GameScene.playground.player.posX = Interpreter.builtInVariables["robot"]["x"];
                                     if (MissionHandler.Mission == 1)
                                     {
                                         MissionHandler.MissionComplete = true;
@@ -36,7 +36,7 @@ namespace pLdevTest
                                     break;
 
                                 case "y":
-                                    GameScene.playground.player.playerY = Interpreter.builtInVariables["robot"]["y"];
+                                    GameScene.playground.player.posY = Interpreter.builtInVariables["robot"]["y"];
                                     if (MissionHandler.Mission == 0)
                                     {
                                         MissionHandler.MissionComplete = true;

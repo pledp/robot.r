@@ -17,7 +17,7 @@ namespace pLdevTest
         public static int Coins;
         public static int AmountOfCoins;
 
-        private static int mission = 0;
+        private static int mission = 7;
         public static int CurrWorldMission = 1;
         public static int World = 0;
         public static int[] WorldMissionCount =
@@ -246,7 +246,7 @@ namespace pLdevTest
             switch(mission)
             {
                 case 8:
-                    if(GameScene.playground.player.playerX == GameScene.playground.finishFlag.flagX && GameScene.playground.player.playerY == GameScene.playground.finishFlag.flagY)
+                    if(GameScene.playground.player.posX == GameScene.playground.finishFlag.posX && GameScene.playground.player.posY == GameScene.playground.finishFlag.posY)
                     {
                         missionComplete = true;
                         WorldTransistion();
