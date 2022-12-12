@@ -83,8 +83,9 @@ namespace pLdevTest
             _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 625, 490, 600, _graphics.GraphicsDevice.Viewport.Height - 490), clipboardColor);
 
             // Paper shadow
-            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 590 + 15, 525 + 15, 530, _graphics.GraphicsDevice.Viewport.Height - 525), new Color(123, 52, 11));
-            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 590, 525, 530, _graphics.GraphicsDevice.Viewport.Height - 525), Color.White);
+            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 600 + 15, 525 + 15, 550, _graphics.GraphicsDevice.Viewport.Height - 525), new Color(123, 52, 11));
+
+            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 600, 525, 550, _graphics.GraphicsDevice.Viewport.Height - 525), Color.White);
             _spriteBatch.Draw(clipboard, new Vector2((_graphics.GraphicsDevice.Viewport.Width - 650) + (650 / 2) - (clipboard.Width / 2), 450), Color.White);
 
             for (int x = 0; x < missionCounterText.Length; x++)
@@ -118,11 +119,16 @@ namespace pLdevTest
                 {
                     _spriteBatch.DrawString(GlobalThings.smallerFont, "o", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 583, 556 + overallOffset), Color.Red);
                 }
-                _spriteBatch.DrawString(MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x] == Color.Black ? GlobalThings.smallerFont : GlobalThings.smallerFont, MissionHandler.formattedStrings[x], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x]);
+                _spriteBatch.DrawString(MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x] == Color.Black ? GlobalThings.smallerFont : GlobalThings.smallerFont, MissionHandler.formattedStrings[x], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 550, 560 + overallOffset), MissionHandler.MissionsInfoColor[MissionHandler.Mission, 0][x]);
 
                 if (x == 0)
                 {
                     overallOffset += 60;
+                    if (MissionHandler.Mission == 9)
+                    {
+                        _spriteBatch.DrawString(GlobalThings.font, MissionHandler.Coins + "/" + MissionHandler.AmountOfCoins, new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Black);
+                        overallOffset += 50;
+                    }
                 }
                 else
                 {

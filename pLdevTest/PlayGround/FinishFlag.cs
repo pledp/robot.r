@@ -29,14 +29,6 @@ namespace pLdevTest
             flagX = initialGridPosX;
             flagY = initialGridPosY;
         }
-        public void Update(GameTime gameTime)
-        {
-
-        }
-        public void LoadContent(ContentManager Content)
-        {
-
-        }
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
             spriteBatch.Draw(flagTexture, new Rectangle((int)flagPos.X + (flagX * 25), (int)flagPos.Y + (flagY * 25), flagWidth, flagHeight), Color.Green);

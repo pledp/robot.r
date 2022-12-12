@@ -67,7 +67,7 @@ namespace pLdevTest
         protected override void LoadContent()
         {
             gw = Window;
-            GlobalThings.LoadContent(Content);
+            GlobalThings.LoadContent(Content, _graphics.GraphicsDevice);
             _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
             mainMenu = new MainMenu(_graphics.GraphicsDevice);
             transistion = new CircleScreenTransistion(_graphics.GraphicsDevice);

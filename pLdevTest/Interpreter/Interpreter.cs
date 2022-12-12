@@ -159,8 +159,6 @@ namespace pLdevTest
         {
             lastIndex = stopIndex;
             variables = new Dictionary<string, double>();
-            GameScene.playground.player.playerY = 0;
-            GameScene.playground.player.playerX = 0;
 
             // Create a dictionary of dictionaries for built in static classes. Key of the dictionary holds dictionaries of the built in variables for the classes.
             builtInVariables = new Dictionary<string, Dictionary<string, int>>();
@@ -174,12 +172,11 @@ namespace pLdevTest
             lines = typedLines;
 
             RunLines(lines, lineIndex, stopIndex, gameTime, true);
-
         }
  
         private static async Task RunLines(List<string> lines, int lineIndex, int stopIndex, GameTime gameTime, bool qualify)
         {
-            // Interprate every line, split segment by spaces.
+            // Interprate every line, split segment by spaces
             string[] segments = lines[lineIndex].Split(initialSplit, StringSplitOptions.RemoveEmptyEntries);
             codeInput.readingLine = lineIndex + 1;
             if (segments.Length > 1)
@@ -211,13 +208,25 @@ namespace pLdevTest
                     HandleBuiltInMethod(lineIndex, stopIndex, segments[0], gameTime);
                 }
             }
+
+            if (MissionHandler.Mission == 9)
+            {
+                foreach (Gem gem in GameScene.playground.gems)
+                {
+                    if (!gem.PickedUp)
+                    {
+                        gem.PickUp();
+                    }
+                }
+            }
+
             if (lineIndex + 1 < stopIndex && lineIndex + 1 < lines.Count)
             {
                 codeInput.readingLine = lineIndex + 1;
                 await MakeDelay();
-                RunLines(lines, lineIndex + 1, stopIndex, gameTime, true);
-                return;
+                await RunLines(lines, lineIndex + 1, stopIndex, gameTime, true);
             }
+
             else if(qualify && lineIndex == lastIndex-1)
             {
                 Debug.WriteLine("end: " + lines[lineIndex]);

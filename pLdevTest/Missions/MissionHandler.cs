@@ -14,13 +14,16 @@ namespace pLdevTest
         public static string[] formattedStrings;
         public static int lineBreaks;
 
+        public static int Coins;
+        public static int AmountOfCoins;
+
         private static int mission = 0;
         public static int CurrWorldMission = 1;
         public static int World = 0;
         public static int[] WorldMissionCount =
         {
             9,
-            1
+            2
         };
 
         public static int Mission
@@ -41,7 +44,8 @@ namespace pLdevTest
             "If only... (Ft. Loops)",
             "Delay",
             "Goal",
-            "world2plaCeholder"
+            "Pyramid Scheme",
+            "Placeholder"
         };
         public static string[] Missions
         {
@@ -132,7 +136,13 @@ namespace pLdevTest
             {
                 new[]
                 {
-                    "WORLD 2 PLACEHOLDER",
+                    "PASS: Collect all the gems.",
+                }
+            },
+            {
+                new[]
+                {
+                    "PLACEHGOLDER",
                 }
             }
         };
@@ -219,6 +229,12 @@ namespace pLdevTest
                 {
                     PlayGround.pgColor,
                 }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
+                }
             }
         };
 
@@ -236,6 +252,12 @@ namespace pLdevTest
                         WorldTransistion();
                     }
                     break;
+                case 9:
+                    if (AmountOfCoins == Coins)
+                    {
+                        missionComplete = true;
+                    }
+                    break;
             }
 
             if (MissionComplete)
@@ -250,6 +272,12 @@ namespace pLdevTest
                 missionComplete = false;
                 CurrWorldMission++;
                 FormatMissionText();
+                switch (mission)
+                {
+                    case 9:
+                        GameScene.playground.CreateGems(9);
+                        break;
+                }
             }
         }
         public static void FormatMissionText()

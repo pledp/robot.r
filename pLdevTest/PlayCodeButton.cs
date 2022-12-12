@@ -33,6 +33,18 @@ namespace pLdevTest
             if (GlobalThings.EnterArea(buttonPos, mouseState) && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed && !unpressableButton)
             {
                 unpressableButton = true;
+
+                // Reset playground
+                GameScene.playground.player.playerY = 0;
+                GameScene.playground.player.playerX = 0;
+
+                MissionHandler.AmountOfCoins = 0;
+                MissionHandler.Coins = 0;
+                if (MissionHandler.Mission == 9)
+                {
+                    GameScene.playground.CreateGems(9);
+                }
+
                 Interpreter.StartInterprete(codeInput.Typing, 0, codeInput.Typing.Count, gameTime);
                 inputText.UpdateEditorProportions(graphics);
             }

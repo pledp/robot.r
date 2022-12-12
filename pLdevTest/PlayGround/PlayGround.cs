@@ -17,6 +17,7 @@ namespace pLdevTest
         private int width;
         private Texture2D pgTexture;
         public static Color pgColor;
+        public Gem[] gems;
 
         Texture2D lightMask;
 
@@ -57,18 +58,31 @@ namespace pLdevTest
                 _graphics, pp.BackBufferWidth, pp.BackBufferHeight);
 
             player.LoadContent(Content);
-            finishFlag.LoadContent(Content);
         }
         public void Update(GameTime gameTime)
         {
             player.Update(gameTime);
-            finishFlag.Update(gameTime);
         }
 
         public void DrawBoard(SpriteBatch _spriteBatch, GameTime gameTime, GraphicsDeviceManager _graphics)
         {
             _spriteBatch.Draw(pgTexture, playground, pgColor);
-            finishFlag.Draw(_spriteBatch, gameTime, _graphics);
+            if(MissionHandler.Mission == 8)
+            {
+                finishFlag.Draw(_spriteBatch, gameTime, _graphics);
+            }
+            if(MissionHandler.Mission == 9 && gems != null)
+            {
+                foreach(Gem gem in gems)
+                {
+                    if (!gem.PickedUp)
+                    {
+                        gem.Draw(_spriteBatch, gameTime, _graphics);
+                    }
+                    
+                }
+            }
+
             player.Draw(_spriteBatch, gameTime, _graphics);
         }
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager _graphics)
@@ -105,12 +119,46 @@ namespace pLdevTest
             spriteBatch.End();
             spriteBatch.Begin();
         }
+        public void CreateGems(int level)
+        {
+            int gemIndex = 0;
+            switch (level)
+            {
+                case 9:
+                    gems = new Gem[20];
+                    for(int x = 0; x < 10; x++)
+                    {
+                        gems[x] = new Gem(playground.X, playground.Y, 1+x, 1+x);
+                        if(x == 9)
+                        {
+                            gems[x+1] = new Gem(playground.X, playground.Y, x+2, 1+x);
+                            gemIndex = x+2;
+                        }
+                    }
+                    int z = 0;
+                    for (int y = 9; y > 0; y--)
+                    {
+                        gems[gemIndex+z] = new Gem(playground.X, playground.Y, 12+z, y);
+                        z++;
+                    }
+
+                    break;
+            }
+        }
 
         public void UpdateProportions(GraphicsDevice _graphics)
         {
             playground.X = _graphics.Viewport.Width - width - 50;
             player.UpdateProportions(_graphics, playground.X);
             finishFlag.UpdateProportions(_graphics, playground.X);
+
+            if (MissionHandler.Mission == 9)
+            {
+                foreach (Gem gem in gems)
+                {
+                    gem.UpdateProportions(_graphics, playground.X);
+                }
+            }
 
             lightsTarget = new RenderTarget2D(
                 _graphics,_graphics.Viewport.Width, _graphics.Viewport.Height);
