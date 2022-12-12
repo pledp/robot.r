@@ -102,6 +102,7 @@ namespace pLdevTest
             {
                 playground.DrawBoard(_spriteBatch, gameTime, _graphics);
             }
+
             if (LevelCompleteTypewriter.play)
             {
                 levelCompleteTypewriter.Draw(_spriteBatch, gameTime, _graphics.GraphicsDevice);

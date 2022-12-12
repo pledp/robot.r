@@ -21,7 +21,7 @@ namespace pLdevTest
         Rectangle transistionPos;
 
         double elapsedTime;
-        double desiredDuration = 3;
+        double desiredDuration = 2.5f;
         Vector2 startingSize;
 
         Vector2 openingTransistion;

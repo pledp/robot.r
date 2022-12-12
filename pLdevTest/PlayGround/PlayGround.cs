@@ -13,10 +13,26 @@ namespace pLdevTest
 {
     public class PlayGround
     {
+        bool firstTime = true;
+        bool maxedOut = false;
+        private double tileTimer;
+        private int[] amountOfTiles;
+        private int currRow;
+        private int iterations;
+        private int rowCounterAni;
+        private bool t;
+
+        private Vector2[,] tilesMovement;
+        private int[,] randomTime;
+        private float[,] tileOpacity;
+        private bool[,] goDown;
+        private double[,] elapsedTime;
+
         private Rectangle playground;
         private int width;
         private Texture2D pgTexture;
         public static Color pgColor;
+        public static Color pgColor2;
         public Gem[] gems;
 
         Texture2D lightMask;
@@ -38,6 +54,7 @@ namespace pLdevTest
             
             pgTexture = new Texture2D(_graphics, 1, 1);
             pgColor = new Color(153, 225, 217);
+            pgColor2 = new Color(143, 215, 207);
             pgTexture.SetData(new[] { pgColor });
 
             // Create a player on the playground. Move in a 21x15 grid.
@@ -45,6 +62,28 @@ namespace pLdevTest
             finishFlag = new FinishFlag(_graphics, playground.X, playground.Y, 10,10);
             blackRectangle = new Texture2D(_graphics, 1, 1);
             blackRectangle.SetData(new[] { Color.Black });
+
+            CreateTiles();
+        }
+        public void CreateTiles()
+        {
+            tilesMovement = new Vector2[22, 16];
+            randomTime = new int[22, 16];
+            tileOpacity = new float[22, 16];
+            goDown = new bool[22, 16];
+            elapsedTime = new double[22, 16];
+
+            Random rnd = new Random();
+            for (int x = 0; x < 22; x++)
+            {
+                for (int y = 0; y < 16; y++)
+                {
+                    randomTime[x, y] = 30;
+                    tileOpacity[x, y] = 0f;
+                    goDown[x, y] = false;
+                    elapsedTime[x, y] = 0f;
+                }
+            }
         }
         public void LoadContent(ContentManager Content, GraphicsDevice _graphics)
         {
@@ -62,12 +101,103 @@ namespace pLdevTest
         public void Update(GameTime gameTime)
         {
             player.Update(gameTime);
+
+            /*if(!maxedOut)
+            {
+               tileTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                if (tileTimer > 0.1)
+                {
+                    tileTimer = 0;
+
+                    for (int x = 0; x < rowCounterAni+1; x++)
+                    {
+                        if (amountOfTiles[x] < 22)
+                        {
+                            amountOfTiles[x]++;
+                        }
+                    }
+
+                    iterations++;
+                    if(iterations % 2 == 0 && rowCounterAni < 15)
+                    {
+                        rowCounterAni++;
+                    }
+                }
+                if(rowCounterAni == 15 && amountOfTiles[rowCounterAni] == 22)
+                {
+                    maxedOut = true;
+                    Debug.WriteLine("test");
+                }
+            }*/
+
+            // Create tile transistion
+            for (int x = 0; x < 22; x++)
+            {
+                for (int y = 0; y < 16; y++)
+                {
+                    elapsedTime[x,y] += gameTime.ElapsedGameTime.TotalSeconds;
+                    if (tilesMovement[x,y].Y == playground.Y + (y * 25) - randomTime[x, y]/2 || goDown[x,y])
+                    {
+                        if (!goDown[x,y])
+                        {
+                            goDown[x,y] = true;
+                            elapsedTime[x, y] = 0;
+                        }
+                        tilesMovement[x, y] = tileTransistion(new Vector2(playground.X + (x * 25), playground.Y + (y * 25)), gameTime, new Vector2(playground.X + (x * 25), playground.Y + (y * 25) - randomTime[x, y]/2), x, y);
+                    }
+                    else
+                    {
+                        tilesMovement[x, y] = tileTransistion(new Vector2(playground.X + (x * 25), playground.Y + (y * 25) - randomTime[x, y]/2), gameTime, new Vector2(playground.X + (x * 25), playground.Y + (y * 25) + randomTime[x, y]), x, y);
+                        tileOpacity[x, y] = tileTransistion(new Vector2(1f, 0f), gameTime, new Vector2(0f), x, y).X;
+                    }
+                }
+            }
         }
 
         public void DrawBoard(SpriteBatch _spriteBatch, GameTime gameTime, GraphicsDeviceManager _graphics)
         {
-            _spriteBatch.Draw(pgTexture, playground, pgColor);
-            if(MissionHandler.Mission == 8)
+            /*for (int y = 0; y < amountOfTiles.Length; y++)
+            {
+                for(int x = 0; x < amountOfTiles[y]; x++)
+                {
+                    _spriteBatch.Draw(pgTexture, new Rectangle(playground.X + (x * 25), playground.Y + (y * 25), 25, 25), pgColor);
+                }
+            }*/
+            Color printColor;
+            for (int x = 0; x < 22; x++)
+{
+                for(int y = 0; y < 16; y++)
+                {
+                    if(y % 2 == 0)
+                    {
+                        if(x % 2 == 0)
+                        {
+                            printColor = pgColor;
+                        }
+                        else
+                        {
+                            printColor = pgColor2;
+                        }
+                    }
+                    else
+                    {
+                        if (x % 2 == 0)
+                        {
+                            printColor = pgColor2;
+                        }
+                        else
+                        {
+                            printColor = pgColor;
+                        }
+                    }
+
+                    _spriteBatch.Draw(pgTexture, new Rectangle((int)tilesMovement[x,y].X, (int)tilesMovement[x,y].Y, 25, 25), printColor * tileOpacity[x,y]);
+                }
+            }
+
+            //_spriteBatch.Draw(pgTexture, playground, pgColor);
+
+            if (MissionHandler.Mission == 8)
             {
                 finishFlag.Draw(_spriteBatch, gameTime, _graphics);
             }
@@ -85,6 +215,7 @@ namespace pLdevTest
 
             player.Draw(_spriteBatch, gameTime, _graphics);
         }
+
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager _graphics)
         {
             spriteBatch.End();
@@ -164,6 +295,15 @@ namespace pLdevTest
                 _graphics,_graphics.Viewport.Width, _graphics.Viewport.Height);
             mainTarget = new RenderTarget2D(
                 _graphics, _graphics.Viewport.Width, _graphics.Viewport.Height);
+        }
+        private Vector2 tileTransistion(Vector2 newPos, GameTime gameTime, Vector2 startingSize, int x, int y)
+        {
+            Vector2 updatedPos;
+            float desiredDuration = ((x + y) * 0.1f);
+            float percentageComplete = (float)elapsedTime[x,y] / desiredDuration;
+            updatedPos = Vector2.Lerp(startingSize, newPos, MathHelper.SmoothStep(0, 1, percentageComplete));
+
+            return updatedPos;
         }
     }
 }
