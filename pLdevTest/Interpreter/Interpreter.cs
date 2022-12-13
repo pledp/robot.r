@@ -168,6 +168,11 @@ namespace pLdevTest
             robot = new Dictionary<string, int>();
             robot.Add("x", 0);
             robot.Add("y", 0);
+            var enemy = new Dictionary<string, int>();
+            enemy.Add("x", 0);
+            enemy.Add("y", 0);
+
+            builtInVariables.Add("enemy", enemy);
             builtInVariables.Add("robot", robot);
 
             consoleText = new List<string>();

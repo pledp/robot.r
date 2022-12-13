@@ -21,7 +21,7 @@ namespace pLdevTest
         public static int Coins;
         public static int AmountOfCoins;
 
-        private static int mission = 10;
+        private static int mission = 11;
         public static int CurrWorldMission = 1;
         public static int World = 0;
         public static int[] WorldMissionCount =

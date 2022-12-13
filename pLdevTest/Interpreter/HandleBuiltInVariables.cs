@@ -15,9 +15,24 @@ namespace pLdevTest
 
             // Check if built in variable exists, if it does, set its value to the expression
             string builtInVariableKey = key.Split(".")[0];
+            double index = 0;
+            string newstring = "enemy[5].x";
+            if(key.Contains('['))
+            {
+                string splitBySquareBrackets = key.Split(new string[] { "[", "]" }, StringSplitOptions.None)[1];
+                builtInVariableKey = builtInVariableKey.Split("[")[0];
+
+                Debug.WriteLine(splitBySquareBrackets);
+                index = HandleExpression.GetResults(splitBySquareBrackets, Interpreter.variables);
+                Debug.WriteLine((int)index);
+            }
+
+            Debug.WriteLine(builtInVariableKey);
+
             if (Interpreter.builtInVariables.ContainsKey(builtInVariableKey))
             {
                 string variableName = key.Split(".")[1];
+
                 switch (builtInVariableKey)
                 {
                     case "robot":
@@ -45,6 +60,30 @@ namespace pLdevTest
                             }    
                         }
                         break;
+
+                    case "enemy":
+                        if (Interpreter.builtInVariables["enemy"].ContainsKey(variableName))
+                        {
+                            Interpreter.builtInVariables["enemy"][variableName] = (int)value;
+                            switch (variableName)
+                            {
+                                case "x":
+                                    if (GameScene.playground.enemies[(int)index] != null)
+                                    {
+                                        GameScene.playground.enemies[(int)index].posX = Interpreter.builtInVariables["enemy"]["x"];
+                                    }
+                                    break;
+
+                                case "y":
+                                    if (GameScene.playground.enemies[(int)index] != null)
+                                    {
+                                        GameScene.playground.enemies[(int)index].posY = Interpreter.builtInVariables["enemy"]["y"];
+                                    }
+                                    break;
+                            }
+                        }
+                        break;
+
                 }
                 return true;
             } else
