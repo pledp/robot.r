@@ -22,10 +22,9 @@ namespace pLdevTest
         {
             font = Content.Load<SpriteFont>("font");
             smallerFont = Content.Load<SpriteFont>("smallerFont");
-            orangeColor = new Color(255, 165, 0);
+            gemTexture = Content.Load<Texture2D>("gem");
 
-            gemTexture = new Texture2D(_graphics, 1, 1);
-            gemTexture.SetData(new[] { Color.Yellow });
+            orangeColor = new Color(255, 165, 0);
 
             enemyTexture = new Texture2D(_graphics, 1, 1);
             enemyTexture.SetData(new[] { Color.Green });

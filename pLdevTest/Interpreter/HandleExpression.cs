@@ -10,6 +10,8 @@ using System.Text.RegularExpressions;
 using System.Collections;
 using info.lundin.math;
 using Microsoft.Xna.Framework.Input;
+using System.Reflection;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace pLdevTest
 {
@@ -125,12 +127,26 @@ namespace pLdevTest
             else if (expression.Contains("."))
             {
                 string variableName = expression.Split(".")[0];
+                variableName = variableName.Split(new string[] { "[", "]" }, StringSplitOptions.None)[0];
+                Debug.WriteLine("OBJECT: " + variableName);
+
                 string variableName2 = expression.Split(".")[1];
+                Debug.WriteLine(variableName2);
                 if (Interpreter.builtInVariables.ContainsKey(variableName))
                 {
                     if (Interpreter.builtInVariables[variableName].ContainsKey(variableName2))
                     {
-                        string value = Interpreter.builtInVariables[variableName][variableName2].ToString();
+                        double index = 0;
+                        if (expression.Contains('['))
+                        {
+                            string splitBySquareBrackets = expression.Split(new string[] { "[", "]" }, StringSplitOptions.None)[1];
+                            variableName = variableName.Split("[")[0];
+
+                            Debug.WriteLine(splitBySquareBrackets);
+                            index = GetResults(splitBySquareBrackets, Interpreter.variables);
+                            Debug.WriteLine(index);
+                        }
+                        string value = Interpreter.builtInVariables[variableName][variableName2][(int)index].ToString();
                         return value;
                     }
                 }

@@ -16,15 +16,12 @@ namespace pLdevTest
             // Check if built in variable exists, if it does, set its value to the expression
             string builtInVariableKey = key.Split(".")[0];
             double index = 0;
-            string newstring = "enemy[5].x";
             if(key.Contains('['))
             {
                 string splitBySquareBrackets = key.Split(new string[] { "[", "]" }, StringSplitOptions.None)[1];
                 builtInVariableKey = builtInVariableKey.Split("[")[0];
 
-                Debug.WriteLine(splitBySquareBrackets);
                 index = HandleExpression.GetResults(splitBySquareBrackets, Interpreter.variables);
-                Debug.WriteLine((int)index);
             }
 
             Debug.WriteLine(builtInVariableKey);
@@ -38,12 +35,12 @@ namespace pLdevTest
                     case "robot":
                         if (Interpreter.builtInVariables["robot"].ContainsKey(variableName))
                         {
-                            Interpreter.builtInVariables["robot"][variableName] = (int)value;
+                            Interpreter.builtInVariables["robot"][variableName][0] = (int)value;
 
                             switch (variableName)
                             {
                                 case "x":
-                                    GameScene.playground.player.posX = Interpreter.builtInVariables["robot"]["x"];
+                                    GameScene.playground.player.posX = Interpreter.builtInVariables["robot"]["x"][0];
                                     if (MissionHandler.Mission == 1)
                                     {
                                         MissionHandler.MissionComplete = true;
@@ -51,7 +48,7 @@ namespace pLdevTest
                                     break;
 
                                 case "y":
-                                    GameScene.playground.player.posY = Interpreter.builtInVariables["robot"]["y"];
+                                    GameScene.playground.player.posY = Interpreter.builtInVariables["robot"]["y"][0];
                                     if (MissionHandler.Mission == 0)
                                     {
                                         MissionHandler.MissionComplete = true;
@@ -64,20 +61,20 @@ namespace pLdevTest
                     case "enemy":
                         if (Interpreter.builtInVariables["enemy"].ContainsKey(variableName))
                         {
-                            Interpreter.builtInVariables["enemy"][variableName] = (int)value;
+                            Interpreter.builtInVariables["enemy"][variableName][(int)index] = (int)value;
                             switch (variableName)
                             {
                                 case "x":
                                     if (GameScene.playground.enemies[(int)index] != null)
                                     {
-                                        GameScene.playground.enemies[(int)index].posX = Interpreter.builtInVariables["enemy"]["x"];
+                                        GameScene.playground.enemies[(int)index].posX = Interpreter.builtInVariables["enemy"]["x"][(int)index];
                                     }
                                     break;
 
                                 case "y":
                                     if (GameScene.playground.enemies[(int)index] != null)
                                     {
-                                        GameScene.playground.enemies[(int)index].posY = Interpreter.builtInVariables["enemy"]["y"];
+                                        GameScene.playground.enemies[(int)index].posY = Interpreter.builtInVariables["enemy"]["y"][(int)index];
                                     }
                                     break;
                             }

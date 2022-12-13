@@ -23,6 +23,8 @@ namespace pLdevTest
         public int objectWidth = 25;
         public int objectHeight = 25;
 
+        public int index;
+
         public void HoverTransistion(GameTime gameTime)
         {
             elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;

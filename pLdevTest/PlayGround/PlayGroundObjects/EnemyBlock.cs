@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using info.lundin.math;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,10 +13,11 @@ namespace pLdevTest
     public class EnemyBlock : PlaygroundObject
     {
         double moveElapsedTime;
-        public EnemyBlock(int x, int y, int initialGridPosX, int initialGridPosY)
+        public EnemyBlock(int x, int y, int initialGridPosX, int initialGridPosY, int index)
         {
             posX = initialGridPosX;
             posY = initialGridPosY;
+            this.index = index;
 
             initialPos = new Vector2(x, y);
         }
@@ -57,6 +59,12 @@ namespace pLdevTest
 
         public void CheckForCollision()
         {
+            if (Interpreter.builtInVariables["enemy"]["x"].Length > (int)index)
+            {
+                Interpreter.builtInVariables["enemy"]["x"][(int)index] = posX;
+                Interpreter.builtInVariables["enemy"]["y"][(int)index] = posY;
+            }
+
             if (GameScene.playground.player.posX == posX && GameScene.playground.player.posY == posY)
             {
                 MissionHandler.MissionFailed = true;

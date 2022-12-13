@@ -61,7 +61,7 @@ namespace pLdevTest
 
             // Create a player on the playground. Move in a 21x15 grid.
             player = new PlaygroundPlayer(_graphics, playground.X, playground.Y);
-            finishFlag = new FinishFlag(_graphics, playground.X, playground.Y, 10,10);
+            finishFlag = new FinishFlag(_graphics, playground.X, playground.Y, 21,15);
             blackRectangle = new Texture2D(_graphics, 1, 1);
             blackRectangle.SetData(new[] { Color.Black });
 
@@ -295,17 +295,17 @@ namespace pLdevTest
                     gems = new Gem[20];
                     for(int x = 0; x < 10; x++)
                     {
-                        gems[x] = new Gem(playground.X, playground.Y, 1+x, 1+x);
+                        gems[x] = new Gem(playground.X, playground.Y, 1+x, 1+x, x);
                         if(x == 9)
                         {
-                            gems[x+1] = new Gem(playground.X, playground.Y, x+2, 1+x);
+                            gems[x+1] = new Gem(playground.X, playground.Y, x+2, 1+x, x+1);
                             gemIndex = x+2;
                         }
                     }
                     int z = 0;
                     for (int y = 9; y > 0; y--)
                     {
-                        gems[gemIndex+z] = new Gem(playground.X, playground.Y, 12+z, y);
+                        gems[gemIndex+z] = new Gem(playground.X, playground.Y, 12+z, y, gemIndex+z);
                         z++;
                     }
 
@@ -315,7 +315,7 @@ namespace pLdevTest
                     enemies = new EnemyBlock[16];
                     for(int y = 0; y < 16; y++)
                     {
-                        enemies[y] = new EnemyBlock(playground.X, playground.Y, 21-y, y);
+                        enemies[y] = new EnemyBlock(playground.X, playground.Y, 21-y, y, y);
                     }
                     break;
 
@@ -323,7 +323,7 @@ namespace pLdevTest
                     enemies = new EnemyBlock[22];
                     for (int y = 0; y < 22; y++)
                     {
-                        enemies[y] = new EnemyBlock(playground.X, playground.Y, y, 15);
+                        enemies[y] = new EnemyBlock(playground.X, playground.Y, y, 15, y);
                     }
                     break;
             }

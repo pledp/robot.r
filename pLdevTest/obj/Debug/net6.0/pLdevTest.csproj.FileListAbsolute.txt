@@ -104,3 +104,4 @@ C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\StbImageSharp.dll
 C:\Users\lasse\source\repos\pLdev\pLdevTest\bin\Debug\net6.0\StbTrueTypeSharp.dll
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Content\robot.xnb
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Content\clipboard.xnb
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Content\gem.xnb

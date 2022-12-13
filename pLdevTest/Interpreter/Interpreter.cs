@@ -131,7 +131,7 @@ namespace pLdevTest
             "sleep"
         };
 
-        public static Dictionary<string, Dictionary<string, int>> builtInVariables;
+        public static Dictionary<string, Dictionary<string, int[]>> builtInVariables;
 
         public static readonly string[] operators =
         {
@@ -147,7 +147,7 @@ namespace pLdevTest
         };
 
         public static Dictionary<string, double> variables;
-        public static Dictionary<string, int> robot;
+        public static Dictionary<string, int[]> robot;
         public static List<string> consoleText;
         public static int CurrentDelay;
         public static int defaultDelay;
@@ -162,17 +162,32 @@ namespace pLdevTest
             lastIndex = stopIndex;
             variables = new Dictionary<string, double>();
 
-            // Create a dictionary of dictionaries for built in static classes. Key of the dictionary holds dictionaries of the built in variables for the classes.
-            builtInVariables = new Dictionary<string, Dictionary<string, int>>();
+            // Create a dictionary of dictionaries for built in objects. Key of the dictionary holds dictionaries of the built in variables for the objects.
+            builtInVariables = new Dictionary<string, Dictionary<string, int[]>>();
 
-            robot = new Dictionary<string, int>();
-            robot.Add("x", 0);
-            robot.Add("y", 0);
-            var enemy = new Dictionary<string, int>();
-            enemy.Add("x", 0);
-            enemy.Add("y", 0);
+            robot = new Dictionary<string, int[]>();
 
-            builtInVariables.Add("enemy", enemy);
+            robot.Add("x", new int[] {0});
+            robot.Add("y", new int[] {0});
+
+            if(GameScene.playground.enemies != null)
+            {
+                var enemy = new Dictionary<string, int[]>();
+                int[] xs = new int[GameScene.playground.enemies.Length];
+                int[] ys = new int[GameScene.playground.enemies.Length];
+
+                for (int x = 0; x < GameScene.playground.enemies.Length; x++)
+                {
+                    xs[x] = GameScene.playground.enemies[x].posX;
+                    ys[x] = GameScene.playground.enemies[x].posY;
+                }
+
+                enemy.Add("x", xs);
+                enemy.Add("y", ys);
+
+                builtInVariables.Add("enemy", enemy);
+            }
+
             builtInVariables.Add("robot", robot);
 
             consoleText = new List<string>();
@@ -448,7 +463,7 @@ namespace pLdevTest
             }
             catch(Exception ex)
             {
-                Debug.WriteLine("5555");
+                Debug.WriteLine("Emded");
             }
             
             CurrentDelay = 0;

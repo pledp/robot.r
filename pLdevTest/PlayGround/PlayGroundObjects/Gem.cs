@@ -15,11 +15,12 @@ namespace pLdevTest
     {
         public bool PickedUp = false;
 
-        public Gem(int posX, int posY, int initialGridPosX, int initialGridPosY)
+        public Gem(int posX, int posY, int initialGridPosX, int initialGridPosY, int index)
         {
             initialPos = new Vector2(posX, posY);
             this.posX = initialGridPosX;
             this.posY = initialGridPosY;
+            this.index = index;
 
             MissionHandler.AmountOfCoins++;
         }

@@ -15,7 +15,11 @@ namespace pLdevTest
     public class PlayCodeButton
     {
         private Rectangle buttonPos;
+        private Rectangle cancelPos;
+
         private Texture2D playButtonTexture;
+        private Texture2D cancelButtonTexture;
+
         public static List<CancellationTokenSource> CancelToken;
         public static List<CancellationToken> cancelToken;
         private int index = 0;
@@ -29,7 +33,11 @@ namespace pLdevTest
             playButtonTexture = new Texture2D(graphicsDevice, 1, 1);
             playButtonTexture.SetData(new[] { Color.Green });
 
+            cancelButtonTexture = new Texture2D(graphicsDevice, 1, 1);
+            cancelButtonTexture.SetData(new[] { Color.Red });
+
             buttonPos = new Rectangle(buttonX, buttonY, 30, 30);
+            cancelPos = new Rectangle(buttonX, buttonY+20 * 2, 30, 30);
 
             CancelToken = new List<CancellationTokenSource>();
             cancelToken = new List<CancellationToken>();
@@ -61,11 +69,26 @@ namespace pLdevTest
                 index++;
                 inputText.UpdateEditorProportions(graphics);
             }
+            if (GlobalThings.EnterArea(cancelPos, mouseState) && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed && !unpressableButton)
+            {
+                if (!over || MissionHandler.MissionPlaying)
+                {
+                    CancelToken[index - 1].Cancel();
+                    over = true;
+                    GameScene.playground.player.posY = 0;
+                    GameScene.playground.player.posX = 0;
+                    MissionHandler.ResetMission();
+                }
+
+            }
+
+
             lastMouseState = Mouse.GetState();
         }
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
             spriteBatch.Draw(playButtonTexture, buttonPos, Color.White);
+            spriteBatch.Draw(cancelButtonTexture, cancelPos, Color.White);
         }
     }
 }
