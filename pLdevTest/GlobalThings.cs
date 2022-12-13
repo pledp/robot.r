@@ -17,13 +17,18 @@ namespace pLdevTest
         public static SpriteFont smallerFont;
         public static SpriteFont font;
         public static Texture2D gemTexture;
+        public static Texture2D enemyTexture;
         public static void LoadContent(ContentManager Content, GraphicsDevice _graphics)
         {
             font = Content.Load<SpriteFont>("font");
             smallerFont = Content.Load<SpriteFont>("smallerFont");
             orangeColor = new Color(255, 165, 0);
+
             gemTexture = new Texture2D(_graphics, 1, 1);
             gemTexture.SetData(new[] { Color.Yellow });
+
+            enemyTexture = new Texture2D(_graphics, 1, 1);
+            enemyTexture.SetData(new[] { Color.Green });
         }
         public static bool EnterArea(Rectangle area, MouseState mouseState)
         {

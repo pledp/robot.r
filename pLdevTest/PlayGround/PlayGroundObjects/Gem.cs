@@ -31,10 +31,7 @@ namespace pLdevTest
         {
             spriteBatch.Draw(GlobalThings.gemTexture, new Rectangle((int)objectPos.X + (posX * 25), (int)objectPos.Y + (posY * 25), objectWidth, objectHeight), Color.Yellow * opacity);
         }
-        public void UpdateProportions(GraphicsDevice _graphics, int newX)
-        {
-            initialPos.X = newX;
-        }
+
         public void PickUp()
         {
             if (GameScene.playground.player.posX == posX && GameScene.playground.player.posY == posY)

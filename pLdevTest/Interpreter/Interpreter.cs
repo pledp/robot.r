@@ -155,7 +155,9 @@ namespace pLdevTest
 
         static List<Task> tasks;
 
-        public static void StartInterprete(List<string> typedLines, int lineIndex, int stopIndex, GameTime gameTime)
+        static int index;
+
+        public static void StartInterprete(List<string> typedLines, int lineIndex, int stopIndex, GameTime gameTime, int newIndex)
         {
             lastIndex = stopIndex;
             variables = new Dictionary<string, double>();
@@ -170,6 +172,7 @@ namespace pLdevTest
 
             consoleText = new List<string>();
             lines = typedLines;
+            index = newIndex;
 
             RunLines(lines, lineIndex, stopIndex, gameTime, true);
         }
@@ -219,6 +222,13 @@ namespace pLdevTest
                     }
                 }
             }
+            else if (MissionHandler.Mission == 10 || MissionHandler.Mission == 11)
+            {
+                foreach (EnemyBlock enemy in GameScene.playground.enemies)
+                {
+                    enemy.CheckForCollision();
+                }
+            }
 
             if (lineIndex + 1 < stopIndex && lineIndex + 1 < lines.Count)
             {
@@ -232,7 +242,13 @@ namespace pLdevTest
                 Debug.WriteLine("end: " + lines[lineIndex]);
                 codeInput.readingLine = lineIndex + 1;
                 PlayCodeButton.unpressableButton = false;
-                MissionHandler.CheckForMission();
+
+                if(MissionHandler.Mission != 10 && MissionHandler.Mission != 11)
+                {
+                    MissionHandler.CheckForMission();
+                }
+
+                PlayCodeButton.over = true;
                 return;
             }
         }
@@ -420,9 +436,17 @@ namespace pLdevTest
         }
         private static async Task MakeDelay()
         {
-            await Task.Delay(CurrentDelay);
+            try
+            {
+
+                await Task.Delay(CurrentDelay, PlayCodeButton.cancelToken[index]);
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine("5555");
+            }
+            
             CurrentDelay = 0;
-            return;
         }
     }
 }

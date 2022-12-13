@@ -31,15 +31,10 @@ namespace pLdevTest
         public void Update(GameTime gameTime)
         {
             HoverTransistion(gameTime);
-            Debug.WriteLine("test");
         }
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
             spriteBatch.Draw(flagTexture, new Rectangle((int)objectPos.X + (posX * 25), (int)objectPos.Y + (posY * 25), objectWidth, objectHeight), Color.Green * opacity);
-        }
-        public void UpdateProportions(GraphicsDevice _graphics, int newX)
-        {
-            initialPos.X = newX;
         }
     }
 }

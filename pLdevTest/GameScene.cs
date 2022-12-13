@@ -37,7 +37,7 @@ namespace pLdevTest
             playground.UpdateProportions(_graphics.GraphicsDevice);
             missionInfo.UpdateProportions(_graphics.GraphicsDevice);
 
-            Debug.WriteLine("test");
+            Debug.WriteLine("propupdate");
         }
         public void ProcessTextInput(object sender, TextInputEventArgs e)
         {

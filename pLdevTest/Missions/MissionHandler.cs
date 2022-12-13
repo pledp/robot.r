@@ -11,19 +11,23 @@ namespace pLdevTest
 {
     public static class MissionHandler
     {
+        public static bool MissionFailed = false;
+        public static bool MissionPlaying;
+        public static double Timer;
+
         public static string[] formattedStrings;
         public static int lineBreaks;
 
         public static int Coins;
         public static int AmountOfCoins;
 
-        private static int mission = 7;
+        private static int mission = 10;
         public static int CurrWorldMission = 1;
         public static int World = 0;
         public static int[] WorldMissionCount =
         {
             9,
-            2
+            3
         };
 
         public static int Mission
@@ -45,7 +49,9 @@ namespace pLdevTest
             "Delay",
             "Goal",
             "Pyramid Scheme",
-            "Placeholder"
+            "Survival <",
+            "Survival ^",
+            "PLACEHOLDER"
         };
         public static string[] Missions
         {
@@ -142,7 +148,19 @@ namespace pLdevTest
             {
                 new[]
                 {
-                    "PLACEHGOLDER",
+                    "PASS: Survive.",
+                }
+            },
+            {
+                new[]
+                {
+                    "PASS: Survive",
+                }
+            },
+            {
+                new[]
+                {
+                    "PASS: Survive",
                 }
             }
         };
@@ -235,6 +253,18 @@ namespace pLdevTest
                 {
                     PlayGround.pgColor,
                 }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
+                }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
+                }
             }
         };
 
@@ -258,7 +288,21 @@ namespace pLdevTest
                         missionComplete = true;
                     }
                     break;
+
+                case 10:
+                    if(!MissionFailed)
+                    {
+                        missionComplete = true;
+                    }
+                    break;
+                case 11:
+                    if (!MissionFailed)
+                    {
+                        missionComplete = true;
+                    }
+                    break;
             }
+
 
             if (MissionComplete)
             {
@@ -268,18 +312,14 @@ namespace pLdevTest
             if(missionComplete)
             {
                 mission++;
-                MissionComplete = false;
-                missionComplete = false;
+
                 CurrWorldMission++;
+
                 FormatMissionText();
                 GameScene.playground.CreateTiles();
-                switch (mission)
-                {
-                    case 9:
-                        GameScene.playground.CreateGems(9);
-                        break;
-                }
             }
+
+            ResetMission();
         }
         public static void FormatMissionText()
         {
@@ -324,6 +364,36 @@ namespace pLdevTest
             CurrWorldMission = 1;
             CircleScreenTransistion.playTransistion = true;
 
+        }
+
+        public static void ResetMission()
+        {
+            MissionPlaying = false;
+            MissionComplete = false;
+            MissionFailed = false;
+
+            AmountOfCoins = 0;
+            Coins = 0;
+
+            GameScene.playground.gems = null;
+            GameScene.playground.enemies = null;
+
+            switch (Mission)
+            {
+                case 9:
+                    GameScene.playground.CreateLevel(9);
+                    break;
+
+                case 10:
+                    Timer = 15;
+                    GameScene.playground.CreateLevel(10);
+                    break;
+
+                case 11:
+                    Timer = 15;
+                    GameScene.playground.CreateLevel(11);
+                    break;
+            }
         }
     }
 }

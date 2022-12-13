@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,11 @@ namespace pLdevTest
             elapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
             objectPos = GameScene.playground.TileTransistion(new Vector2(initialPos.X, initialPos.Y), gameTime, new Vector2(initialPos.X, initialPos.Y - 20), elapsedTime, posX*2, posY*2);
             opacity = GameScene.playground.TileTransistion(new Vector2(1, 0), gameTime, new Vector2(0, 0), elapsedTime, posX, posY).X;
+        }
+
+        public void UpdateProportions(GraphicsDevice _graphics, int newX)
+        {
+            initialPos.X = newX;
         }
     }
 }

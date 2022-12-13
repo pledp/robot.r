@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,16 +16,23 @@ namespace pLdevTest
     {
         private Rectangle buttonPos;
         private Texture2D playButtonTexture;
+        public static List<CancellationTokenSource> CancelToken;
+        public static List<CancellationToken> cancelToken;
+        private int index = 0;
 
         private MouseState mouseState;
         private MouseState lastMouseState;
         public static bool unpressableButton = false;
+        public static bool over = true;
         public PlayCodeButton(GraphicsDevice graphicsDevice, int buttonX, int buttonY)
         {
             playButtonTexture = new Texture2D(graphicsDevice, 1, 1);
             playButtonTexture.SetData(new[] { Color.Green });
 
             buttonPos = new Rectangle(buttonX, buttonY, 30, 30);
+
+            CancelToken = new List<CancellationTokenSource>();
+            cancelToken = new List<CancellationToken>();
         }
 
         public void Update(GraphicsDeviceManager graphics, GameTime gameTime, codeInput inputText)
@@ -32,20 +40,25 @@ namespace pLdevTest
             mouseState = Mouse.GetState();
             if (GlobalThings.EnterArea(buttonPos, mouseState) && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed && !unpressableButton)
             {
-                unpressableButton = true;
+                CancelToken.Add(new CancellationTokenSource());
+                cancelToken.Add(CancelToken[index].Token);
+
+                if (!over)
+                {
+                    CancelToken[index-1].Cancel();
+                }
+
+                over = false;
 
                 // Reset playground
                 GameScene.playground.player.posY = 0;
                 GameScene.playground.player.posX = 0;
+                MissionHandler.ResetMission();
+                MissionHandler.MissionPlaying = true;
 
-                MissionHandler.AmountOfCoins = 0;
-                MissionHandler.Coins = 0;
-                if (MissionHandler.Mission == 9)
-                {
-                    GameScene.playground.CreateGems(9);
-                }
+                Interpreter.StartInterprete(codeInput.Typing, 0, codeInput.Typing.Count, gameTime, index);
 
-                Interpreter.StartInterprete(codeInput.Typing, 0, codeInput.Typing.Count, gameTime);
+                index++;
                 inputText.UpdateEditorProportions(graphics);
             }
             lastMouseState = Mouse.GetState();

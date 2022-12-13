@@ -20,7 +20,6 @@ namespace pLdevTest
         private int currRow;
         private int iterations;
         private int rowCounterAni;
-        private bool t;
 
         private Vector2[,] tilesMovement;
         private int[,] randomTime;
@@ -33,7 +32,10 @@ namespace pLdevTest
         private Texture2D pgTexture;
         public static Color pgColor;
         public static Color pgColor2;
+
         public Gem[] gems;
+
+        public EnemyBlock[] enemies;
 
         Texture2D lightMask;
 
@@ -116,9 +118,17 @@ namespace pLdevTest
 
                 }
             }
-            if (MissionHandler.Mission == 8)
+            else if (MissionHandler.Mission == 8)
             {
                 finishFlag.Update(gameTime);
+            }
+
+            else if ((MissionHandler.Mission == 10 || MissionHandler.Mission == 11) && enemies != null)
+            {
+                foreach (EnemyBlock enemy in enemies)
+                {
+                    enemy.Update(gameTime);
+                }
             }
 
             /*if(!maxedOut)
@@ -231,6 +241,13 @@ namespace pLdevTest
                     
                 }
             }
+            else if ((MissionHandler.Mission == 10 || MissionHandler.Mission == 11) && enemies != null)
+            {
+                foreach (EnemyBlock enemy in enemies)
+                {
+                    enemy.Draw(_spriteBatch, gameTime, _graphics);
+                }
+            }
 
             player.Draw(_spriteBatch, gameTime, _graphics);
         }
@@ -269,12 +286,12 @@ namespace pLdevTest
             spriteBatch.End();
             spriteBatch.Begin();
         }
-        public void CreateGems(int level)
+        public void CreateLevel(int level)
         {
-            int gemIndex = 0;
             switch (level)
             {
                 case 9:
+                    int gemIndex = 0;
                     gems = new Gem[20];
                     for(int x = 0; x < 10; x++)
                     {
@@ -293,6 +310,22 @@ namespace pLdevTest
                     }
 
                     break;
+
+                case 10:
+                    enemies = new EnemyBlock[16];
+                    for(int y = 0; y < 16; y++)
+                    {
+                        enemies[y] = new EnemyBlock(playground.X, playground.Y, 21-y, y);
+                    }
+                    break;
+
+                case 11:
+                    enemies = new EnemyBlock[22];
+                    for (int y = 0; y < 22; y++)
+                    {
+                        enemies[y] = new EnemyBlock(playground.X, playground.Y, y, 15);
+                    }
+                    break;
             }
         }
 
@@ -308,6 +341,13 @@ namespace pLdevTest
                 foreach (Gem gem in gems)
                 {
                     gem.UpdateProportions(_graphics, playground.X);
+                }
+            }
+            else if ((MissionHandler.Mission == 10 || MissionHandler.Mission == 11) && enemies != null)
+            {
+                foreach (EnemyBlock enemy in enemies)
+                {
+                    enemy.UpdateProportions(_graphics, playground.X);
                 }
             }
 

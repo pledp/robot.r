@@ -31,9 +31,5 @@ namespace pLdevTest
         {
             spriteBatch.Draw(robotTexture, new Rectangle((int)objectPos.X + (posX * 25), (int)objectPos.Y + (posY * 25), objectWidth, objectHeight), Color.White * opacity);
         }
-        public void UpdateProportions(GraphicsDevice _graphics, int newX)
-        {
-            initialPos.X = newX;
-        }
     }
 }

@@ -60,6 +60,15 @@ namespace pLdevTest
                 }
             }
 
+            if((MissionHandler.Mission == 10 || MissionHandler.Mission == 11) && MissionHandler.MissionPlaying)
+            {
+                MissionHandler.Timer -= gameTime.ElapsedGameTime.TotalSeconds;
+            }
+            if((MissionHandler.Mission == 10 || MissionHandler.Mission == 11) && MissionHandler.Timer < 0 && MissionHandler.MissionPlaying)
+            {
+                MissionHandler.CheckForMission();
+            }
+
             lastMouseState = mouseState;
         }
         public void LoadContet(ContentManager Content)
@@ -133,10 +142,26 @@ namespace pLdevTest
                 if (x == 0)
                 {
                     overallOffset += 60;
-                    if (MissionHandler.Mission == 9)
+                    switch(MissionHandler.Mission)
                     {
-                        _spriteBatch.DrawString(GlobalThings.font, MissionHandler.Coins + "/" + MissionHandler.AmountOfCoins, new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Black);
-                        overallOffset += 50;
+                        case 9:
+                            _spriteBatch.DrawString(GlobalThings.font, MissionHandler.Coins + "/" + MissionHandler.AmountOfCoins, new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Black);
+                            overallOffset += 50;
+                            break;
+
+                        case 10: case 11:
+                            _spriteBatch.DrawString(GlobalThings.font, MissionHandler.Timer.ToString(), new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Black);
+                            overallOffset += 50;
+
+                            if(MissionHandler.MissionFailed)
+                            {
+                                _spriteBatch.DrawString(GlobalThings.font, "FAILED", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Red);
+                            }
+                            else if (!MissionHandler.MissionFailed)
+                            {
+                                _spriteBatch.DrawString(GlobalThings.font, "SAFE", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Green);
+                            }
+                            break;
                     }
                 }
                 else
