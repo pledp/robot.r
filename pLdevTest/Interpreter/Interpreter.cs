@@ -194,10 +194,23 @@ namespace pLdevTest
             lines = typedLines;
             index = newIndex;
 
+            for(int x = 0; x < lines.Count; x++)
+            {
+                if(lines[x].Contains("Update()") || lines[x].Contains("update()")) 
+                {
+                    PlayCodeButton.UpdateStartIndex = x;
+                    PlayCodeButton.UpdateEndIndex = FindBracket(x);
+                    PlayCodeButton.RunUpdate = true;
+
+                    break;
+                }
+            }
+
+
             RunLines(lines, lineIndex, stopIndex, gameTime, true);
         }
  
-        private static async Task RunLines(List<string> lines, int lineIndex, int stopIndex, GameTime gameTime, bool qualify)
+        public static async Task RunLines(List<string> lines, int lineIndex, int stopIndex, GameTime gameTime, bool qualify)
         {
             // Interprate every line, split segment by spaces
             string[] segments = lines[lineIndex].Split(initialSplit, StringSplitOptions.RemoveEmptyEntries);

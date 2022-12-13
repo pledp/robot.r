@@ -18,7 +18,7 @@ namespace pLdevTest
         public GameScene gameScene;
         private MainMenu mainMenu;
         public static CircleScreenTransistion transistion;
-        public static bool menuScene = false;
+        public static bool menuScene = true;
 
         public Game1()
         {

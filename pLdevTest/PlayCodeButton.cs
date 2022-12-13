@@ -28,6 +28,12 @@ namespace pLdevTest
         private MouseState lastMouseState;
         public static bool unpressableButton = false;
         public static bool over = true;
+
+        public static bool RunUpdate = false;
+        public static int UpdateStartIndex;
+        public static int UpdateEndIndex;
+
+
         public PlayCodeButton(GraphicsDevice graphicsDevice, int buttonX, int buttonY)
         {
             playButtonTexture = new Texture2D(graphicsDevice, 1, 1);
@@ -56,6 +62,7 @@ namespace pLdevTest
                     CancelToken[index-1].Cancel();
                 }
 
+                RunUpdate = false;
                 over = false;
 
                 // Reset playground
@@ -74,6 +81,7 @@ namespace pLdevTest
                 if (!over || MissionHandler.MissionPlaying)
                 {
                     CancelToken[index - 1].Cancel();
+                    RunUpdate = false;
                     over = true;
                     GameScene.playground.player.posY = 0;
                     GameScene.playground.player.posX = 0;
@@ -82,6 +90,10 @@ namespace pLdevTest
 
             }
 
+            if (RunUpdate)
+            {
+                Interpreter.RunLines(codeInput.Typing, UpdateStartIndex, UpdateEndIndex, gameTime, false);
+            }
 
             lastMouseState = Mouse.GetState();
         }

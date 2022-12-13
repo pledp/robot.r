@@ -150,17 +150,17 @@ namespace pLdevTest
                             break;
 
                         case 10: case 11:
-                            _spriteBatch.DrawString(GlobalThings.font, MissionHandler.Timer.ToString(), new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Black);
-                            overallOffset += 50;
+                            _spriteBatch.DrawString(GlobalThings.font, String.Format("{0:0.00}", MissionHandler.Timer), new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Black);
 
                             if(MissionHandler.MissionFailed)
                             {
-                                _spriteBatch.DrawString(GlobalThings.font, "FAILED", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Red);
+                                _spriteBatch.DrawString(GlobalThings.font, "FAILED", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 300, 560 + overallOffset), Color.Red);
                             }
                             else if (!MissionHandler.MissionFailed)
                             {
-                                _spriteBatch.DrawString(GlobalThings.font, "SAFE", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Green);
+                                _spriteBatch.DrawString(GlobalThings.font, "SAFE", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 300, 560 + overallOffset), Color.Green);
                             }
+                            overallOffset += 50;
                             break;
                     }
                 }

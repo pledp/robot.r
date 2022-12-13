@@ -21,7 +21,7 @@ namespace pLdevTest
         public static int Coins;
         public static int AmountOfCoins;
 
-        private static int mission = 10;
+        private static int mission = 0;
         public static int CurrWorldMission = 1;
         public static int World = 0;
         public static int[] WorldMissionCount =
@@ -81,17 +81,15 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Declare a variable.",
-                    "You can Declare a Variable like this:",
+                    "Variables are values that can be changed whenever.",
                     "helloWorld = 5"
-
                 }
             },
             {
                 new[]
                 {
                     "PASS: Use a conditional statement.",
-                    "Conditional statements execute the lines within the curly brackets ONLY if a certain condition is met.",
-                    "You can use a Conditional Statement like this:",
+                    "Conditional statements execute the lines ONLY if a certain condition is met.",
                     "if(helloWorld == 5) {\n   print(\"hello world!\")\n}"
                 }
             },
@@ -109,8 +107,7 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Use a loop.",
-                    "Loops repeat the lines within the curly brackets as many times as the arguments say.",
-                    "You can use a Loop like this:",
+                    "Loops repeats lines as many times as the arguments say.",
                     "loop(10) {\n   robot.x = robot.x + 1\n}"
                 }
             },
@@ -118,8 +115,7 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Use a while loop.",
-                    "While loops repeat lines withing the curly brackets as long as a conditional statement is true.",
-                    "You can use a While-loop like this:",
+                    "While loops repeat lines as long as a conditional statement is true.",
                     "while(robot.y != 10) {\n   robot.y = robot.y + 1\n}"
                 }
             },
@@ -149,6 +145,8 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Survive.",
+                    "The Update() method runs 60 times a second until the program is stopped.",
+                    "x = 0\nUpdate() {\n   x = x + 1\n}"
                 }
             },
             {
@@ -195,7 +193,6 @@ namespace pLdevTest
                 {
                     PlayGround.pgColor,
                     Color.Black,
-                    Color.Black,
                     GlobalThings.orangeColor,
                 }
             },
@@ -214,6 +211,13 @@ namespace pLdevTest
                 {
                     PlayGround.pgColor,
                     Color.Black,
+                    GlobalThings.orangeColor,
+                }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
                     Color.Black,
                     GlobalThings.orangeColor,
                 }
@@ -231,27 +235,20 @@ namespace pLdevTest
                 new[]
                 {
                     PlayGround.pgColor,
-                    Color.Black,
+                }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
+                }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
                     Color.Black,
                     GlobalThings.orangeColor,
-                }
-            },
-            {
-                new[]
-                {
-                    PlayGround.pgColor,
-                }
-            },
-            {
-                new[]
-                {
-                    PlayGround.pgColor,
-                }
-            },
-            {
-                new[]
-                {
-                    PlayGround.pgColor,
                 }
             },
             {
@@ -371,6 +368,8 @@ namespace pLdevTest
             MissionPlaying = false;
             MissionComplete = false;
             MissionFailed = false;
+
+            PlayCodeButton.RunUpdate = false;
 
             AmountOfCoins = 0;
             Coins = 0;
