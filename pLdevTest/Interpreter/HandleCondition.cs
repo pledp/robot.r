@@ -11,7 +11,13 @@ namespace pLdevTest
     {
         public static bool GetResults(int lineIndex, int stopIndex, List<string> lines)
         {
-            string currLine = Interpreter.GetInsideParentheses(lines[lineIndex]);
+            string currLine = "";
+            currLine = Interpreter.GetInsideParentheses(lines[lineIndex], lineIndex);
+
+            if(currLine == null)
+            {
+                return false;
+            }
 
             // Split by AND (&&) operator
             string[] splitANDs = currLine.Split(" && ", StringSplitOptions.TrimEntries);
@@ -67,7 +73,7 @@ namespace pLdevTest
 
             for (int x = 0; x < splitByArguments.Length; x++)
             {
-                double argumentExpression = HandleExpression.GetResults(splitByArguments[x], Interpreter.variables);
+                double argumentExpression = HandleExpression.GetResults(splitByArguments[x], Interpreter.variables, lineIndex);
                 arguments.Add(argumentExpression);
             }
 
@@ -87,6 +93,13 @@ namespace pLdevTest
 
                 case string a when currLine.Contains(">"):
                     elements.Add(ArgumentOperators.BiggerThan);
+                    break;
+
+                default:
+                    // Error handling
+                    codeInput.errorLine = lineIndex;
+                    Debug.WriteLine("OperatorError");
+                    return false;
                     break;
             }
             bool ifCondition = false;

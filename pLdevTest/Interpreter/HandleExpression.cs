@@ -19,14 +19,14 @@ namespace pLdevTest
     {
         private static DataTable dt;
         private static bool elementFuncFound;
-        public static double GetResults(string expression, Dictionary<string, double> variables)
+        public static double GetResults(string expression, Dictionary<string, double> variables, int lineIndex)
         {
             // Evaluates the value of the expressions.
-            double value = EvaluateExpression(expression, variables);
+            double value = EvaluateExpression(expression, variables, lineIndex);
             return value;
         }
 
-        private static double EvaluateExpression(string expression, Dictionary<string, double> variables)
+        private static double EvaluateExpression(string expression, Dictionary<string, double> variables, int lineIndex)
         {
             dt = new DataTable();
             List<ExpressionElements> elements;
@@ -40,7 +40,7 @@ namespace pLdevTest
                 elementFuncFound = false;
 
                 // If expression is a variable that is declared, set value to variables value
-                expressions[i] = GetVariableValue(expressions[i], variables);
+                expressions[i] = GetVariableValue(expressions[i], variables, lineIndex);
 
                 // Check if text matches built in functions
                 string splitArrayContainer = expressions[i].Split('(')[0];
@@ -77,7 +77,7 @@ namespace pLdevTest
                         funcExpressions = funcExpressions.Substring(1, funcExpressions.Length - 2);
                     }
 
-                    double elementExpressions = EvaluateExpression(funcExpressions, variables);
+                    double elementExpressions = EvaluateExpression(funcExpressions, variables, lineIndex);
                     double elementFuncValue = elementExpressions;
 
                     switch (elements[0])
@@ -109,13 +109,14 @@ namespace pLdevTest
             catch (Exception ex)
             {
                 // TODO: 
-                Debug.WriteLine(ex);
+                codeInput.errorLine = lineIndex;
+                Debug.WriteLine(lineIndex);
             }
 
             return value;   
         }
 
-        private static string GetVariableValue(string expression, Dictionary<string, double> variables)
+        private static string GetVariableValue(string expression, Dictionary<string, double> variables, int lineIndex)
         {
             if (variables.ContainsKey(expression))
             {
@@ -143,7 +144,7 @@ namespace pLdevTest
                             variableName = variableName.Split("[")[0];
 
                             Debug.WriteLine(splitBySquareBrackets);
-                            index = GetResults(splitBySquareBrackets, Interpreter.variables);
+                            index = GetResults(splitBySquareBrackets, Interpreter.variables, lineIndex);
                             Debug.WriteLine(index);
                         }
                         string value = Interpreter.builtInVariables[variableName][variableName2][(int)index].ToString();

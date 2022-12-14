@@ -10,7 +10,7 @@ namespace pLdevTest
 {
     public static class HandleBuiltInVariables
     {
-        public static bool GetResults(string key, double value)
+        public static bool GetResults(string key, double value, int lineIndex)
         {
 
             // Check if built in variable exists, if it does, set its value to the expression
@@ -21,7 +21,7 @@ namespace pLdevTest
                 string splitBySquareBrackets = key.Split(new string[] { "[", "]" }, StringSplitOptions.None)[1];
                 builtInVariableKey = builtInVariableKey.Split("[")[0];
 
-                index = HandleExpression.GetResults(splitBySquareBrackets, Interpreter.variables);
+                index = HandleExpression.GetResults(splitBySquareBrackets, Interpreter.variables, lineIndex);
             }
 
             Debug.WriteLine(builtInVariableKey);

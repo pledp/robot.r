@@ -299,14 +299,14 @@ namespace pLdevTest
 
         private static void HandleBuiltInMethod(int lineIndex, int stopIndex, string version, GameTime gameTime)
         {
-            HandleMethod.RunMethod(version, GetInsideParentheses(lines[lineIndex]));
+            HandleMethod.RunMethod(version, GetInsideParentheses(lines[lineIndex], lineIndex), lineIndex);
         }
 
         private static async void HandleLoop(int lineIndex, int stopIndex, string version, GameTime gameTime)
         {
-            string currLine = GetInsideParentheses(lines[lineIndex]);
+            string currLine = GetInsideParentheses(lines[lineIndex], lineIndex);
 
-            double loops = HandleExpression.GetResults(currLine, variables);
+            double loops = HandleExpression.GetResults(currLine, variables, lineIndex);
             int bracketEnd = FindBracket(lineIndex);
             if(MissionHandler.Mission == 5)
             {
@@ -322,7 +322,7 @@ namespace pLdevTest
         }
         private static async void HandleWhileLoop(int lineIndex, int stopIndex, string version, GameTime gameTime)
         {
-            string currLine = GetInsideParentheses(lines[lineIndex]);
+            string currLine = GetInsideParentheses(lines[lineIndex], lineIndex);
 
             bool loops = HandleCondition.GetResults(lineIndex, stopIndex, lines);
             int bracketEnd = FindBracket(lineIndex);
@@ -349,7 +349,7 @@ namespace pLdevTest
         private static async void HandleConditionStatement(int lineIndex, int stopIndex, string version, GameTime gameTime)
         {
             bool ifCondition = false;
-
+            int bracketEnd = FindBracket(lineIndex);
             // If "if" and other "elseif" conditions were false, run "elseif" condition
             if (version == "elseif" && !ifConclusion && ifStarted)
             {
@@ -388,13 +388,10 @@ namespace pLdevTest
                     MissionHandler.MissionComplete = true;
                 }
                 await MakeDelay();
-                await RunLines(lines, lineIndex +1, stopIndex, gameTime, true);
-            } else
-            {
-                // If condition was false: Find closing brackets and read line after closing brackets.
-                int falseStartIndex = FindBracket(lineIndex);
-                RunLines(lines, falseStartIndex, stopIndex, gameTime, true);
+                await RunLines(lines, lineIndex +1, bracketEnd, gameTime, true);
             }
+
+            RunLines(lines, bracketEnd, stopIndex, gameTime, true);
         }
 
         private static void HandleAssignment(int lineIndex, string varName, GameTime gameTime)
@@ -405,12 +402,12 @@ namespace pLdevTest
             string expression = line.Split(" = ")[1];
 
             // Handle expressions for numeric variables
-            double value = HandleExpression.GetResults(expression, variables);
+            double value = HandleExpression.GetResults(expression, variables, lineIndex);
 
             if (key.Contains("."))
             {
                 Debug.WriteLine("object");
-                builtInVariableComplete = HandleBuiltInVariables.GetResults(key, value);
+                builtInVariableComplete = HandleBuiltInVariables.GetResults(key, value, lineIndex);
             }
             Debug.WriteLine("ASSING");
 
@@ -443,12 +440,22 @@ namespace pLdevTest
             }
             return false;
         }
-        public static string GetInsideParentheses(string s)
+        public static string GetInsideParentheses(string s, int lineIndex)
         {
-            string newString = s.Substring(s.IndexOf("(") + 1);
-            newString = newString.Substring(0, newString.LastIndexOf(")"));
+            try
+            {
+                string newString;
+                newString = s.Substring(s.IndexOf("(") + 1);
+                newString = newString.Substring(0, newString.LastIndexOf(")"));
 
-            return newString;
+                return newString;
+            }
+            catch
+            {
+                Debug.WriteLine("ParenError");
+                codeInput.errorLine = lineIndex;
+                return null;
+            }
         }
 
         private static int FindBracket(int startIndex)
@@ -461,6 +468,7 @@ namespace pLdevTest
             {
                 if (lines[x].Contains('{') || insideBracket)
                 {
+                    Debug.WriteLine("TEST");
                     if (lines[x].Contains('}'))
                     {
                         nestedBracket--;
@@ -478,7 +486,10 @@ namespace pLdevTest
                     }
                 }
             }
-            return startIndex;
+
+            Debug.WriteLine("BROKENBRACKET");
+            codeInput.errorLine = startIndex;
+            return startIndex+3;
         }
         private static async Task MakeDelay()
         {

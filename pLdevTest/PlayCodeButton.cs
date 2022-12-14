@@ -62,6 +62,8 @@ namespace pLdevTest
                     CancelToken[index-1].Cancel();
                 }
 
+                codeInput.errorLine = -1;
+
                 RunUpdate = false;
                 over = false;
 

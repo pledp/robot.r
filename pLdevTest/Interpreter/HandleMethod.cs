@@ -9,7 +9,7 @@ namespace pLdevTest
 {
     static class HandleMethod
     {
-        public static void RunMethod(string method, string arguments)
+        public static void RunMethod(string method, string arguments, int lineIndex)
         {
             List<BuiltInMethods> methods;
             methods = new List<BuiltInMethods>();
@@ -46,7 +46,7 @@ namespace pLdevTest
                         }
                         else
                         {
-                            formattedPrintString += HandleExpression.GetResults(printSegments[x], Interpreter.variables);
+                            formattedPrintString += HandleExpression.GetResults(printSegments[x], Interpreter.variables, lineIndex);
                         }
                     }
                     Interpreter.consoleText.Add(formattedPrintString);
@@ -58,7 +58,7 @@ namespace pLdevTest
                     {
                         MissionHandler.MissionComplete = true;
                     }
-                    Interpreter.CurrentDelay = (int)HandleExpression.GetResults(arguments, Interpreter.variables);
+                    Interpreter.CurrentDelay = (int)HandleExpression.GetResults(arguments, Interpreter.variables, lineIndex);
                     break;
 
                 case BuiltInMethods.Shoot:

@@ -17,6 +17,7 @@ namespace pLdevTest
     {
         
         public static int readingLine;
+        public static int errorLine = -1;
 
         private string typeWriterString;
         private string typeWriterStringType;
@@ -195,7 +196,7 @@ namespace pLdevTest
 
                 lineCounterOffset = Convert.ToInt32(GlobalThings.font.MeasureString(lineCounter[line-1].ToString()).X);
                 // Draw code
-                spriteBatch.DrawString(GlobalThings.font, formattedCode[line - 1], new Vector2(60 + codeEditorOffset.X, line * 50 + codeEditorOffset.Y - 50), Color.White);
+                spriteBatch.DrawString(GlobalThings.font, formattedCode[line - 1], new Vector2(60 + codeEditorOffset.X, line * 50 + codeEditorOffset.Y - 50), line == errorLine+1 ? Color.Red : Color.White);
 
                 // Draw line counter
                 spriteBatch.DrawString(GlobalThings.font, line.ToString(), new Vector2(codeEditorOffset.X + pos.X, (line - 1) * 50 + codeEditorOffset.Y + 20), line == readingLine ? Color.Green : darkeyGrey, 0, origin, 1, SpriteEffects.None, 0);
