@@ -13,13 +13,7 @@ namespace pLdevTest
 {
     public class PlayGround
     {
-        bool firstTime = true;
-        bool maxedOut = false;
-        private double tileTimer;
-        private int[] amountOfTiles;
-        private int currRow;
-        private int iterations;
-        private int rowCounterAni;
+        bool lightsOn = false;
 
         private Vector2[,] tilesMovement;
         private int[,] randomTime;
@@ -27,15 +21,15 @@ namespace pLdevTest
         private bool[,] goDown;
         private double[,] elapsedTime;
 
-        private Rectangle playground;
+        public Rectangle playground;
         private int width;
         private Texture2D pgTexture;
         public static Color pgColor;
         public static Color pgColor2;
 
         public Gem[] gems;
-
         public EnemyBlock[] enemies;
+        public List<Bullet> bullets;
 
         Texture2D lightMask;
 
@@ -53,15 +47,16 @@ namespace pLdevTest
             // Create a playground
             width = playgroundWidth;
             playground = new Rectangle(_graphics.Viewport.Width - width - 50, 10, width, 400);
+            bullets = new List<Bullet>();
             
             pgTexture = new Texture2D(_graphics, 1, 1);
             pgColor = new Color(153, 225, 217);
-            pgColor2 = new Color(143, 215, 207);
+            pgColor2 = new Color(133, 205, 197);
             pgTexture.SetData(new[] { pgColor });
 
             // Create a player on the playground. Move in a 21x15 grid.
             player = new PlaygroundPlayer(_graphics, playground.X, playground.Y);
-            finishFlag = new FinishFlag(_graphics, playground.X, playground.Y, 21,15);
+            finishFlag = new FinishFlag(_graphics, playground.X, playground.Y, 0,0);
             blackRectangle = new Texture2D(_graphics, 1, 1);
             blackRectangle.SetData(new[] { Color.Black });
 
@@ -107,7 +102,22 @@ namespace pLdevTest
         {
             player.Update(gameTime);
 
-            if (MissionHandler.Mission == 9 && gems != null)
+            try
+            {
+                foreach (Bullet bullet in bullets)
+                {
+                    if (!bullet.spent)
+                    {
+                        bullet.Update(gameTime);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
+
+            if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.CoinLevel && gems != null)
             {
                 foreach (Gem gem in gems)
                 {
@@ -118,46 +128,21 @@ namespace pLdevTest
 
                 }
             }
-            else if (MissionHandler.Mission == 8)
+            else if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.FlagLevel)
             {
                 finishFlag.Update(gameTime);
             }
 
-            else if ((MissionHandler.Mission == 10 || MissionHandler.Mission == 11) && enemies != null)
+            else if ((MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.EnemyLevel || MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.KillLevel) && enemies != null)
             {
                 foreach (EnemyBlock enemy in enemies)
                 {
-                    enemy.Update(gameTime);
+                    if (!enemy.killed)
+                    {
+                        enemy.Update(gameTime);
+                    }
                 }
             }
-
-            /*if(!maxedOut)
-            {
-               tileTimer += gameTime.ElapsedGameTime.TotalSeconds;
-                if (tileTimer > 0.1)
-                {
-                    tileTimer = 0;
-
-                    for (int x = 0; x < rowCounterAni+1; x++)
-                    {
-                        if (amountOfTiles[x] < 22)
-                        {
-                            amountOfTiles[x]++;
-                        }
-                    }
-
-                    iterations++;
-                    if(iterations % 2 == 0 && rowCounterAni < 15)
-                    {
-                        rowCounterAni++;
-                    }
-                }
-                if(rowCounterAni == 15 && amountOfTiles[rowCounterAni] == 22)
-                {
-                    maxedOut = true;
-                    Debug.WriteLine("test");
-                }
-            }*/
 
             // Create tile transistion
             for (int x = 0; x < 22; x++)
@@ -192,6 +177,7 @@ namespace pLdevTest
                     _spriteBatch.Draw(pgTexture, new Rectangle(playground.X + (x * 25), playground.Y + (y * 25), 25, 25), pgColor);
                 }
             }*/
+
             Color printColor;
             for (int x = 0; x < 22; x++)
 {
@@ -225,12 +211,12 @@ namespace pLdevTest
             }
 
             //_spriteBatch.Draw(pgTexture, playground, pgColor);
-            if (MissionHandler.Mission == 8)
+            if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.FlagLevel)
             {
                 finishFlag.Draw(_spriteBatch, gameTime, _graphics);
             }
 
-            if(MissionHandler.Mission == 9 && gems != null)
+            if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.CoinLevel && gems != null)
             {
                 foreach(Gem gem in gems)
                 {
@@ -241,11 +227,23 @@ namespace pLdevTest
                     
                 }
             }
-            else if ((MissionHandler.Mission == 10 || MissionHandler.Mission == 11) && enemies != null)
+            else if ((MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.EnemyLevel || MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.KillLevel) && enemies != null)
             {
                 foreach (EnemyBlock enemy in enemies)
                 {
-                    enemy.Draw(_spriteBatch, gameTime, _graphics);
+                    if(!enemy.killed)
+                    {
+                        enemy.Draw(_spriteBatch, gameTime, _graphics);
+                    }
+                   
+                }
+            }
+
+            foreach (Bullet bullet in bullets)
+            {
+                if(!bullet.spent)
+                {
+                    bullet.Draw(_spriteBatch, gameTime, _graphics);
                 }
             }
 
@@ -290,6 +288,11 @@ namespace pLdevTest
         {
             switch (level)
             {
+                case 8:
+                    finishFlag.posX = 21;
+                    finishFlag.posY = 15;
+                    break;
+
                 case 9:
                     int gemIndex = 0;
                     gems = new Gem[20];
@@ -326,6 +329,30 @@ namespace pLdevTest
                         enemies[y] = new EnemyBlock(playground.X, playground.Y, y, 15, y);
                     }
                     break;
+
+                case 12:
+                    gems = new Gem[22*16];
+                    for (int x = 0; x < 22; x++)
+                    {
+                        for(int y = 0; y < 16; y++)
+                        {
+                            gems[(x*16) + y] = new Gem(playground.X, playground.Y, x, y, (x * 16) + y);
+                        }
+                    }
+                    break;
+                case 13:
+                    finishFlag.posX = 21;
+                    finishFlag.posY = 23;
+                    break;
+                case 14:
+                    var rand = new Random();
+                    MissionHandler.AmountOfEnemies = 20;
+                    enemies = new EnemyBlock[20];
+                    for (int y = 0; y < 20; y++)
+                    {
+                        enemies[y] = new EnemyBlock(playground.X, playground.Y, 21 + (y * 2), rand.Next(0,16), y);
+                    }
+                    break;
             }
         }
 
@@ -333,17 +360,19 @@ namespace pLdevTest
         {
             playground.X = _graphics.Viewport.Width - width - 50;
             player.UpdateProportions(_graphics, playground.X);
+
+
             finishFlag.UpdateProportions(_graphics, playground.X);
 
 
-            if (MissionHandler.Mission == 9 && gems != null)
+            if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.CoinLevel && gems != null)
             {
                 foreach (Gem gem in gems)
                 {
                     gem.UpdateProportions(_graphics, playground.X);
                 }
             }
-            else if ((MissionHandler.Mission == 10 || MissionHandler.Mission == 11) && enemies != null)
+            else if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.EnemyLevel && enemies != null)
             {
                 foreach (EnemyBlock enemy in enemies)
                 {
@@ -351,10 +380,13 @@ namespace pLdevTest
                 }
             }
 
-            lightsTarget = new RenderTarget2D(
-                _graphics,_graphics.Viewport.Width, _graphics.Viewport.Height);
-            mainTarget = new RenderTarget2D(
-                _graphics, _graphics.Viewport.Width, _graphics.Viewport.Height);
+            if(lightsOn)
+            {
+                lightsTarget = new RenderTarget2D(
+                    _graphics, _graphics.Viewport.Width, _graphics.Viewport.Height);
+                mainTarget = new RenderTarget2D(
+                    _graphics, _graphics.Viewport.Width, _graphics.Viewport.Height);
+            }
         }
         public Vector2 TileTransistion(Vector2 newPos, GameTime gameTime, Vector2 startingSize, double elapsedTime, int x, int y)
         {

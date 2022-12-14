@@ -39,12 +39,19 @@ namespace pLdevTest
             transistionPos = new Rectangle(_graphics.Viewport.Width / 2 - 100, _graphics.Viewport.Height / 2 - 100, 200, 200);
             openingTransistion = new Vector2(_graphics.Viewport.Width + _graphics.Viewport.Height, _graphics.Viewport.Width + _graphics.Viewport.Height);
             startingSize = openingTransistion;
+            var pp = _graphics.PresentationParameters;
+            transistionMask = new RenderTarget2D(
+                _graphics, pp.BackBufferWidth, pp.BackBufferHeight);
+            mainTarget = new RenderTarget2D(
+               _graphics, pp.BackBufferWidth, pp.BackBufferHeight);
 
-            ResizeRenderTarget(_graphics);
             transistionColor = new Color(153, 243, 159);
         }
         public void ResizeRenderTarget(GraphicsDevice _graphics)
         {
+            transistionMask.Dispose();
+            mainTarget.Dispose();
+
             var pp = _graphics.PresentationParameters;
             transistionMask = new RenderTarget2D(
                 _graphics, pp.BackBufferWidth, pp.BackBufferHeight);

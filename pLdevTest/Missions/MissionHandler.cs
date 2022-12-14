@@ -21,13 +21,16 @@ namespace pLdevTest
         public static int Coins;
         public static int AmountOfCoins;
 
-        private static int mission = 0;
+        public static int KilledEnemies;
+        public static int AmountOfEnemies;
+
+        private static int mission = 14;
         public static int CurrWorldMission = 1;
         public static int World = 0;
         public static int[] WorldMissionCount =
         {
             9,
-            3
+            6
         };
 
         public static int Mission
@@ -51,12 +54,36 @@ namespace pLdevTest
             "Pyramid Scheme",
             "Survival <",
             "Survival ^",
-            "PLACEHOLDER"
+            "Covered",
+            "Where?",
+            "Pew Pew",
+            "Ph"
         };
         public static string[] Missions
         {
             get { return missions; }
         }
+
+        public readonly static MissionTypes[] MissionCategory =
+        {
+            MissionTypes.Default,
+            MissionTypes.Default,
+            MissionTypes.Default,
+            MissionTypes.Default,
+            MissionTypes.Default,
+            MissionTypes.Default,
+            MissionTypes.Default,
+            MissionTypes.Default,
+            MissionTypes.FlagLevel,
+            MissionTypes.CoinLevel,
+            MissionTypes.EnemyLevel,
+            MissionTypes.EnemyLevel,
+            MissionTypes.CoinLevel,
+            MissionTypes.FlagLevel,
+            MissionTypes.KillLevel,
+            MissionTypes.KillLevel
+        };
+
         public readonly static String[,][] MissionsInfoText =
         {
             {
@@ -158,9 +185,29 @@ namespace pLdevTest
             {
                 new[]
                 {
-                    "PASS: Survive",
+                    "PASS: Collect all the gems",
                 }
-            }
+            },
+            {
+                new[]
+                {
+                    "PASS: Reach the flag.",
+                }
+            },
+            {
+                new[]
+                {
+                    "PASS: DESTROY all the enemies.",
+                    "Use the shoot() method to fire a projectile.",
+                    "shoot()"
+                }
+            },
+            {
+                new[]
+                {
+                    "Placeholder.",
+                }
+            },
         };
         public readonly static Color[,][] MissionsInfoColor =
         {
@@ -262,7 +309,27 @@ namespace pLdevTest
                 {
                     PlayGround.pgColor,
                 }
-            }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
+                }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
+                    Color.Black,
+                    GlobalThings.orangeColor,
+                }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
+                }
+            },
         };
 
         public static void CheckForMission()
@@ -270,36 +337,36 @@ namespace pLdevTest
             Debug.WriteLine("missioncheck");
             bool missionComplete = false;
 
-            switch(mission)
+            if (MissionCategory[Mission] == MissionTypes.EnemyLevel)
             {
-                case 8:
-                    if(GameScene.playground.player.posX == GameScene.playground.finishFlag.posX && GameScene.playground.player.posY == GameScene.playground.finishFlag.posY)
-                    {
-                        missionComplete = true;
-                        WorldTransistion();
-                    }
-                    break;
-                case 9:
-                    if (AmountOfCoins == Coins)
-                    {
-                        missionComplete = true;
-                    }
-                    break;
-
-                case 10:
-                    if(!MissionFailed)
-                    {
-                        missionComplete = true;
-                    }
-                    break;
-                case 11:
-                    if (!MissionFailed)
-                    {
-                        missionComplete = true;
-                    }
-                    break;
+                if (!MissionFailed)
+                {
+                    missionComplete = true;
+                }
             }
 
+            if(MissionCategory[Mission] == MissionTypes.CoinLevel)
+            {
+                if (AmountOfCoins == Coins)
+                {
+                    missionComplete = true;
+                }
+            }
+            if (MissionCategory[mission] == MissionTypes.KillLevel)
+            {
+                if(AmountOfEnemies == KilledEnemies)
+                {
+                    missionComplete = true;
+                }
+            }
+
+            if (MissionCategory[mission] == MissionTypes.FlagLevel)
+            {
+                if (GameScene.playground.player.posX == GameScene.playground.finishFlag.posX && GameScene.playground.player.posY == GameScene.playground.finishFlag.posY)
+                {
+                    missionComplete = true;
+                }
+            }
 
             if (MissionComplete)
             {
@@ -308,15 +375,20 @@ namespace pLdevTest
 
             if(missionComplete)
             {
+                if(mission == 8)
+                {
+                    WorldTransistion();
+                }
+
                 mission++;
 
                 CurrWorldMission++;
 
                 FormatMissionText();
                 GameScene.playground.CreateTiles();
-            }
 
-            ResetMission();
+                ResetMission();
+            }
         }
         public static void FormatMissionText()
         {
@@ -365,6 +437,7 @@ namespace pLdevTest
 
         public static void ResetMission()
         {
+            GameScene.playground.bullets = new List<Bullet>();
             MissionPlaying = false;
             MissionComplete = false;
             MissionFailed = false;
@@ -374,24 +447,28 @@ namespace pLdevTest
             AmountOfCoins = 0;
             Coins = 0;
 
+            AmountOfEnemies = 0;
+            KilledEnemies = 0;
+
             GameScene.playground.gems = null;
             GameScene.playground.enemies = null;
 
-            switch (Mission)
+            if (MissionCategory[mission] == MissionTypes.EnemyLevel)
             {
-                case 9:
-                    GameScene.playground.CreateLevel(9);
-                    break;
-
-                case 10:
-                    Timer = 15;
-                    GameScene.playground.CreateLevel(10);
-                    break;
-
-                case 11:
-                    Timer = 15;
-                    GameScene.playground.CreateLevel(11);
-                    break;
+                Timer = 15;
+                GameScene.playground.CreateLevel(mission);
+            }
+            else if (MissionCategory[mission] == MissionTypes.CoinLevel)
+            {
+                GameScene.playground.CreateLevel(mission);
+            }
+            else if(MissionCategory[mission] == MissionTypes.FlagLevel)
+            {
+                GameScene.playground.CreateLevel(mission);
+            }
+            else if (MissionCategory[mission] == MissionTypes.KillLevel)
+            {
+                GameScene.playground.CreateLevel(mission);
             }
         }
     }

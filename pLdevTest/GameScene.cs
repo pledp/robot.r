@@ -29,6 +29,15 @@ namespace pLdevTest
         {
             playground = new PlayGround(_graphics, 550);
             missionInfo = new MissionInfo(_graphics);
+
+            background = new Color(50, 41, 47);
+            backgroundTexture = new Texture2D(_graphics, 1, 1);
+            backgroundTexture.SetData(new[] { background });
+
+            codeTextBar = new codeInput();
+
+            levelCompleteTypewriter = new LevelCompleteTypewriter();
+            MissionHandler.FormatMissionText();
         }
 
         public void UpdateProprtions(object sender, EventArgs e, GraphicsDeviceManager _graphics)
@@ -54,15 +63,6 @@ namespace pLdevTest
 
         public void LoadContent(ContentManager Content ,GraphicsDevice _graphics)
         {
-            background = new Color(50, 41, 47);
-            backgroundTexture = new Texture2D(_graphics, 1, 1);
-            backgroundTexture.SetData(new[] { background });
-
-            codeTextBar = new codeInput();
-
-            levelCompleteTypewriter = new LevelCompleteTypewriter();
-            MissionHandler.FormatMissionText();
-
             playground.LoadContent(Content, _graphics);
             codeTextBar.LoadContent(Content, _graphics);
             missionInfo.LoadContet(Content);

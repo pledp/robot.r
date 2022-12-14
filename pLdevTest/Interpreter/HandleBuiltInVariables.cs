@@ -81,6 +81,30 @@ namespace pLdevTest
                         }
                         break;
 
+                    case "gem":
+                        Debug.WriteLine("gem");
+                        if (Interpreter.builtInVariables["gem"].ContainsKey(variableName))
+                        {
+                            Interpreter.builtInVariables["gem"][variableName][(int)index] = (int)value;
+                            switch (variableName)
+                            {
+                                case "x":
+                                    if (GameScene.playground.gems[(int)index] != null)
+                                    {
+                                        GameScene.playground.gems[(int)index].posX = Interpreter.builtInVariables["gem"]["x"][(int)index];
+                                    }
+                                    break;
+
+                                case "y":
+                                    if (GameScene.playground.gems[(int)index] != null)
+                                    {
+                                        GameScene.playground.gems[(int)index].posY = Interpreter.builtInVariables["gem"]["y"][(int)index];
+                                    }
+                                    break;
+                            }
+                        }
+                        break;
+
                 }
                 return true;
             } else

@@ -18,7 +18,7 @@ namespace pLdevTest
         public GameScene gameScene;
         private MainMenu mainMenu;
         public static CircleScreenTransistion transistion;
-        public static bool menuScene = true;
+        public static bool menuScene = false;
 
         public Game1()
         {
@@ -41,6 +41,8 @@ namespace pLdevTest
             IsFixedTimeStep = true;
             TargetElapsedTime = TimeSpan.FromSeconds(1 / 60.0f);
 
+
+
             /*_graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
             _graphics.IsFullScreen = true;
@@ -53,7 +55,9 @@ namespace pLdevTest
         private void ProcessWindowSizeChange(object sender, EventArgs e)
         {
             gameScene.UpdateProprtions(sender, e, _graphics);
+
             transistion.ResizeRenderTarget(_graphics.GraphicsDevice);
+   
         }
         public void ProcessTextInput(object sender, TextInputEventArgs e)
         {
@@ -71,9 +75,9 @@ namespace pLdevTest
             _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
             mainMenu = new MainMenu(_graphics.GraphicsDevice);
             transistion = new CircleScreenTransistion(_graphics.GraphicsDevice);
+            gameScene = new GameScene(_graphics.GraphicsDevice);
 
             transistion.LoadContent(Content, _graphics.GraphicsDevice);
-            gameScene = new GameScene(_graphics.GraphicsDevice);
             gameScene.LoadContent(Content, _graphics.GraphicsDevice);
         }
 

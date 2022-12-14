@@ -128,7 +128,8 @@ namespace pLdevTest
         public static readonly string[] buildInMethods =
         {
             "print",
-            "sleep"
+            "sleep",
+            "shoot"
         };
 
         public static Dictionary<string, Dictionary<string, int[]>> builtInVariables;
@@ -169,8 +170,9 @@ namespace pLdevTest
 
             robot.Add("x", new int[] {0});
             robot.Add("y", new int[] {0});
+            builtInVariables.Add("robot", robot);
 
-            if(GameScene.playground.enemies != null)
+            if (GameScene.playground.enemies != null)
             {
                 var enemy = new Dictionary<string, int[]>();
                 int[] xs = new int[GameScene.playground.enemies.Length];
@@ -187,8 +189,24 @@ namespace pLdevTest
 
                 builtInVariables.Add("enemy", enemy);
             }
+            if (GameScene.playground.gems != null)
+            {
+                var gems = new Dictionary<string, int[]>();
+                int[] xs = new int[GameScene.playground.gems.Length];
+                int[] ys = new int[GameScene.playground.gems.Length];
 
-            builtInVariables.Add("robot", robot);
+                for (int x = 0; x < GameScene.playground.gems.Length; x++)
+                {
+                    xs[x] = GameScene.playground.gems[x].posX;
+                    ys[x] = GameScene.playground.gems[x].posY;
+                }
+
+                gems.Add("x", xs);
+                gems.Add("y", ys);
+
+                builtInVariables.Add("gem", gems);
+            }
+
 
             consoleText = new List<string>();
             lines = typedLines;
@@ -245,7 +263,7 @@ namespace pLdevTest
                 }
             }
 
-            if (MissionHandler.Mission == 9)
+            if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.CoinLevel)
             {
                 foreach (Gem gem in GameScene.playground.gems)
                 {
@@ -253,13 +271,6 @@ namespace pLdevTest
                     {
                         gem.PickUp();
                     }
-                }
-            }
-            else if (MissionHandler.Mission == 10 || MissionHandler.Mission == 11)
-            {
-                foreach (EnemyBlock enemy in GameScene.playground.enemies)
-                {
-                    enemy.CheckForCollision();
                 }
             }
 
@@ -276,7 +287,7 @@ namespace pLdevTest
                 codeInput.readingLine = lineIndex + 1;
                 PlayCodeButton.unpressableButton = false;
 
-                if(MissionHandler.Mission != 10 && MissionHandler.Mission != 11)
+                if(MissionHandler.MissionCategory[MissionHandler.Mission] != MissionTypes.EnemyLevel || MissionHandler.MissionCategory[MissionHandler.Mission] != MissionTypes.KillLevel)
                 {
                     MissionHandler.CheckForMission();
                 }
@@ -398,9 +409,11 @@ namespace pLdevTest
 
             if (key.Contains("."))
             {
+                Debug.WriteLine("object");
                 builtInVariableComplete = HandleBuiltInVariables.GetResults(key, value);
             }
             Debug.WriteLine("ASSING");
+
             // If variable does not exist, make new variable, otherwise update existing variable value.
             if (!builtInVariableComplete)
             {

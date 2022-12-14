@@ -23,6 +23,10 @@ namespace pLdevTest
                 case "sleep":
                     methods.Add(BuiltInMethods.Sleep);
                     break;
+
+                case "shoot":
+                    methods.Add(BuiltInMethods.Shoot);
+                    break;
             }
 
             switch (methods[0])
@@ -55,6 +59,10 @@ namespace pLdevTest
                         MissionHandler.MissionComplete = true;
                     }
                     Interpreter.CurrentDelay = (int)HandleExpression.GetResults(arguments, Interpreter.variables);
+                    break;
+
+                case BuiltInMethods.Shoot:
+                    GameScene.playground.bullets.Add(new Bullet(GameScene.playground.player.posX, GameScene.playground.player.posY, GameScene.playground.playground.X, GameScene.playground.playground.Y));
                     break;
             }
         }

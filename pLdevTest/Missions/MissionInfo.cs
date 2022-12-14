@@ -16,7 +16,7 @@ namespace pLdevTest
     {
         Texture2D whiteRectangle;
         string[] missionCounterText = { "Mission: ", "", "/", ""};
-        Color[] colors = { Color.Black, PlayGround.pgColor, Color.Black, PlayGround.pgColor };
+        Color[] colors = { Color.White, PlayGround.pgColor, Color.White, PlayGround.pgColor };
 
         private RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
         private Vector2 _scrollOffset = Vector2.Zero;
@@ -60,11 +60,11 @@ namespace pLdevTest
                 }
             }
 
-            if((MissionHandler.Mission == 10 || MissionHandler.Mission == 11) && MissionHandler.MissionPlaying)
+            if(MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.EnemyLevel && MissionHandler.MissionPlaying)
             {
                 MissionHandler.Timer -= gameTime.ElapsedGameTime.TotalSeconds;
             }
-            if((MissionHandler.Mission == 10 || MissionHandler.Mission == 11) && MissionHandler.Timer < 0 && MissionHandler.MissionPlaying)
+            if(MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.EnemyLevel && MissionHandler.Timer < 0 && MissionHandler.MissionPlaying)
             {
                 MissionHandler.CheckForMission();
             }
@@ -84,7 +84,6 @@ namespace pLdevTest
             missionCounterText[3] = MissionHandler.WorldMissionCount[MissionHandler.World].ToString();
 
             // Draw frame
-            _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 650, 0, 650, _graphics.GraphicsDevice.Viewport.Height), Color.White);
 
             _spriteBatch.DrawString(GlobalThings.font, MissionHandler.Missions[MissionHandler.Mission], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 410), PlayGround.pgColor);
 
@@ -142,26 +141,30 @@ namespace pLdevTest
                 if (x == 0)
                 {
                     overallOffset += 60;
-                    switch(MissionHandler.Mission)
+                    if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.CoinLevel)
                     {
-                        case 9:
-                            _spriteBatch.DrawString(GlobalThings.font, MissionHandler.Coins + "/" + MissionHandler.AmountOfCoins, new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Black);
-                            overallOffset += 50;
-                            break;
+                        _spriteBatch.DrawString(GlobalThings.font, MissionHandler.Coins + "/" + MissionHandler.AmountOfCoins, new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Black);
+                        overallOffset += 50;
+                    }
+                    if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.KillLevel)
+                    {
+                        _spriteBatch.DrawString(GlobalThings.font, MissionHandler.KilledEnemies + "/" + MissionHandler.AmountOfEnemies, new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Black);
+                        overallOffset += 50;
+                    }
 
-                        case 10: case 11:
-                            _spriteBatch.DrawString(GlobalThings.font, String.Format("{0:0.00}", MissionHandler.Timer), new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Black);
+                    if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.EnemyLevel)
+                    {
+                        _spriteBatch.DrawString(GlobalThings.font, String.Format("{0:0.00}", MissionHandler.Timer), new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Black);
 
-                            if(MissionHandler.MissionFailed)
-                            {
-                                _spriteBatch.DrawString(GlobalThings.font, "FAILED", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 300, 560 + overallOffset), Color.Red);
-                            }
-                            else if (!MissionHandler.MissionFailed)
-                            {
-                                _spriteBatch.DrawString(GlobalThings.font, "SAFE", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 300, 560 + overallOffset), Color.Green);
-                            }
-                            overallOffset += 50;
-                            break;
+                        if (MissionHandler.MissionFailed)
+                        {
+                            _spriteBatch.DrawString(GlobalThings.font, "FAILED", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 300, 560 + overallOffset), Color.Red);
+                        }
+                        else if (!MissionHandler.MissionFailed)
+                        {
+                            _spriteBatch.DrawString(GlobalThings.font, "SAFE", new Vector2(_graphics.GraphicsDevice.Viewport.Width - 300, 560 + overallOffset), Color.Green);
+                        }
+                        overallOffset += 50;
                     }
                 }
                 else

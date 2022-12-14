@@ -13,6 +13,8 @@ namespace pLdevTest
     public class EnemyBlock : PlaygroundObject
     {
         double moveElapsedTime;
+        public bool killed = false;
+        bool alreadyFound = false;
         public EnemyBlock(int x, int y, int initialGridPosX, int initialGridPosY, int index)
         {
             posX = initialGridPosX;
@@ -26,26 +28,39 @@ namespace pLdevTest
         {
             if(MissionHandler.MissionPlaying)
             {
-                moveElapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-                if (moveElapsedTime > 0.1)
+                if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.EnemyLevel)
                 {
-                    if(MissionHandler.Mission == 10)
+                    moveElapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
+                    if (moveElapsedTime > 0.2)
+                    {
+                        if (MissionHandler.Mission == 10)
+                        {
+                            posX = posX - 1;
+                            if (posX < 0)
+                            {
+                                posX = 21;
+                            }
+                        }
+                        else if (MissionHandler.Mission == 11)
+                        {
+                            posY = posY - 1;
+                            if (posY < 0)
+                            {
+                                posY = 16;
+                            }
+                        }
+                        moveElapsedTime = 0;
+                        CheckForCollision();
+                    }
+                }
+                else if(MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.KillLevel)
+                {
+                    moveElapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
+                    if (moveElapsedTime > 0.2)
                     {
                         posX = posX - 1;
-                        if (posX < 0)
-                        {
-                            posX = 21;
-                        }
+                        moveElapsedTime = 0;
                     }
-                    else if(MissionHandler.Mission == 11)
-                    {
-                        posY = posY - 1;
-                        if (posY < 0)
-                        {
-                            posY = 16;
-                        }
-                    }
-                    moveElapsedTime = 0;
                     CheckForCollision();
                 }
             }
@@ -59,15 +74,42 @@ namespace pLdevTest
 
         public void CheckForCollision()
         {
-            if (Interpreter.builtInVariables["enemy"]["x"].Length > (int)index)
+            if(MissionHandler.MissionPlaying)
             {
-                Interpreter.builtInVariables["enemy"]["x"][(int)index] = posX;
-                Interpreter.builtInVariables["enemy"]["y"][(int)index] = posY;
+                if (Interpreter.builtInVariables["enemy"]["x"].Length > (int)index)
+                {
+                    Interpreter.builtInVariables["enemy"]["x"][(int)index] = posX;
+                    Interpreter.builtInVariables["enemy"]["y"][(int)index] = posY;
+
+                    if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.KillLevel)
+                    {
+                        foreach (Bullet bullet in GameScene.playground.bullets)
+                        {
+                            if (bullet.posX == posX && bullet.posY == posY && !bullet.spent && !alreadyFound)
+                            {
+                                killed = true;
+
+                                MissionHandler.KilledEnemies++;
+
+                                bullet.spent = true;
+
+                                if (MissionHandler.KilledEnemies == MissionHandler.AmountOfEnemies)
+                                {
+                                    MissionHandler.CheckForMission();
+                                }
+                                alreadyFound = true;
+                            }
+                        }
+                    }
+                }
             }
 
-            if (GameScene.playground.player.posX == posX && GameScene.playground.player.posY == posY)
+            if(MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.EnemyLevel)
             {
-                MissionHandler.MissionFailed = true;
+                if (GameScene.playground.player.posX == posX && GameScene.playground.player.posY == posY)
+                {
+                    MissionHandler.MissionFailed = true;
+                }
             }
         }
     }

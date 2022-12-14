@@ -1,5 +1,6 @@
 ﻿public enum BuiltInMethods
 {
     Print,
-    Sleep
+    Sleep,
+    Shoot
 }

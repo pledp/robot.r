@@ -27,6 +27,14 @@ namespace pLdevTest
         public void Update(GameTime gameTime)
         {
             HoverTransistion(gameTime);
+            if (MissionHandler.MissionPlaying)
+            {
+                if (Interpreter.builtInVariables["gem"]["x"].Length > (int)index)
+                {
+                    Interpreter.builtInVariables["gem"]["x"][index] = posX;
+                    Interpreter.builtInVariables["gem"]["y"][index] = posY;
+                }
+            }
         }
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
@@ -37,7 +45,9 @@ namespace pLdevTest
         {
             if (GameScene.playground.player.posX == posX && GameScene.playground.player.posY == posY)
             {
+                Debug.WriteLine("pickup");
                 MissionHandler.Coins = MissionHandler.Coins + 1;
+                Debug.WriteLine(MissionHandler.Coins);
                 PickedUp = true;
             }
         }
