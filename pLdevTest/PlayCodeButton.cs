@@ -82,14 +82,20 @@ namespace pLdevTest
             {
                 if (!over || MissionHandler.MissionPlaying)
                 {
-                    CancelToken[index - 1].Cancel();
-                    RunUpdate = false;
-                    over = true;
-                    GameScene.playground.player.posY = 0;
-                    GameScene.playground.player.posX = 0;
-                    MissionHandler.ResetMission();
+                    try
+                    {
+                        CancelToken[index - 1].Cancel();
+                        RunUpdate = false;
+                        over = true;
+                        GameScene.playground.player.posY = 0;
+                        GameScene.playground.player.posX = 0;
+                        MissionHandler.ResetMission();
+                    }
+                    catch
+                    {
+                        Debug.WriteLine("test");
+                    }
                 }
-
             }
 
             if (RunUpdate)

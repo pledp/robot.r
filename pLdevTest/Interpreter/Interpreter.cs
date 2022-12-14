@@ -305,16 +305,31 @@ namespace pLdevTest
         private static async void HandleLoop(int lineIndex, int stopIndex, string version, GameTime gameTime)
         {
             string currLine = GetInsideParentheses(lines[lineIndex], lineIndex);
+            if(currLine == null)
+            {
+                Debug.WriteLine("ParenError");
+                return;
+            }
 
             double loops = HandleExpression.GetResults(currLine, variables, lineIndex);
             int bracketEnd = FindBracket(lineIndex);
-            if(MissionHandler.Mission == 5)
+            if(bracketEnd == lineIndex)
+            {
+                Debug.WriteLine("BracketError");
+                return;
+            }
+
+            if (MissionHandler.Mission == 5)
             {
                 MissionHandler.MissionComplete = true;
             }
 
             for(int i = 0; i < loops; i++)
             {
+                if(PlayCodeButton.cancelToken[index].IsCancellationRequested)
+                {
+                    return;
+                }
                 await MakeDelay();
                 await RunLines(lines, lineIndex+1, bracketEnd, gameTime, true);
             }
@@ -323,10 +338,24 @@ namespace pLdevTest
         private static async void HandleWhileLoop(int lineIndex, int stopIndex, string version, GameTime gameTime)
         {
             string currLine = GetInsideParentheses(lines[lineIndex], lineIndex);
+            if (currLine == null)
+            {
+                Debug.WriteLine("ParenError");
+                return;
+            }
 
             bool loops = HandleCondition.GetResults(lineIndex, stopIndex, lines);
+
             int bracketEnd = FindBracket(lineIndex);
-            if(MissionHandler.Mission == 6)
+
+            if(bracketEnd == lineIndex)
+            {
+                Debug.WriteLine("BracketError");
+                return;
+            }
+            Debug.WriteLine("thisshouldtprint");
+
+            if (MissionHandler.Mission == 6)
             {
                 MissionHandler.MissionComplete = true;
             }
@@ -334,9 +363,9 @@ namespace pLdevTest
             int x = 0;
             while(true)
             {
-                if (!HandleCondition.GetResults(lineIndex, stopIndex, lines) || x == 1000)
+                if (!HandleCondition.GetResults(lineIndex, stopIndex, lines) || x == 1000 || PlayCodeButton.cancelToken[index].IsCancellationRequested)
                 {
-                    break;
+                    return;
                 };
                 x++;
                 await MakeDelay();
@@ -350,6 +379,10 @@ namespace pLdevTest
         {
             bool ifCondition = false;
             int bracketEnd = FindBracket(lineIndex);
+            if(bracketEnd == lineIndex)
+            {
+                Debug.WriteLine("BracketError");
+            }
             // If "if" and other "elseif" conditions were false, run "elseif" condition
             if (version == "elseif" && !ifConclusion && ifStarted)
             {
@@ -366,7 +399,7 @@ namespace pLdevTest
             {
                 ifCondition = true;
 
-                if (MissionHandler.Mission == 4 && MissionHandler.World == 1)
+                if (MissionHandler.Mission == 4)
                 {
                     MissionHandler.MissionComplete = true;
                 }
@@ -444,15 +477,19 @@ namespace pLdevTest
         {
             try
             {
+                if(!s.Contains("(") || !s.Contains(")"))
+                {
+                    throw new Exception("No parentheses");
+                }
                 string newString;
                 newString = s.Substring(s.IndexOf("(") + 1);
                 newString = newString.Substring(0, newString.LastIndexOf(")"));
-
+                Debug.WriteLine("JJJ");
                 return newString;
             }
-            catch
+            catch(Exception e)
             {
-                Debug.WriteLine("ParenError");
+                Debug.WriteLine("ParenError " + e);
                 codeInput.errorLine = lineIndex;
                 return null;
             }
@@ -468,7 +505,6 @@ namespace pLdevTest
             {
                 if (lines[x].Contains('{') || insideBracket)
                 {
-                    Debug.WriteLine("TEST");
                     if (lines[x].Contains('}'))
                     {
                         nestedBracket--;
@@ -489,18 +525,17 @@ namespace pLdevTest
 
             Debug.WriteLine("BROKENBRACKET");
             codeInput.errorLine = startIndex;
-            return startIndex+3;
+            return startIndex; 
         }
         private static async Task MakeDelay()
         {
             try
             {
-
                 await Task.Delay(CurrentDelay, PlayCodeButton.cancelToken[index]);
             }
             catch(Exception ex)
             {
-                Debug.WriteLine("Emded");
+                Debug.WriteLine("Ended");
             }
             
             CurrentDelay = 0;
