@@ -213,7 +213,7 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Sort the colors.",
-                    "Sort red to Y:1, green to Y:2, blue to Y:3",
+                    "Sort red to Y=1, green to Y=2, blue to Y=3",
                     "if(colorBlock[1].color == color.Red) {"
                 }
             },

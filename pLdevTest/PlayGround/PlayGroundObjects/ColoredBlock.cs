@@ -49,7 +49,7 @@ namespace pLdevTest
 
                 }
 
-                if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.SortLevel)
+                if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.SortLevel && !sorted)
                 {
                     CheckForCollision();
                 }

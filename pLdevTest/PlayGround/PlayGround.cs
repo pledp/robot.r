@@ -134,10 +134,7 @@ namespace pLdevTest
             {
                 foreach (ColoredBlock block in coloredBlocks)
                 {
-                    if(!block.sorted)
-                    {
-                        block.Update(gameTime);
-                    }
+                    block.Update(gameTime);
                 }
             }
 
@@ -380,7 +377,7 @@ namespace pLdevTest
                 case 15:
                     MissionHandler.AmountOfColorBlocks = 22;
                     coloredBlocks = new ColoredBlock[22];
-                    for (int y = 0; y < 23; y++)
+                    for (int y = 0; y < 22; y++)
                     {
                         coloredBlocks[y] = new ColoredBlock(playground.X, playground.Y, y, 5, y);
                     }
