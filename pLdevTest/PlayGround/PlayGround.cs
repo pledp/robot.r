@@ -378,11 +378,11 @@ namespace pLdevTest
                     break;
 
                 case 15:
-                    MissionHandler.AmountOfColorBlocks = 20;
-                    coloredBlocks = new ColoredBlock[20];
-                    for (int y = 0; y < 20; y++)
+                    MissionHandler.AmountOfColorBlocks = 22;
+                    coloredBlocks = new ColoredBlock[22];
+                    for (int y = 0; y < 23; y++)
                     {
-                        coloredBlocks[y] = new ColoredBlock(playground.X, playground.Y, y * -2, 5, y);
+                        coloredBlocks[y] = new ColoredBlock(playground.X, playground.Y, y, 5, y);
                     }
                     break;
             }

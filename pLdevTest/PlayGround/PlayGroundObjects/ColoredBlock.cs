@@ -9,7 +9,6 @@ namespace pLdevTest
     {
         public ColorBlocksEnum blockColor;
         Texture2D color;
-        double moveElapsedTime;
         public bool sorted = false;
         public ColoredBlock(int x, int y, int initialGridPosX, int initialGridPosY, int index)
         {
@@ -52,12 +51,6 @@ namespace pLdevTest
 
                 if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.SortLevel)
                 {
-                    moveElapsedTime += gameTime.ElapsedGameTime.TotalSeconds;
-                    if (moveElapsedTime > 0.2)
-                    {
-                        posX = posX + 1;
-                        moveElapsedTime = 0;
-                    }
                     CheckForCollision();
                 }
             }

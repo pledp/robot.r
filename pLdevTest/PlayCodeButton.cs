@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -18,6 +19,7 @@ namespace pLdevTest
         private Rectangle cancelPos;
 
         private Texture2D playButtonTexture;
+        private Texture2D playButtonTexturePressed;
         private Texture2D cancelButtonTexture;
 
         public static List<CancellationTokenSource> CancelToken;
@@ -36,17 +38,19 @@ namespace pLdevTest
 
         public PlayCodeButton(GraphicsDevice graphicsDevice, int buttonX, int buttonY)
         {
-            playButtonTexture = new Texture2D(graphicsDevice, 1, 1);
-            playButtonTexture.SetData(new[] { Color.Green });
-
             cancelButtonTexture = new Texture2D(graphicsDevice, 1, 1);
             cancelButtonTexture.SetData(new[] { Color.Red });
 
-            buttonPos = new Rectangle(buttonX, buttonY, 30, 30);
-            cancelPos = new Rectangle(buttonX, buttonY+20 * 2, 30, 30);
+            buttonPos = new Rectangle(buttonX, buttonY, 60, 60);
+            cancelPos = new Rectangle(buttonX, buttonY+30 * 2, 30, 30);
 
             CancelToken = new List<CancellationTokenSource>();
             cancelToken = new List<CancellationToken>();
+        }
+        public void LoadContent(ContentManager Content)
+        {
+            playButtonTexture = Content.Load<Texture2D>("playButton");
+            playButtonTexturePressed = Content.Load<Texture2D>("playButtonPressed");
         }
 
         public void Update(GraphicsDeviceManager graphics, GameTime gameTime, codeInput inputText)
@@ -110,7 +114,17 @@ namespace pLdevTest
         }
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
-            spriteBatch.Draw(playButtonTexture, buttonPos, Color.White);
+            Texture2D playButton;
+            if (!over)
+            {
+                playButton = playButtonTexturePressed;
+            }
+            else
+            {
+                playButton = playButtonTexture;
+            }
+
+            spriteBatch.Draw(playButton, buttonPos, Color.White);
             spriteBatch.Draw(cancelButtonTexture, cancelPos, Color.White);
         }
     }

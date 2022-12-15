@@ -87,7 +87,7 @@ namespace pLdevTest
             typing.Add("");
             lineCounter.Add(numberOfLines);
 
-            codeEditorOffset = new Vector2(70, 10);
+            codeEditorOffset = new Vector2(80, 10);
 
         }
 
@@ -99,6 +99,7 @@ namespace pLdevTest
             whiteRectangle.SetData(new[] { Color.White });
 
             playButton = new PlayCodeButton(graphicsDevice, 10, 10);
+            playButton.LoadContent(Content);
 
             // Initialize bag for variables
             variablesBag = new BuildBag(graphicsDevice, 250, "VARIABLES", 0, "variables");
