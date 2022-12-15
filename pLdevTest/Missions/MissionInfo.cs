@@ -84,7 +84,6 @@ namespace pLdevTest
             missionCounterText[3] = MissionHandler.WorldMissionCount[MissionHandler.World].ToString();
 
             // Draw frame
-
             _spriteBatch.DrawString(GlobalThings.font, MissionHandler.Missions[MissionHandler.Mission], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 410), PlayGround.pgColor);
 
             // Draw clipboard and paper

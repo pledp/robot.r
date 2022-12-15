@@ -98,9 +98,15 @@ namespace pLdevTest
                 default:
                     // Error handling
                     codeInput.errorLine = lineIndex;
-                    Debug.WriteLine("OperatorError");
+                    codeInput.errorText = "Operator error. (Maybe a misstyped operator?)";
                     return false;
                     break;
+            }
+            if (arguments.Count == 1)
+            {
+                codeInput.errorLine = lineIndex;
+                codeInput.errorText = "Spacing error. Use spaces between expressions.";
+                return false;
             }
             bool ifCondition = false;
             switch (elements[0])

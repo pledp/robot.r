@@ -4,5 +4,6 @@
     EnemyLevel,
     FlagLevel,
     Default,
-    KillLevel
+    KillLevel,
+    SortLevel
 }

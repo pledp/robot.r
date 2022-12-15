@@ -40,7 +40,7 @@ namespace pLdevTest
                             switch (variableName)
                             {
                                 case "x":
-                                    GameScene.playground.player.posX = Interpreter.builtInVariables["robot"]["x"][0];
+                                    GameScene.playground.player.posX = (int)Interpreter.builtInVariables["robot"]["x"][0];
                                     if (MissionHandler.Mission == 1)
                                     {
                                         MissionHandler.MissionComplete = true;
@@ -48,7 +48,7 @@ namespace pLdevTest
                                     break;
 
                                 case "y":
-                                    GameScene.playground.player.posY = Interpreter.builtInVariables["robot"]["y"][0];
+                                    GameScene.playground.player.posY = (int)Interpreter.builtInVariables["robot"]["y"][0];
                                     if (MissionHandler.Mission == 0)
                                     {
                                         MissionHandler.MissionComplete = true;
@@ -61,22 +61,30 @@ namespace pLdevTest
                     case "enemy":
                         if (Interpreter.builtInVariables["enemy"].ContainsKey(variableName))
                         {
-                            Interpreter.builtInVariables["enemy"][variableName][(int)index] = (int)value;
-                            switch (variableName)
+                            try
                             {
-                                case "x":
-                                    if (GameScene.playground.enemies[(int)index] != null)
-                                    {
-                                        GameScene.playground.enemies[(int)index].posX = Interpreter.builtInVariables["enemy"]["x"][(int)index];
-                                    }
-                                    break;
+                                Interpreter.builtInVariables["enemy"][variableName][(int)index] = (int)value;
+                                switch (variableName)
+                                {
+                                    case "x":
+                                        if (GameScene.playground.enemies[(int)index] != null)
+                                        {
+                                            GameScene.playground.enemies[(int)index].posX = (int)Interpreter.builtInVariables["enemy"]["x"][(int)index];
+                                        }
+                                        break;
 
-                                case "y":
-                                    if (GameScene.playground.enemies[(int)index] != null)
-                                    {
-                                        GameScene.playground.enemies[(int)index].posY = Interpreter.builtInVariables["enemy"]["y"][(int)index];
-                                    }
-                                    break;
+                                    case "y":
+                                        if (GameScene.playground.enemies[(int)index] != null)
+                                        {
+                                            GameScene.playground.enemies[(int)index].posY = (int)Interpreter.builtInVariables["enemy"]["y"][(int)index];
+                                        }
+                                        break;
+                                }
+                            }
+                            catch
+                            {
+                                codeInput.errorLine = lineIndex;
+                                codeInput.errorText = "Indexing error. Index out of range.";
                             }
                         }
                         break;
@@ -85,26 +93,65 @@ namespace pLdevTest
                         Debug.WriteLine("gem");
                         if (Interpreter.builtInVariables["gem"].ContainsKey(variableName))
                         {
-                            Interpreter.builtInVariables["gem"][variableName][(int)index] = (int)value;
-                            switch (variableName)
+                            try
                             {
-                                case "x":
-                                    if (GameScene.playground.gems[(int)index] != null)
-                                    {
-                                        GameScene.playground.gems[(int)index].posX = Interpreter.builtInVariables["gem"]["x"][(int)index];
-                                    }
-                                    break;
+                                Interpreter.builtInVariables["gem"][variableName][(int)index] = (int)value;
+                                switch (variableName)
+                                {
+                                    case "x":
+                                        if (GameScene.playground.gems[(int)index] != null)
+                                        {
+                                            GameScene.playground.gems[(int)index].posX = (int)Interpreter.builtInVariables["gem"]["x"][(int)index];
+                                        }
+                                        break;
 
-                                case "y":
-                                    if (GameScene.playground.gems[(int)index] != null)
-                                    {
-                                        GameScene.playground.gems[(int)index].posY = Interpreter.builtInVariables["gem"]["y"][(int)index];
-                                    }
-                                    break;
+                                    case "y":
+                                        if (GameScene.playground.gems[(int)index] != null)
+                                        {
+                                            GameScene.playground.gems[(int)index].posY = (int)Interpreter.builtInVariables["gem"]["y"][(int)index];
+                                        }
+                                        break;
+                                }
+                            }
+                            catch
+                            {
+                                codeInput.errorLine = lineIndex;
+                                codeInput.errorText = "Indexing error. Index out of range.";
                             }
                         }
                         break;
 
+                    case "colorBlock":
+                        Debug.WriteLine("block");
+                        if (Interpreter.builtInVariables["colorBlock"].ContainsKey(variableName))
+                        {
+                            try
+                            {
+                                Interpreter.builtInVariables["colorBlock"][variableName][(int)index] = (int)value;
+                                switch (variableName)
+                                {
+                                    case "x":
+                                        if (GameScene.playground.coloredBlocks[(int)index] != null)
+                                        {
+                                            GameScene.playground.coloredBlocks[(int)index].posX = (int)Interpreter.builtInVariables["colorBlock"]["x"][(int)index];
+                                        }
+                                        break;
+
+                                    case "y":
+                                        if (GameScene.playground.coloredBlocks[(int)index] != null)
+                                        {
+                                            GameScene.playground.coloredBlocks[(int)index].posY = (int)Interpreter.builtInVariables["colorBlock"]["y"][(int)index];
+                                        }
+                                        break;
+                                }
+                            }
+                            catch
+                            {
+                                codeInput.errorLine = lineIndex;
+                                codeInput.errorText = "Indexing error. Index out of range.";
+                            }
+                        }
+                        break;
                 }
                 return true;
             } else

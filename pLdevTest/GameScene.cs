@@ -109,7 +109,6 @@ namespace pLdevTest
             }
 
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
-
         }
     }
 }

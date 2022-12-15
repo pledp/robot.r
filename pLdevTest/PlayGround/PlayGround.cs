@@ -29,6 +29,7 @@ namespace pLdevTest
 
         public Gem[] gems;
         public EnemyBlock[] enemies;
+        public ColoredBlock[] coloredBlocks;
         public List<Bullet> bullets;
 
         Texture2D lightMask;
@@ -128,6 +129,18 @@ namespace pLdevTest
 
                 }
             }
+
+            if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.SortLevel && coloredBlocks != null)
+            {
+                foreach (ColoredBlock block in coloredBlocks)
+                {
+                    if(!block.sorted)
+                    {
+                        block.Update(gameTime);
+                    }
+                }
+            }
+
             else if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.FlagLevel)
             {
                 finishFlag.Update(gameTime);
@@ -227,6 +240,18 @@ namespace pLdevTest
                     
                 }
             }
+
+            if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.SortLevel && coloredBlocks != null)
+            {
+                foreach (ColoredBlock block in coloredBlocks)
+                {
+                    if(!block.sorted)
+                    {
+                        block.Draw(_spriteBatch, gameTime, _graphics);
+                    }
+                }
+            }
+
             else if ((MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.EnemyLevel || MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.KillLevel) && enemies != null)
             {
                 foreach (EnemyBlock enemy in enemies)
@@ -351,6 +376,15 @@ namespace pLdevTest
                     for (int y = 0; y < 20; y++)
                     {
                         enemies[y] = new EnemyBlock(playground.X, playground.Y, 21 + (y * 2), rand.Next(0,16), y);
+                    }
+                    break;
+
+                case 15:
+                    coloredBlocks = new ColoredBlock[10];
+                    MissionHandler.AmountOfColorBlocks = 10;
+                    for (int y = 0; y < 10; y++)
+                    {
+                        coloredBlocks[y] = new ColoredBlock(playground.X, playground.Y, y * -2, 5, y);
                     }
                     break;
             }

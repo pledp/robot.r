@@ -24,7 +24,10 @@ namespace pLdevTest
         public static int KilledEnemies;
         public static int AmountOfEnemies;
 
-        private static int mission = 14;
+        public static int AmountOfColorBlocks;
+        public static int SortedColorBlocks;
+
+        private static int mission = 15;
         public static int CurrWorldMission = 1;
         public static int World = 0;
         public static int[] WorldMissionCount =
@@ -57,7 +60,8 @@ namespace pLdevTest
             "Covered",
             "Where?",
             "Pew Pew",
-            "Ph"
+            "Sorter",
+            "BOSS"
         };
         public static string[] Missions
         {
@@ -81,7 +85,8 @@ namespace pLdevTest
             MissionTypes.CoinLevel,
             MissionTypes.FlagLevel,
             MissionTypes.KillLevel,
-            MissionTypes.KillLevel
+            MissionTypes.SortLevel,
+            MissionTypes.Default,
         };
 
         public readonly static String[,][] MissionsInfoText =
@@ -205,7 +210,13 @@ namespace pLdevTest
             {
                 new[]
                 {
-                    "Placeholder.",
+                    "PASS: Sort the colors.",
+                }
+            },
+            {
+                new[]
+                {
+                    "PASS: Kill the boss.",
                 }
             },
         };
@@ -330,6 +341,12 @@ namespace pLdevTest
                     PlayGround.pgColor,
                 }
             },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
+                }
+            },
         };
 
         public static void CheckForMission()
@@ -345,7 +362,15 @@ namespace pLdevTest
                 }
             }
 
-            if(MissionCategory[Mission] == MissionTypes.CoinLevel)
+            if (MissionCategory[Mission] == MissionTypes.SortLevel)
+            {
+                if (AmountOfColorBlocks == SortedColorBlocks)
+                {
+                    missionComplete = true;
+                }
+            }
+
+            if (MissionCategory[Mission] == MissionTypes.CoinLevel)
             {
                 if (AmountOfCoins == Coins)
                 {
@@ -450,8 +475,12 @@ namespace pLdevTest
             AmountOfEnemies = 0;
             KilledEnemies = 0;
 
+            SortedColorBlocks = 0;
+            AmountOfColorBlocks = 0;
+
             GameScene.playground.gems = null;
             GameScene.playground.enemies = null;
+            GameScene.playground.coloredBlocks = null;
 
             if (MissionCategory[mission] == MissionTypes.EnemyLevel)
             {
@@ -467,6 +496,10 @@ namespace pLdevTest
                 GameScene.playground.CreateLevel(mission);
             }
             else if (MissionCategory[mission] == MissionTypes.KillLevel)
+            {
+                GameScene.playground.CreateLevel(mission);
+            }
+            else if (MissionCategory[mission] == MissionTypes.SortLevel)
             {
                 GameScene.playground.CreateLevel(mission);
             }

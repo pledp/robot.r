@@ -12,6 +12,7 @@ using info.lundin.math;
 using Microsoft.Xna.Framework.Input;
 using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
+using System.Xml.Schema;
 
 namespace pLdevTest
 {
@@ -41,6 +42,8 @@ namespace pLdevTest
 
                 // If expression is a variable that is declared, set value to variables value
                 expressions[i] = GetVariableValue(expressions[i], variables, lineIndex);
+
+                expressions[i] = GetClassValue(expressions[i], variables, lineIndex);
 
                 // Check if text matches built in functions
                 string splitArrayContainer = expressions[i].Split('(')[0];
@@ -108,9 +111,8 @@ namespace pLdevTest
             }
             catch (Exception ex)
             {
-                // TODO: 
                 codeInput.errorLine = lineIndex;
-                Debug.WriteLine(lineIndex);
+                codeInput.errorText = "Assignment error. (Maybe a typo or a unassigned variable?)";
             }
 
             return value;   
@@ -129,7 +131,6 @@ namespace pLdevTest
             {
                 string variableName = expression.Split(".")[0];
                 variableName = variableName.Split(new string[] { "[", "]" }, StringSplitOptions.None)[0];
-                Debug.WriteLine("OBJECT: " + variableName);
 
                 string variableName2 = expression.Split(".")[1];
                 Debug.WriteLine(variableName2);
@@ -143,11 +144,10 @@ namespace pLdevTest
                             string splitBySquareBrackets = expression.Split(new string[] { "[", "]" }, StringSplitOptions.None)[1];
                             variableName = variableName.Split("[")[0];
 
-                            Debug.WriteLine(splitBySquareBrackets);
                             index = GetResults(splitBySquareBrackets, Interpreter.variables, lineIndex);
-                            Debug.WriteLine(index);
                         }
                         string value = Interpreter.builtInVariables[variableName][variableName2][(int)index].ToString();
+
                         return value;
                     }
                 }
@@ -211,6 +211,50 @@ namespace pLdevTest
                 }
             }
             return sections.ToArray();
+        }
+
+        private static string GetClassValue(string expression, Dictionary<string, double> variables, int lineIndex)
+        {
+            string value = expression;
+            if (value.Contains("."))
+            {
+                string className = expression.Split(".")[0];
+                string variableName = expression.Split(".")[1];
+
+                switch (className)
+                {
+                    case "color":
+                        switch (variableName)
+                        {
+                            case "Red":
+                                value = "1";
+                                break;
+                            case "Green":
+                                value = "2";
+                                break;
+                            case "Blue":
+                                value = "3";
+                                break;
+                        }
+                        break;
+                }
+            } 
+            else
+            {
+                switch (value)
+                {
+                    case "Red":
+                        value = "1";
+                        break;
+                    case "Green":
+                        value = "2";
+                        break;
+                    case "Blue":
+                        value = "3";
+                        break;
+                }
+            }
+            return value;
         }
     }
 }

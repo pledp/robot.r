@@ -70,6 +70,9 @@ namespace pLdevTest
                 // Reset playground
                 GameScene.playground.player.posY = 0;
                 GameScene.playground.player.posX = 0;
+                codeInput.madeAlready = false;
+                codeInput.errorIndicator = null;
+
                 MissionHandler.ResetMission();
                 MissionHandler.MissionPlaying = true;
 

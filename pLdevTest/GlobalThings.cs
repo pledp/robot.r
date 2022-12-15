@@ -18,6 +18,9 @@ namespace pLdevTest
         public static SpriteFont font;
         public static Texture2D gemTexture;
         public static Texture2D enemyTexture;
+        public static Texture2D frameTexture;
+        public static Texture2D blueTexture;
+        public static Texture2D greenTexture;
         public static void LoadContent(ContentManager Content, GraphicsDevice _graphics)
         {
             font = Content.Load<SpriteFont>("font");
@@ -27,7 +30,14 @@ namespace pLdevTest
             orangeColor = new Color(255, 165, 0);
 
             enemyTexture = new Texture2D(_graphics, 1, 1);
-            enemyTexture.SetData(new[] { Color.Green });
+            enemyTexture.SetData(new[] { Color.Red });
+            greenTexture = new Texture2D(_graphics, 1, 1);
+            greenTexture.SetData(new[] { Color.Green });
+            blueTexture = new Texture2D(_graphics, 1, 1);
+            blueTexture.SetData(new[] { Color.Blue });
+
+            frameTexture = new Texture2D(_graphics, 1, 1);
+            frameTexture.SetData(new[] { new Color(50, 41, 47) });
         }
         public static bool EnterArea(Rectangle area, MouseState mouseState)
         {

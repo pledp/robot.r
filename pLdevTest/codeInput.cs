@@ -18,6 +18,9 @@ namespace pLdevTest
         
         public static int readingLine;
         public static int errorLine = -1;
+        public static ErrorIndicator errorIndicator;
+        public static bool madeAlready;
+        public static string errorText;
 
         private string typeWriterString;
         private string typeWriterStringType;
@@ -57,7 +60,7 @@ namespace pLdevTest
         private BuildBag consoleBag;
 
         private RasterizerState _rasterizerState = new RasterizerState() { ScissorTestEnable = true };
-        private Vector2 _scrollOffset = Vector2.Zero;
+        public static Vector2 _scrollOffset = Vector2.Zero;
         private Matrix _matrix = Matrix.CreatePerspective(500, 50, 1, 2);
         private MouseState mouseState;
         private MouseState lastMouseState;
@@ -171,6 +174,11 @@ namespace pLdevTest
             playButton.Update(graphics, gameTime, this);
             variablesBag.Update(graphics.GraphicsDevice, gameTime);
             consoleBag.Update(graphics.GraphicsDevice, gameTime);
+
+            if(errorIndicator != null)
+            {
+                errorIndicator.Update(gameTime);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
@@ -195,7 +203,14 @@ namespace pLdevTest
                 origin.X -= rectangle.X/ 2 - size.X / 2;
 
                 lineCounterOffset = Convert.ToInt32(GlobalThings.font.MeasureString(lineCounter[line-1].ToString()).X);
-                // Draw code
+
+                // If current line has an error, make a error indicator.
+                if(line == errorLine + 1 && !madeAlready)
+                {
+                    errorIndicator = new ErrorIndicator(new Vector2(80 + codeEditorOffset.X + GlobalThings.font.MeasureString(formattedCode[line-1]).X, line * 50 + codeEditorOffset.Y - 40), errorText, "Error:");
+                    madeAlready = true;
+                }
+
                 spriteBatch.DrawString(GlobalThings.font, formattedCode[line - 1], new Vector2(60 + codeEditorOffset.X, line * 50 + codeEditorOffset.Y - 50), line == errorLine+1 ? Color.Red : Color.White);
 
                 // Draw line counter
@@ -214,6 +229,10 @@ namespace pLdevTest
                     break;
             }
             spriteBatch.Draw(whiteRectangle, new Rectangle((cursorOffset + 40 + Convert.ToInt32(codeEditorOffset.X)) + (lineIndent[currentLine] * spaceSize), currentLine * 50 + Convert.ToInt32(codeEditorOffset.Y), 10, Convert.ToInt32(GlobalThings.font.MeasureString("A").Y)), Color.White);
+            if (errorIndicator != null)
+            {
+                errorIndicator.Draw(spriteBatch);
+            }
             spriteBatch.End();
             spriteBatch.Begin();
 

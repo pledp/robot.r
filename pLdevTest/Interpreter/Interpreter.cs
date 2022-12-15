@@ -132,7 +132,7 @@ namespace pLdevTest
             "shoot"
         };
 
-        public static Dictionary<string, Dictionary<string, int[]>> builtInVariables;
+        public static Dictionary<string, Dictionary<string, object[]>> builtInVariables;
 
         public static readonly string[] operators =
         {
@@ -148,7 +148,7 @@ namespace pLdevTest
         };
 
         public static Dictionary<string, double> variables;
-        public static Dictionary<string, int[]> robot;
+        public static Dictionary<string, object[]> robot;
         public static List<string> consoleText;
         public static int CurrentDelay;
         public static int defaultDelay;
@@ -164,19 +164,19 @@ namespace pLdevTest
             variables = new Dictionary<string, double>();
 
             // Create a dictionary of dictionaries for built in objects. Key of the dictionary holds dictionaries of the built in variables for the objects.
-            builtInVariables = new Dictionary<string, Dictionary<string, int[]>>();
+            builtInVariables = new Dictionary<string, Dictionary<string, object[]>>();
 
-            robot = new Dictionary<string, int[]>();
+            robot = new Dictionary<string, object[]>();
 
-            robot.Add("x", new int[] {0});
-            robot.Add("y", new int[] {0});
+            robot.Add("x", new object[] {0});
+            robot.Add("y", new object[] {0});
             builtInVariables.Add("robot", robot);
 
             if (GameScene.playground.enemies != null)
             {
-                var enemy = new Dictionary<string, int[]>();
-                int[] xs = new int[GameScene.playground.enemies.Length];
-                int[] ys = new int[GameScene.playground.enemies.Length];
+                var enemy = new Dictionary<string, object[]>();
+                object[] xs = new object[GameScene.playground.enemies.Length];
+                object[] ys = new object[GameScene.playground.enemies.Length];
 
                 for (int x = 0; x < GameScene.playground.enemies.Length; x++)
                 {
@@ -191,9 +191,9 @@ namespace pLdevTest
             }
             if (GameScene.playground.gems != null)
             {
-                var gems = new Dictionary<string, int[]>();
-                int[] xs = new int[GameScene.playground.gems.Length];
-                int[] ys = new int[GameScene.playground.gems.Length];
+                var gems = new Dictionary<string, object[]>();
+                object[] xs = new object[GameScene.playground.gems.Length];
+                object[] ys = new object[GameScene.playground.gems.Length];
 
                 for (int x = 0; x < GameScene.playground.gems.Length; x++)
                 {
@@ -205,6 +205,26 @@ namespace pLdevTest
                 gems.Add("y", ys);
 
                 builtInVariables.Add("gem", gems);
+            }
+            if (GameScene.playground.coloredBlocks != null)
+            {
+                var coloredBlocks = new Dictionary<string, object[]>();
+                object[] xs = new object[GameScene.playground.coloredBlocks.Length];
+                object[] ys = new object[GameScene.playground.coloredBlocks.Length];
+                object[] colors = new object[GameScene.playground.coloredBlocks.Length];
+
+                for (int x = 0; x < GameScene.playground.coloredBlocks.Length; x++)
+                {
+                    xs[x] = GameScene.playground.coloredBlocks[x].posX;
+                    ys[x] = GameScene.playground.coloredBlocks[x].posY;
+                    colors[x] = GameScene.playground.coloredBlocks[x].blockColor;
+                }
+
+                coloredBlocks.Add("x", xs);
+                coloredBlocks.Add("y", ys);
+                coloredBlocks.Add("color", colors);
+
+                builtInVariables.Add("colorBlock", coloredBlocks);
             }
 
 
@@ -283,11 +303,10 @@ namespace pLdevTest
 
             else if(qualify && lineIndex == lastIndex-1)
             {
-                Debug.WriteLine("end: " + lines[lineIndex]);
                 codeInput.readingLine = lineIndex + 1;
                 PlayCodeButton.unpressableButton = false;
 
-                if(MissionHandler.MissionCategory[MissionHandler.Mission] != MissionTypes.EnemyLevel || MissionHandler.MissionCategory[MissionHandler.Mission] != MissionTypes.KillLevel)
+                if(MissionHandler.MissionCategory[MissionHandler.Mission] != MissionTypes.EnemyLevel || MissionHandler.MissionCategory[MissionHandler.Mission] != MissionTypes.KillLevel || MissionHandler.MissionCategory[MissionHandler.Mission] != MissionTypes.SortLevel)
                 {
                     MissionHandler.CheckForMission();
                 }
@@ -382,6 +401,7 @@ namespace pLdevTest
             if(bracketEnd == lineIndex)
             {
                 Debug.WriteLine("BracketError");
+                return;
             }
             // If "if" and other "elseif" conditions were false, run "elseif" condition
             if (version == "elseif" && !ifConclusion && ifStarted)
@@ -439,10 +459,8 @@ namespace pLdevTest
 
             if (key.Contains("."))
             {
-                Debug.WriteLine("object");
                 builtInVariableComplete = HandleBuiltInVariables.GetResults(key, value, lineIndex);
             }
-            Debug.WriteLine("ASSING");
 
             // If variable does not exist, make new variable, otherwise update existing variable value.
             if (!builtInVariableComplete)
@@ -491,6 +509,8 @@ namespace pLdevTest
             {
                 Debug.WriteLine("ParenError " + e);
                 codeInput.errorLine = lineIndex;
+                codeInput.errorText = "Parentheses error. (Maybe a missing parentheses?)";
+
                 return null;
             }
         }
@@ -525,6 +545,8 @@ namespace pLdevTest
 
             Debug.WriteLine("BROKENBRACKET");
             codeInput.errorLine = startIndex;
+            codeInput.errorText = "Bracket error. (Maybe a missing bracket?)";
+
             return startIndex; 
         }
         private static async Task MakeDelay()

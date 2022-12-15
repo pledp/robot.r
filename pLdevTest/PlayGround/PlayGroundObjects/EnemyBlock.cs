@@ -69,7 +69,7 @@ namespace pLdevTest
 
         public void Draw(SpriteBatch _spriteBatch, GameTime gameTime, GraphicsDeviceManager _graphics)
         {
-            _spriteBatch.Draw(GlobalThings.enemyTexture, new Rectangle((int)objectPos.X + (posX * 25), (int)objectPos.Y + (posY * 25), objectWidth, objectHeight), Color.Green * opacity);
+            _spriteBatch.Draw(GlobalThings.enemyTexture, new Rectangle((int)objectPos.X + (posX * 25), (int)objectPos.Y + (posY * 25), objectWidth, objectHeight), Color.Red * opacity);
         }
 
         public void CheckForCollision()
