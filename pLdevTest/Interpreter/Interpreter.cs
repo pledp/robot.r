@@ -217,7 +217,7 @@ namespace pLdevTest
                 {
                     xs[x] = GameScene.playground.coloredBlocks[x].posX;
                     ys[x] = GameScene.playground.coloredBlocks[x].posY;
-                    colors[x] = GameScene.playground.coloredBlocks[x].blockColor;
+                    colors[x] = "color." + GameScene.playground.coloredBlocks[x].blockColor;
                 }
 
                 coloredBlocks.Add("x", xs);

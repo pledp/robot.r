@@ -239,21 +239,6 @@ namespace pLdevTest
                         break;
                 }
             } 
-            else
-            {
-                switch (value)
-                {
-                    case "Red":
-                        value = "1";
-                        break;
-                    case "Green":
-                        value = "2";
-                        break;
-                    case "Blue":
-                        value = "3";
-                        break;
-                }
-            }
             return value;
         }
     }

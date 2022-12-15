@@ -150,6 +150,11 @@ namespace pLdevTest
                         _spriteBatch.DrawString(GlobalThings.font, MissionHandler.KilledEnemies + "/" + MissionHandler.AmountOfEnemies, new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Black);
                         overallOffset += 50;
                     }
+                    if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.SortLevel)
+                    {
+                        _spriteBatch.DrawString(GlobalThings.font, MissionHandler.SortedColorBlocks + "/" + MissionHandler.AmountOfColorBlocks, new Vector2(_graphics.GraphicsDevice.Viewport.Width - 560, 560 + overallOffset), Color.Black);
+                        overallOffset += 50;
+                    }
 
                     if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.EnemyLevel)
                     {

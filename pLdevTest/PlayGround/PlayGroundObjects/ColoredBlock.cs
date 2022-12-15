@@ -73,7 +73,30 @@ namespace pLdevTest
         {
             if (MissionHandler.MissionPlaying)
             {
-                if(posY == 0)
+                bool foundCollision = false;
+                if (blockColor == ColorBlocksEnum.Red)
+                {
+                    if (posY == 1)
+                    {
+                        foundCollision = true;
+                    }
+                }
+                else if (blockColor == ColorBlocksEnum.Green)
+                {
+                    if (posY == 2)
+                    {
+                        foundCollision = true;
+                    }
+                }
+                else if (blockColor == ColorBlocksEnum.Blue)
+                {
+                    if (posY == 3)
+                    {
+                        foundCollision = true;
+                    }
+                }
+
+                if(foundCollision)
                 {
                     MissionHandler.SortedColorBlocks++;
                     sorted = true;

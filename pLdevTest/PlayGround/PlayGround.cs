@@ -245,10 +245,7 @@ namespace pLdevTest
             {
                 foreach (ColoredBlock block in coloredBlocks)
                 {
-                    if(!block.sorted)
-                    {
-                        block.Draw(_spriteBatch, gameTime, _graphics);
-                    }
+                    block.Draw(_spriteBatch, gameTime, _graphics);
                 }
             }
 
@@ -311,6 +308,7 @@ namespace pLdevTest
         }
         public void CreateLevel(int level)
         {
+            // Setup levels
             switch (level)
             {
                 case 8:
@@ -380,9 +378,9 @@ namespace pLdevTest
                     break;
 
                 case 15:
-                    coloredBlocks = new ColoredBlock[10];
-                    MissionHandler.AmountOfColorBlocks = 10;
-                    for (int y = 0; y < 10; y++)
+                    MissionHandler.AmountOfColorBlocks = 20;
+                    coloredBlocks = new ColoredBlock[20];
+                    for (int y = 0; y < 20; y++)
                     {
                         coloredBlocks[y] = new ColoredBlock(playground.X, playground.Y, y * -2, 5, y);
                     }

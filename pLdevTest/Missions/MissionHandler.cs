@@ -171,6 +171,7 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Collect all the gems.",
+                    "gem[1].x = 5"
                 }
             },
             {
@@ -185,6 +186,7 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Survive",
+                    "enemy[2].y = 5"
                 }
             },
             {
@@ -211,6 +213,8 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Sort the colors.",
+                    "Sort red to Y:1, green to Y:2, blue to Y:3",
+                    "if(colorBlock[1].color == color.Red) {"
                 }
             },
             {
@@ -299,6 +303,7 @@ namespace pLdevTest
                 new[]
                 {
                     PlayGround.pgColor,
+                    GlobalThings.orangeColor,
                 }
             },
             {
@@ -306,6 +311,13 @@ namespace pLdevTest
                 {
                     PlayGround.pgColor,
                     Color.Black,
+                    GlobalThings.orangeColor,
+                }
+            },
+            {
+                new[]
+                {
+                    PlayGround.pgColor,
                     GlobalThings.orangeColor,
                 }
             },
@@ -325,12 +337,6 @@ namespace pLdevTest
                 new[]
                 {
                     PlayGround.pgColor,
-                }
-            },
-            {
-                new[]
-                {
-                    PlayGround.pgColor,
                     Color.Black,
                     GlobalThings.orangeColor,
                 }
@@ -339,6 +345,8 @@ namespace pLdevTest
                 new[]
                 {
                     PlayGround.pgColor,
+                    Color.Black,
+                    GlobalThings.orangeColor,
                 }
             },
             {
