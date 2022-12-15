@@ -190,6 +190,13 @@ namespace pLdevTest
 
             Color printColor;
             for (int x = 0; x < 22; x++)
+            {
+                for (int y = 0; y < 16; y++)
+                {
+                    _spriteBatch.Draw(pgTexture, new Rectangle((int)tilesMovement[x, y].X + 20, (int)tilesMovement[x, y].Y + 20, 25, 25), Color.Black * 0.5f);
+                }
+            }
+            for (int x = 0; x < 22; x++)
 {
                 for(int y = 0; y < 16; y++)
                 {
