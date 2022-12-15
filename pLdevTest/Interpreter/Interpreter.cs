@@ -384,6 +384,10 @@ namespace pLdevTest
             {
                 if (!HandleCondition.GetResults(lineIndex, stopIndex, lines) || x == 1000 || PlayCodeButton.cancelToken[index].IsCancellationRequested)
                 {
+                    break;
+                };
+                if (PlayCodeButton.cancelToken[index].IsCancellationRequested)
+                {
                     return;
                 };
                 x++;
