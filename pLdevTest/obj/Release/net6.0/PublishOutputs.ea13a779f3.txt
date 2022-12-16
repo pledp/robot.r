@@ -1,5 +1,15 @@
 C:\Users\lasse\Downloads\testbuildgame\pLdevTest.exe
+C:\Users\lasse\Downloads\testbuildgame\Content/clipboard.xnb
+C:\Users\lasse\Downloads\testbuildgame\Content/effect1.xnb
 C:\Users\lasse\Downloads\testbuildgame\Content/font.xnb
+C:\Users\lasse\Downloads\testbuildgame\Content/gem.xnb
+C:\Users\lasse\Downloads\testbuildgame\Content/lightmask.xnb
+C:\Users\lasse\Downloads\testbuildgame\Content/MaskShader.xnb
+C:\Users\lasse\Downloads\testbuildgame\Content/playButton.xnb
+C:\Users\lasse\Downloads\testbuildgame\Content/playButtonPressed.xnb
+C:\Users\lasse\Downloads\testbuildgame\Content/robot.xnb
+C:\Users\lasse\Downloads\testbuildgame\Content/smallerFont.xnb
+C:\Users\lasse\Downloads\testbuildgame\Content/transistionMask.xnb
 C:\Users\lasse\Downloads\testbuildgame\pLdevTest.dll
 C:\Users\lasse\Downloads\testbuildgame\pLdevTest.deps.json
 C:\Users\lasse\Downloads\testbuildgame\pLdevTest.runtimeconfig.json

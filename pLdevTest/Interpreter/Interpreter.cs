@@ -55,7 +55,7 @@ INCLUDES (WORK IN PROGRESS):
     - Logical operators
         - ||, the OR operator checks if 2 or more arguments are true, if ANY of them are true, return true for the entire segment.
             DEMO:
-                if(5 == 1 || 6 == 6) {
+                if(5==1 || 6 == 6) {
                     print("Hello, World!")
                 }
 
@@ -96,16 +96,6 @@ INCLUDES (WORK IN PROGRESS):
     DEMO: 
         robot.x = 5
         test = robot.y
-
-DEMO: 
-    foo = 50
-    dev = sqrt(sqrt(50))
-    if(foo != 50) {
-        x = dev
-    }
-    elseif(foo == 50) {
-        x = dev * 5
-    }
 */
 
 namespace pLdevTest
@@ -136,10 +126,10 @@ namespace pLdevTest
 
         public static readonly string[] operators =
         {
-            "== ",
-            "!= ",
-            "< ",
-            "> "
+            "==",
+            "!=",
+            "<",
+            ">"
         };
         public static readonly string[] initialSplit =
         {
@@ -153,8 +143,6 @@ namespace pLdevTest
         public static int CurrentDelay;
         public static int defaultDelay;
         static int lastIndex;
-
-        static List<Task> tasks;
 
         static int index;
 

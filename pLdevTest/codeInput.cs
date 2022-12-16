@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 
 namespace pLdevTest
@@ -77,6 +78,10 @@ namespace pLdevTest
             cursorOffset = 0;
 
             fontGlyphs = GlobalThings.font.GetGlyphs();
+            foreach(KeyValuePair<char, SpriteFont.Glyph> c in fontGlyphs)
+            {
+                Debug.WriteLine(c);
+            }
 
             size = new Vector2();
             pos = new Vector2();
@@ -185,7 +190,6 @@ namespace pLdevTest
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
             //spriteBatch.DrawString(GlobalThings.font, typeWriterStringType, new Vector2(graphics.GraphicsDevice.Viewport.Width / 2 - GlobalThings.font.MeasureString(typeWriterString).X / 2, graphics.GraphicsDevice.Viewport.Height / 2 - GlobalThings.font.MeasureString(typeWriterString).Y / 2), Color.Black);
-
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, rasterizerState: _rasterizerState, transformMatrix: _matrix);
             spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(0, 0, graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
@@ -212,7 +216,21 @@ namespace pLdevTest
                     madeAlready = true;
                 }
 
-                spriteBatch.DrawString(GlobalThings.font, formattedCode[line - 1], new Vector2(60 + codeEditorOffset.X, line * 50 + codeEditorOffset.Y - 50), line == errorLine+1 ? Color.Red : Color.White);
+                string[] themedCode = Regex.Split(formattedCode[line - 1], @"([   *()])");
+
+                int xTextOffset = 0;
+                for(int x = 0; x < themedCode.Length; x++)
+                {
+                    Color themedColor = codeTheme(themedCode[x]);
+                    if(line == errorLine+1)
+                    {
+                        themedColor = Color.Red;
+                    }
+
+                    spriteBatch.DrawString(GlobalThings.font, themedCode[x], new Vector2(60 + codeEditorOffset.X + xTextOffset, line * 50 + codeEditorOffset.Y - 50), themedColor);
+
+                    xTextOffset = xTextOffset + (int)GlobalThings.font.MeasureString(themedCode[x]).X;
+                }
 
                 // Draw line counter
                 spriteBatch.DrawString(GlobalThings.font, line.ToString(), new Vector2(codeEditorOffset.X + pos.X, (line - 1) * 50 + codeEditorOffset.Y + 20), line == readingLine ? Color.Green : darkeyGrey, 0, origin, 1, SpriteEffects.None, 0);
@@ -388,6 +406,25 @@ namespace pLdevTest
                 variablesBag.UpdateProportions(graphicsDevice.GraphicsDevice);
                 consoleBag.UpdateProportions(graphicsDevice.GraphicsDevice);
             }
+        }
+
+        public Color codeTheme(string s)
+        {
+            Color newColor = Color.White;
+            if(Regex.IsMatch(s, @"^\d+$"))
+            {
+                newColor = GlobalThings.orangeColor; 
+            }
+            else if(Interpreter.buildInMethods.Contains(s) || Interpreter.builtInFunctions.Contains(s))
+            {
+                newColor = Color.LightGoldenrodYellow;
+            }
+            else if (Interpreter.operators.Contains(s))
+            {
+                newColor = Color.OrangeRed;
+            }
+
+            return newColor;
         }
     } 
 }

@@ -21,6 +21,8 @@ namespace pLdevTest
         public static Texture2D frameTexture;
         public static Texture2D blueTexture;
         public static Texture2D greenTexture;
+        public static Color darkerGrey;
+
         public static void LoadContent(ContentManager Content, GraphicsDevice _graphics)
         {
             font = Content.Load<SpriteFont>("font");
@@ -28,6 +30,7 @@ namespace pLdevTest
             gemTexture = Content.Load<Texture2D>("gem");
 
             orangeColor = new Color(255, 165, 0);
+            darkerGrey = new Color(65, 65, 63);
 
             enemyTexture = new Texture2D(_graphics, 1, 1);
             enemyTexture.SetData(new[] { Color.Red });

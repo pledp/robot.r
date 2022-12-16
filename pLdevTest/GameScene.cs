@@ -13,6 +13,7 @@ namespace pLdevTest
     {
         public static PlayGround playground;
         private MissionInfo missionInfo;
+        private HelpBar helpBar;
 
         MouseState currentMouseState;
         public static SpriteFont font;
@@ -22,6 +23,7 @@ namespace pLdevTest
         public static Color background;
         public static Color orange;
         private Texture2D backgroundTexture;
+
 
         LevelCompleteTypewriter levelCompleteTypewriter;
 
@@ -35,9 +37,11 @@ namespace pLdevTest
             backgroundTexture.SetData(new[] { background });
 
             codeTextBar = new codeInput();
+            helpBar = new HelpBar(_graphics, 250, "HELPBAR", 0, "AIR");
 
             levelCompleteTypewriter = new LevelCompleteTypewriter();
             MissionHandler.FormatMissionText();
+
         }
 
         public void UpdateProprtions(object sender, EventArgs e, GraphicsDeviceManager _graphics)
@@ -45,6 +49,7 @@ namespace pLdevTest
             codeTextBar.UpdateEditorProportions(_graphics);
             playground.UpdateProportions(_graphics.GraphicsDevice);
             missionInfo.UpdateProportions(_graphics.GraphicsDevice);
+            helpBar.UpdateProportions(_graphics.GraphicsDevice);
 
             Debug.WriteLine("propupdate");
         }
@@ -75,6 +80,7 @@ namespace pLdevTest
             codeTextBar.Update(gameTime, _graphics);
             playground.Update(gameTime);
             missionInfo.Update(gameTime, _graphics.GraphicsDevice);
+            helpBar.Update(_graphics.GraphicsDevice, gameTime);
             if (LevelCompleteTypewriter.play)
             {
                 levelCompleteTypewriter.Update(gameTime);
@@ -109,6 +115,7 @@ namespace pLdevTest
             }
 
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
+            helpBar.Draw(_spriteBatch, gameTime, _graphics);
         }
     }
 }

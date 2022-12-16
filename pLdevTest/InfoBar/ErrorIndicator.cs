@@ -20,7 +20,7 @@ namespace pLdevTest
         public ErrorIndicator(Vector2 newPos, string text, string title)
         {
             pos = newPos;
-            hoverFrame = new HoverFrame(title, text);
+            hoverFrame = new HoverFrame(title, text, "", Color.Red);
         }
         public void Update(GameTime gameTime)
         {
@@ -36,7 +36,7 @@ namespace pLdevTest
 
             if(drawFrame)
             {
-                hoverFrame.Update(gameTime);
+                hoverFrame.Update(gameTime, (int)codeInput._scrollOffset.Y);
             }
         }
 

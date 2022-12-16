@@ -14,6 +14,8 @@ namespace pLdevTest
     public class MainMenu
     {
         private Rectangle buttonPos;
+        private Rectangle engButtonPos;
+        private Rectangle finButtonPos;
         private Vector2 startingPos;
         Vector2 minPos;
         private Texture2D playButtonTexture;
@@ -29,6 +31,9 @@ namespace pLdevTest
             playButtonTexture.SetData(new[] { Color.Green }); 
 
             buttonPos = new Rectangle(50, 50, (int)GlobalThings.font.MeasureString("PLAY").X + 40, (int)GlobalThings.font.MeasureString("PLAY").Y + 10);
+            engButtonPos = new Rectangle(50, 100, 50, 50);
+            finButtonPos = new Rectangle(50, 150, 50, 50);
+
             minPos = new Vector2((int)GlobalThings.font.MeasureString("PLAY").X + 40, (int)GlobalThings.font.MeasureString("PLAY").Y + 10);
             startingPos = new Vector2(buttonPos.Width, buttonPos.Height);
         }
@@ -44,6 +49,21 @@ namespace pLdevTest
                 AnimateMenuItem(new Vector2(minPos.X + 100, buttonPos.Height), gameTime);
                 aniDone = true;
             }
+            if (GlobalThings.EnterArea(engButtonPos, mouseState) && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
+            {
+                LanguageHandler.language = 0;
+            }
+            if (GlobalThings.EnterArea(finButtonPos, mouseState) && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
+            {
+                LanguageHandler.language = 1;
+            }
+
+            if (GlobalThings.EnterArea(buttonPos, mouseState))
+            {
+                AnimateMenuItem(new Vector2(minPos.X + 100, buttonPos.Height), gameTime);
+                aniDone = true;
+            }
+
             else
             {
                 if(aniDone)
@@ -59,6 +79,9 @@ namespace pLdevTest
         public void Draw(GameTime gameTime, SpriteBatch _spriteBatch, GraphicsDeviceManager _graphics)
         {
             _spriteBatch.Draw(playButtonTexture, new Rectangle(buttonPos.X-20, buttonPos.Y-5, buttonPos.Width, buttonPos.Height), Color.White);
+            _spriteBatch.Draw(playButtonTexture, engButtonPos, Color.White);
+            _spriteBatch.Draw(playButtonTexture, finButtonPos, Color.White);
+
             _spriteBatch.DrawString(GlobalThings.font, "PLAY", new Vector2(buttonPos.X, buttonPos.Y), Color.White);
         }
         private void AnimateMenuItem(Vector2 newPos, GameTime gameTime)

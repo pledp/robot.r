@@ -12,13 +12,13 @@ namespace pLdevTest
 {
     public class Game1 : Game
     {
-        public GraphicsDeviceManager _graphics;
+        public static GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         public static GameWindow gw;
         public GameScene gameScene;
         private MainMenu mainMenu;
         public static CircleScreenTransistion transistion;
-        public static bool menuScene = false;
+        public static bool menuScene = true;
 
         public Game1()
         {

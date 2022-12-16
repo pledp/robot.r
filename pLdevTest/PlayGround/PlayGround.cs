@@ -415,8 +415,15 @@ namespace pLdevTest
                     enemy.UpdateProportions(_graphics, playground.X);
                 }
             }
+            else if (MissionHandler.MissionCategory[MissionHandler.Mission] == MissionTypes.SortLevel && coloredBlocks != null)
+            {
+                foreach (ColoredBlock block in coloredBlocks)
+                {
+                    block.UpdateProportions(_graphics, playground.X);
+                }
+            }
 
-            if(lightsOn)
+            if (lightsOn)
             {
                 lightsTarget = new RenderTarget2D(
                     _graphics, _graphics.Viewport.Width, _graphics.Viewport.Height);
