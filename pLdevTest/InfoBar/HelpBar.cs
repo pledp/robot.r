@@ -162,6 +162,8 @@ namespace pLdevTest
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
+            spriteBatch.Draw(helpBarTexture, new Rectangle(helpBar.X + 20, helpBar.Y + 20, helpBar.Width, helpBar.Height), Color.Black * 0.5f);
+
             spriteBatch.Draw(helpBarTexture, helpBar, helpBarColor);
 
             Vector2 variableTextPos = new Vector2(helpBar.X, helpBar.Y);
