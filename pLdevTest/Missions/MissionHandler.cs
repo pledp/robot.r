@@ -27,7 +27,7 @@ namespace pLdevTest
         public static int AmountOfColorBlocks;
         public static int SortedColorBlocks;
 
-        private static int mission = 15;
+        private static int mission = 0;
         public static int CurrWorldMission = 1;
         public static int World = 0;
         public static int[] WorldMissionCount =
@@ -417,8 +417,12 @@ namespace pLdevTest
                 mission++;
 
                 CurrWorldMission++;
+                formattedStrings = new string[MissionsInfoText[mission, 0].Length];
+                for(int i = 0; i < formattedStrings.Length; i++)
+                {
+                    formattedStrings[i] = GlobalThings.FormatLineBreak(MissionsInfoText[mission, 0][i], 440);
+                }
 
-                FormatMissionText();
                 GameScene.playground.CreateTiles();
 
                 ResetMission();

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -52,6 +53,26 @@ namespace pLdevTest
                 return true;
             }
             return false;
+        }
+
+        // Format string for line breaks.
+        public static string FormatLineBreak(string s, int lineLength)
+        {
+            int lineWidth = 0;
+            string[] splitBySpaces = s.Split(" ");
+            string formattedString = "";
+            for (int y = 0; y < splitBySpaces.Length; y++)
+            {
+                int stringWidth = (int)GlobalThings.smallerFont.MeasureString(splitBySpaces[y]).X;
+                lineWidth = lineWidth + stringWidth;
+                if (lineWidth > lineLength)
+                {
+                    formattedString = formattedString + "\n";
+                    lineWidth = stringWidth;
+                }
+                formattedString = formattedString + splitBySpaces[y] + " ";
+            }
+            return formattedString;            
         }
     }
 }

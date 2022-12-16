@@ -33,11 +33,11 @@ namespace pLdevTest
 
             if(mouseState.Y < ((int)GlobalThings.smallerFont.MeasureString(infoExample).Y + (int)GlobalThings.smallerFont.MeasureString(infoText).Y + (int)GlobalThings.font.MeasureString(infoTitle).Y + 24 + 50))
             {
-                pos = new Vector2(mouseState.X + 30, mouseState.Y + 30 - scrollOffset);
+                pos = new Vector2(mouseState.X + 30, mouseState.Y + 30);
             }
             else
             {
-                pos = new Vector2(mouseState.X + 30, mouseState.Y + 30 - scrollOffset - ((int)GlobalThings.smallerFont.MeasureString(infoExample).Y + (int)GlobalThings.smallerFont.MeasureString(infoText).Y + (int)GlobalThings.font.MeasureString(infoTitle).Y + 24 + 50));
+                pos = new Vector2(mouseState.X + 30, mouseState.Y + 30 - ((int)GlobalThings.smallerFont.MeasureString(infoExample).Y + (int)GlobalThings.smallerFont.MeasureString(infoText).Y + (int)GlobalThings.font.MeasureString(infoTitle).Y + 24 + 50));
             }
             
         }

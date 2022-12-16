@@ -94,11 +94,14 @@ namespace pLdevTest
                 buttonPressed = true;
             }
 
+            int offsetY = 0;
             for(int x = 0; x < infoWidgets.Length; x++)
             {
                 infoWidgets[x].widgetTitle = LanguageHandler.HelpBarWidgets[x][LanguageHandler.language][0];
                 infoWidgets[x].widgetText = LanguageHandler.HelpBarWidgets[x][LanguageHandler.language][1];
-                infoWidgets[x].Update(gameTime, new Vector2(helpBar.X, helpBar.Y+10 + (x*82)));
+
+                infoWidgets[x].Update(gameTime, new Vector2(helpBar.X, helpBar.Y+10 + offsetY + (x*50)));
+                offsetY += (int)GlobalThings.font.MeasureString(GlobalThings.FormatLineBreak(infoWidgets[x].widgetTitle, 280)).Y;
             }
 
             if (buttonPressed)
@@ -176,6 +179,7 @@ namespace pLdevTest
 
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, rasterizerState: _rasterizerState, transformMatrix: _matrix);
             spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(0, helpBar.Y + 55, graphics.GraphicsDevice.Viewport.Width, helpBar.Height);
+
 
             for(int x = 0; x < infoWidgets.Length; x++)
             {

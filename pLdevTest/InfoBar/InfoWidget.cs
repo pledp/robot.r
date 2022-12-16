@@ -38,7 +38,7 @@ namespace pLdevTest
         {
             MouseState mouseState = Mouse.GetState();
             pos = new Vector2(helpBar.X + 30, helpBar.Y + 50);
-            widget = new Rectangle((int)pos.X, (int)pos.Y, 440, (int)GlobalThings.font.MeasureString(widgetTitle).Y + 30);
+            widget = new Rectangle((int)pos.X, (int)pos.Y, 440, (int)GlobalThings.font.MeasureString(GlobalThings.FormatLineBreak(widgetTitle,250)).Y + 30);
             if (GlobalThings.EnterArea(new Rectangle((int)widget.X, (int)widget.Y + (int)HelpBar._scrollOffset.Y, widget.Width, widget.Height), mouseState))
             {
                 drawFrame = true;
@@ -58,8 +58,8 @@ namespace pLdevTest
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(GlobalThings.frameTexture,widget, Color.White);
-            spriteBatch.DrawString(GlobalThings.font, widgetTitle, new Vector2(widget.X + 10, widget.Y + 10), textColor);
+            spriteBatch.Draw(GlobalThings.frameTexture, widget, Color.White);
+            spriteBatch.DrawString(GlobalThings.font, GlobalThings.FormatLineBreak(widgetTitle, 250), new Vector2(widget.X + 10, widget.Y + 10), textColor);
         }
         public void DrawHoverFrame(SpriteBatch spriteBatch)
         {
