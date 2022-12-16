@@ -55,6 +55,8 @@ namespace pLdevTest
             "",
             "if(6 == 3 || 6 == 6 && 1 == 1){\n   x = 1\n}",
             "loop(5){\n   print(5)\n}",
+            "",
+            ""
         };
 
         public HelpBar(GraphicsDevice _graphics, int width, string text, int index, string content)

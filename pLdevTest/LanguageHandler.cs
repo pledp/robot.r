@@ -78,6 +78,32 @@ namespace pLdevTest
                     "Silmukat toistavat linjoja useita kertoja."
                 }
             },
+            new[]
+            {
+                new[]
+                {
+                    "Built-in Functions",
+                    "sqrt(arguments)\ntan(arguments)\ncos(arguments)\nsin(arguments)"
+                },
+                new[]
+                {
+                    "Sisäänrakennetut toiminnot",
+                    "sqrt()\ntan()\ncos()\nsin()"
+                }
+            },
+            new[]
+            {
+                new[]
+                {
+                    "Built-in Methods",
+                    "print(arguments) - Prints to the console.\nsleep(arguments) - Adds a delay.\nshoot() - Makes the robot shoot a projectile."
+                },
+                new[]
+                {
+                    "Sisäänrakennetut metoodit",
+                    "print() - Tulostaa konsoliin.\nsleep() - Lisää viiveen.\nshoot() - Robootti ampuu ammuksen."
+                }
+            },
         };
     }
 }
