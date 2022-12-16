@@ -120,39 +120,46 @@ namespace pLdevTest
 
         private static string GetVariableValue(string expression, Dictionary<string, double> variables, int lineIndex)
         {
-            if (variables.ContainsKey(expression))
+            try
             {
-                string value = variables[expression].ToString();
-                return value;
-            }
-
-            // Check for built in variables, if it exists, get its value
-            else if (expression.Contains("."))
-            {
-                string variableName = expression.Split(".")[0];
-                variableName = variableName.Split(new string[] { "[", "]" }, StringSplitOptions.None)[0];
-
-                string variableName2 = expression.Split(".")[1];
-                Debug.WriteLine(variableName2);
-                if (Interpreter.builtInVariables.ContainsKey(variableName))
+                if (variables.ContainsKey(expression))
                 {
-                    if (Interpreter.builtInVariables[variableName].ContainsKey(variableName2))
+                    string value = variables[expression].ToString();
+                    return value;
+                }
+
+                // Check for built in variables, if it exists, get its value
+                else if (expression.Contains("."))
+                {
+                    string variableName = expression.Split(".")[0];
+                    variableName = variableName.Split(new string[] { "[", "]" }, StringSplitOptions.None)[0];
+
+                    string variableName2 = expression.Split(".")[1];
+                    Debug.WriteLine(variableName2);
+                    if (Interpreter.builtInVariables.ContainsKey(variableName))
                     {
-                        double index = 0;
-                        if (expression.Contains('['))
+                        if (Interpreter.builtInVariables[variableName].ContainsKey(variableName2))
                         {
-                            string splitBySquareBrackets = expression.Split(new string[] { "[", "]" }, StringSplitOptions.None)[1];
-                            variableName = variableName.Split("[")[0];
+                            double index = 0;
+                            if (expression.Contains('['))
+                            {
+                                string splitBySquareBrackets = expression.Split(new string[] { "[", "]" }, StringSplitOptions.None)[1];
+                                variableName = variableName.Split("[")[0];
 
-                            index = GetResults(splitBySquareBrackets, Interpreter.variables, lineIndex);
+                                index = GetResults(splitBySquareBrackets, Interpreter.variables, lineIndex);
+                            }
+                            string value = Interpreter.builtInVariables[variableName][variableName2][(int)index].ToString();
+
+                            return value;
                         }
-                        string value = Interpreter.builtInVariables[variableName][variableName2][(int)index].ToString();
-
-                        return value;
                     }
                 }
+                return expression;
             }
-            return expression;
+            catch
+            {
+                return expression;
+            }
         }
 
         public static string[] FormatExpressions(string expression)

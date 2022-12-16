@@ -40,7 +40,15 @@ namespace pLdevTest
                         if (printSegments[x].Contains('"'))
                         {
                             string newString = printSegments[x].Substring(printSegments[x].IndexOf('"') + 1);
-                            newString = newString.Substring(0, newString.LastIndexOf('"'));
+                            try
+                            {
+                                newString = newString.Substring(0, newString.LastIndexOf('"'));
+                            }
+                            catch
+                            {
+                                codeInput.errorLine = lineIndex;
+                                codeInput.errorText = "Expected: \"";
+                            }
 
                             formattedPrintString += newString;
                         }

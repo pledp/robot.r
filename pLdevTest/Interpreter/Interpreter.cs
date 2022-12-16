@@ -306,8 +306,10 @@ namespace pLdevTest
                 codeInput.readingLine = lineIndex + 1;
                 PlayCodeButton.unpressableButton = false;
 
-                if(MissionHandler.MissionCategory[MissionHandler.Mission] != MissionTypes.EnemyLevel || MissionHandler.MissionCategory[MissionHandler.Mission] != MissionTypes.KillLevel || MissionHandler.MissionCategory[MissionHandler.Mission] != MissionTypes.SortLevel)
+                Debug.WriteLine(MissionHandler.MissionCategory[MissionHandler.Mission]);
+                if(MissionHandler.MissionCategory[MissionHandler.Mission] != MissionTypes.EnemyLevel && MissionHandler.MissionCategory[MissionHandler.Mission] != MissionTypes.KillLevel && MissionHandler.MissionCategory[MissionHandler.Mission] != MissionTypes.SortLevel)
                 {
+                    Debug.WriteLine("tt");
                     MissionHandler.CheckForMission();
                 }
 

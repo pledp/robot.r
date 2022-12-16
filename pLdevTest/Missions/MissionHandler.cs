@@ -54,7 +54,7 @@ namespace pLdevTest
             "If only... (Ft. Loops)",
             "Delay",
             "Goal",
-            "Pyramid Scheme",
+            "(Inverted) Pyramid Scheme",
             "Survival <",
             "Survival ^",
             "Covered",
@@ -359,6 +359,7 @@ namespace pLdevTest
 
         public static void CheckForMission()
         {
+
             Debug.WriteLine("missioncheck");
             bool missionComplete = false;
 
@@ -455,6 +456,7 @@ namespace pLdevTest
         }
         private static async void WorldTransistion()
         {
+            World = World + 1;
             LevelCompleteTypewriter.play = true;
             await Task.Delay(3000);
             CircleScreenTransistion.keepScreen = true;
@@ -462,7 +464,6 @@ namespace pLdevTest
 
             await Task.Delay(5000);
             LevelCompleteTypewriter.play = false;
-            World++;
             CurrWorldMission = 1;
             CircleScreenTransistion.playTransistion = true;
 
