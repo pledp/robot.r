@@ -183,5 +183,11 @@ namespace pLdevTest
                 }
             },
         };
+
+        public static string[] BackToMenuText =
+        {
+            "Press ESC to return to menu.",
+            "Paina ESC palataksesi valikkoon."
+        };
     }
 }

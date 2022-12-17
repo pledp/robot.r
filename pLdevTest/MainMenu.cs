@@ -13,12 +13,17 @@ namespace pLdevTest
 {
     public class MainMenu
     {
+        private Vector2 langSelector;
+
         private Rectangle buttonPos;
         private Rectangle engButtonPos;
         private Texture2D engTexture;
 
         private Rectangle finButtonPos;
         private Texture2D finTexture;
+
+        private Rectangle crtButtonPos;
+        private Texture2D crtButtonTexture;
 
         private Rectangle selectedLangPos;
         private Vector2 startingPos;
@@ -44,7 +49,11 @@ namespace pLdevTest
             finTexture = new Texture2D(graphicsDevice, 1, 1);
             finTexture.SetData(new[] { Color.Blue });
 
-            selectedLangPos = new Rectangle(30, 140, 70, 70);
+            crtButtonPos = new Rectangle(40, 350, 50, 50);
+            crtButtonTexture = new Texture2D(graphicsDevice, 1, 1);
+            crtButtonTexture.SetData(new[] { Color.LightPink });
+
+            langSelector = new Vector2(engButtonPos.X + 10, engButtonPos.Y);
 
             minPos = new Vector2((int)GlobalThings.font.MeasureString("PLAY").X + 40, (int)GlobalThings.font.MeasureString("PLAY").Y + 10);
             startingPos = new Vector2(buttonPos.Width, buttonPos.Height);
@@ -57,15 +66,22 @@ namespace pLdevTest
                 GameSceneTransistion(_graphics, Content);
             }
 
+
             if (GlobalThings.EnterArea(engButtonPos, mouseState) && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
             {
                 LanguageHandler.language = 0;
-                selectedLangPos = new Rectangle(30, 140, 70, 70);
+                langSelector = new Vector2(engButtonPos.X+10, engButtonPos.Y);
             }
             if (GlobalThings.EnterArea(finButtonPos, mouseState) && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
             {
                 LanguageHandler.language = 1;
-                selectedLangPos = new Rectangle(30, 240, 70, 70);
+                langSelector = new Vector2(finButtonPos.X+10, finButtonPos.Y);
+            }
+
+            // CRT effect ON and OFF
+            if (GlobalThings.EnterArea(crtButtonPos, mouseState) && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
+            {
+                Game1.ToggleCrtEffect = !Game1.ToggleCrtEffect;
             }
 
             if (GlobalThings.EnterArea(buttonPos, mouseState))
@@ -88,9 +104,21 @@ namespace pLdevTest
         public void Draw(GameTime gameTime, SpriteBatch _spriteBatch, GraphicsDeviceManager _graphics)
         {
             _spriteBatch.Draw(playButtonTexture, new Rectangle(buttonPos.X-20, buttonPos.Y-5, buttonPos.Width, buttonPos.Height), Color.White);
-            _spriteBatch.Draw(GlobalThings.enemyTexture, selectedLangPos, Color.White);
+
             _spriteBatch.Draw(engTexture, engButtonPos, Color.White);
+            _spriteBatch.DrawString(GlobalThings.font, "English", new Vector2(engButtonPos.X + 70, engButtonPos.Y), Color.White);
+
             _spriteBatch.Draw(finTexture, finButtonPos, Color.White);
+            _spriteBatch.DrawString(GlobalThings.font, "Suomi", new Vector2(finButtonPos.X + 70, finButtonPos.Y), Color.White);
+
+
+            _spriteBatch.Draw(crtButtonTexture, crtButtonPos, Color.White);
+            _spriteBatch.DrawString(GlobalThings.font, "CRT-Effect", new Vector2(crtButtonPos.X+ 70, crtButtonPos.Y), Color.White);
+            if(Game1.ToggleCrtEffect)
+            {
+                _spriteBatch.DrawString(GlobalThings.font, "X", new Vector2(crtButtonPos.X+10, crtButtonPos.Y), Color.Black);
+            }
+            _spriteBatch.DrawString(GlobalThings.font, "X", langSelector, Color.Black);
 
             _spriteBatch.DrawString(GlobalThings.font, "PLAY", new Vector2(buttonPos.X, buttonPos.Y), Color.White);
         }

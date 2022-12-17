@@ -1,4 +1,1 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/CRTeffect.fx","C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/bin/DesktopGL/CRTeffect.xnb","EffectProcessor","CompiledEffectContent",1771,1068,0,3442269
-"C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/File.spritefont","C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/bin/DesktopGL/smallerFont.xnb","FontDescriptionProcessor","SpriteFontContent",2291,73355,0,1492391
-"C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/font.spritefont","C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/bin/DesktopGL/font.xnb","FontDescriptionProcessor","SpriteFontContent",2293,138891,0,0280273

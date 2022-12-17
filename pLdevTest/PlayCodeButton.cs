@@ -21,6 +21,7 @@ namespace pLdevTest
         private Texture2D playButtonTexture;
         private Texture2D playButtonTexturePressed;
         private Texture2D cancelButtonTexture;
+        private Texture2D cancelButtonTexturePressed;
 
         public static List<CancellationTokenSource> CancelToken;
         public static List<CancellationToken> cancelToken;
@@ -38,11 +39,8 @@ namespace pLdevTest
 
         public PlayCodeButton(GraphicsDevice graphicsDevice, int buttonX, int buttonY)
         {
-            cancelButtonTexture = new Texture2D(graphicsDevice, 1, 1);
-            cancelButtonTexture.SetData(new[] { Color.Red });
-
             buttonPos = new Rectangle(buttonX, buttonY, 60, 60);
-            cancelPos = new Rectangle(buttonX, buttonY+30 * 2, 30, 30);
+            cancelPos = new Rectangle(buttonX, buttonY + 70, 60, 60);
 
             CancelToken = new List<CancellationTokenSource>();
             cancelToken = new List<CancellationToken>();
@@ -51,6 +49,10 @@ namespace pLdevTest
         {
             playButtonTexture = Content.Load<Texture2D>("playButton");
             playButtonTexturePressed = Content.Load<Texture2D>("playButtonPressed");
+
+            cancelButtonTexture = Content.Load<Texture2D>("StopButton");
+            cancelButtonTexturePressed = Content.Load<Texture2D>("StopButtonPressed");
+
         }
 
         public void Update(GraphicsDeviceManager graphics, GameTime gameTime, codeInput inputText)
@@ -115,17 +117,20 @@ namespace pLdevTest
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
             Texture2D playButton;
+            Texture2D cancelButton;
             if (!over)
             {
                 playButton = playButtonTexturePressed;
+                cancelButton = cancelButtonTexture;
             }
             else
             {
                 playButton = playButtonTexture;
+                cancelButton = cancelButtonTexturePressed;
             }
 
             spriteBatch.Draw(playButton, buttonPos, Color.White);
-            spriteBatch.Draw(cancelButtonTexture, cancelPos, Color.White);
+            spriteBatch.Draw(cancelButton, cancelPos, Color.White);
         }
     }
 }

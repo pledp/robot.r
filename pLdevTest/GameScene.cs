@@ -111,6 +111,7 @@ namespace pLdevTest
             {
                 levelCompleteTypewriter.Draw(_spriteBatch, gameTime, _graphics.GraphicsDevice);
             }
+            _spriteBatch.DrawString(GlobalThings.smallerFont, LanguageHandler.BackToMenuText[LanguageHandler.language], new Vector2((_graphics.GraphicsDevice.Viewport.Width / 2) - (GlobalThings.smallerFont.MeasureString(LanguageHandler.BackToMenuText[LanguageHandler.language]).X / 2), _graphics.GraphicsDevice.Viewport.Height - 30), Color.White);
 
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
             helpBar.Draw(_spriteBatch, gameTime, _graphics);

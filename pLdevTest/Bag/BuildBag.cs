@@ -141,14 +141,7 @@ namespace pLdevTest
                 elapsedTime = 0;
                 buttonPressed = false;
 
-                if(bagState)
-                {
-                    bagState = false;
-                }
-                else
-                {
-                    bagState = true;
-                }
+                bagState = !bagState;
             }
         }
 

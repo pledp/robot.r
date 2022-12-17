@@ -162,7 +162,7 @@ namespace pLdevTest
                 {
                     "LÄPÄISY: Liikuta roboottia pystysuorassa.",
                     "Voit liikuttaa roboottia pystysuorassa komennolla:",
-                    "robot.y = 3"
+                    "robot.x = 3"
 
                 }
             },

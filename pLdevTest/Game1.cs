@@ -22,6 +22,8 @@ namespace pLdevTest
         RenderTarget2D renderTarget;
         Effect crtEffect;
 
+        public static bool ToggleCrtEffect = true;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this)
@@ -83,13 +85,21 @@ namespace pLdevTest
 
             transistion.LoadContent(Content, _graphics.GraphicsDevice);
             gameScene.LoadContent(Content, _graphics.GraphicsDevice);
+
         }
 
         protected override void Update(GameTime gameTime)
         {
+            KeyboardState kb = Keyboard.GetState();
+            if(kb.IsKeyDown(Keys.Escape))
+            {
+                menuScene = true;
+            }
+
             if(!menuScene)
             {
                 gameScene.Update(gameTime, _graphics);
+
             }
             else if(menuScene)
             {
@@ -132,8 +142,14 @@ namespace pLdevTest
             _spriteBatch.End();
             _graphics.GraphicsDevice.SetRenderTarget(null);
 
-
-            _spriteBatch.Begin(effect: crtEffect);
+            if(ToggleCrtEffect)
+            {
+                _spriteBatch.Begin(effect: crtEffect);
+            }
+            else
+            {
+                _spriteBatch.Begin();
+            }
  
             _spriteBatch.Draw(renderTarget, new Rectangle(0, 0, _graphics.GraphicsDevice.Viewport.Width, _graphics.GraphicsDevice.Viewport.Height), Color.White);
             _spriteBatch.End();

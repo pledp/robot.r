@@ -155,14 +155,7 @@ namespace pLdevTest
                 elapsedTime = 0;
                 buttonPressed = false;
 
-                if (helpBarState)
-                {
-                    helpBarState = false;
-                }
-                else
-                {
-                    helpBarState = true;
-                }
+                helpBarState = !helpBarState;
             }
         }
 
