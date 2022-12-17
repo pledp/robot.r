@@ -1,5 +1,6 @@
 C:\Users\lasse\Downloads\testbuildgame\pLdevTest.exe
 C:\Users\lasse\Downloads\testbuildgame\Content/clipboard.xnb
+C:\Users\lasse\Downloads\testbuildgame\Content/CRTeffect.xnb
 C:\Users\lasse\Downloads\testbuildgame\Content/effect1.xnb
 C:\Users\lasse\Downloads\testbuildgame\Content/font.xnb
 C:\Users\lasse\Downloads\testbuildgame\Content/gem.xnb

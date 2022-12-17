@@ -42,6 +42,7 @@ C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Release\net6
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Release\net6.0\Content\gem.xnb
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Release\net6.0\Content\playButton.xnb
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Release\net6.0\Content\playButtonPressed.xnb
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Release\net6.0\Content\CRTeffect.xnb
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Release\net6.0\pLdevTest.dll.manifest
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Release\net6.0\pLdevTest.application
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\obj\Release\net6.0\pLdevTest.dll.manifest
