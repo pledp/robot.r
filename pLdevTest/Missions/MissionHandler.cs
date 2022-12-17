@@ -27,43 +27,102 @@ namespace pLdevTest
         public static int AmountOfColorBlocks;
         public static int SortedColorBlocks;
 
-        private static int mission = 0;
         public static int CurrWorldMission = 1;
         public static int World = 0;
         public static int[] WorldMissionCount =
         {
             9,
-            6
+            8
         };
 
+        private static int completedMissions = 0;
+        public static int CompletedMissions
+        {
+            set { completedMissions = value; }
+            get { return completedMissions; }
+        }
+
+        private static int mission = 0;
         public static int Mission
         {
+            set { mission = value; }
             get { return mission; }
         }
 
         public static bool MissionComplete;
 
-        private readonly static string[] missions =
+        private readonly static string[,] missions =
         {
-            "Up and Down!",
-            "Left and Right!",
-            "Declaration of ?",
-            "If only...",
-            "Only if else...",
-            "Repetetitition",
-            "If only... (Ft. Loops)",
-            "Delay",
-            "Goal",
-            "(Inverted) Pyramid Scheme",
-            "Survival <",
-            "Survival ^",
-            "Covered",
-            "Where?",
-            "Pew Pew",
-            "Sorter",
-            "BOSS"
+            {
+                "Up and Down!",
+                "Ylös ja Alas!"
+            },
+            {
+                "Left and Right!",
+                "Vasemalle ja Oikealle",
+            },
+            {
+                "Declaration of ?",
+                "?:n julistus",
+            },
+            {
+                "If only...",
+                "Jos vain...",
+            },
+            {
+                "Only if else...",
+                "Jos vain muuten...",
+            },
+            {
+                "Repetetitition",
+                "Tototoisto",
+            },
+            {
+                "If only... (Ft. Loops)",
+                "Jo vain... (Ft. Solmukat)",
+            },
+            {
+                "Invasive delay",
+                "Tunkeutuva viive",
+            },
+            {
+                "Goals (Singular",
+                "Maaleja (Yksikkö)",
+            },
+            {
+                "(Inverted) Pyramid Scheme",
+                "(Ylösalain) Pyramidihuijaus",
+            },
+            {
+                "Groundmarch",
+                "Maamarssi",
+            },
+            {
+                "Airmarch",
+                "Ilmamarssi",
+            },
+            {
+                "Payday",
+                "Palkkapäivä",
+            },
+            {
+                "Hide-out",
+                "Piilopaikka",
+            },
+            {
+                "Pew Pew (Ft. VIOLENCE)",
+                "Piu Piu (Ft. VÄKIVALTA)",
+            },
+            {
+                "Unpaid Alien internship",
+                "Palkaton työharjoittelu",
+            },
+            {
+                "BOSS, ENDER OF WORLDS.",
+                "POMO, MAAILMANLOPPU",
+            },
         };
-        public static string[] Missions
+        public static string[,] Missions
         {
             get { return missions; }
         }
@@ -86,7 +145,7 @@ namespace pLdevTest
             MissionTypes.FlagLevel,
             MissionTypes.KillLevel,
             MissionTypes.SortLevel,
-            MissionTypes.Default,
+            MissionTypes.KillLevel,
         };
 
         public readonly static String[,][] MissionsInfoText =
@@ -98,6 +157,13 @@ namespace pLdevTest
                     "You can Move The Robot vertically with:",
                     "robot.y = 3"
 
+                },
+                new[]
+                {
+                    "LÄPÄISY: Liikuta roboottia pystysuorassa.",
+                    "Voit liikuttaa roboottia pystysuorassa komennolla:",
+                    "robot.y = 3"
+
                 }
             },
             {
@@ -107,6 +173,12 @@ namespace pLdevTest
                     "Additionally, you can also Move The Robot horizontally with:",
                     "robot.x = 4"
 
+                },
+                new[]
+                {
+                    "LÄPÄISY: Liikuta roboottia vaakasuorassa.",
+                    "Voit liikuttaa roboottia vaakasuorassa komennolla:",
+                    "robot.y = 3"
                 }
             },
             {
@@ -114,6 +186,12 @@ namespace pLdevTest
                 {
                     "PASS: Declare a variable.",
                     "Variables are values that can be changed whenever.",
+                    "helloWorld = 5"
+                },
+                new[]
+                {
+                    "LÄPÄISY: Julkaise variaabeli.",
+                    "Variaabelit ovat arvoja, joita voi kutsua tai muuttaa milloin tahansa.",
                     "helloWorld = 5"
                 }
             },
@@ -123,7 +201,14 @@ namespace pLdevTest
                     "PASS: Use a conditional statement.",
                     "Conditional statements execute the lines ONLY if a certain condition is met.",
                     "if(helloWorld == 5) {\n   print(\"hello world!\")\n}"
-                }
+                },
+                new[]
+                {
+                    "LÄPÄISY: Käytä ehtolausetta.",
+                    "Ehtolauseet tarkistavat jos tietty ehto täyttyy, ja vetävät linjat sen sisällä vain jos ehto täyttyy.",
+                    "if(helloWorld == 5) {\n   print(\"hello world!\")\n}"
+                },
+
             },
             {
                 new[]
@@ -133,13 +218,27 @@ namespace pLdevTest
                     "if(helloWorld != 2 + 2 + 1) {\n   print(\"hello world!\")\n}",
                     "elseif(helloWorld < 5) {\n   print(sqrt(5))\n}",
                     "else {\n   print(helloWord)\n}"
-                }
+                },
+                new[]
+                {
+                    "LÄPÄISY: Käytä toissijaista ehtolausetta.",
+                    "Ehtolauseilla on myös lisä-toiminallisuutta:",
+                    "if(helloWorld != 2 + 2 + 1) {\n   print(\"hello world!\")\n}",
+                    "elseif(helloWorld < 5) {\n   print(sqrt(5))\n}",
+                    "else {\n   print(helloWord)\n}"
+                },
             },
             {
                 new[]
                 {
                     "PASS: Use a loop.",
-                    "Loops repeats lines as many times as the arguments say.",
+                    "Loops repeats lines several times.",
+                    "loop(10) {\n   robot.x = robot.x + 1\n}"
+                },
+                new[]
+                {
+                    "LÄPÄISY: Käytä silmukkaa.",
+                    "Silmukat toistavat linjoja useita kertoja.",
                     "loop(10) {\n   robot.x = robot.x + 1\n}"
                 }
             },
@@ -149,14 +248,28 @@ namespace pLdevTest
                     "PASS: Use a while loop.",
                     "While loops repeat lines as long as a conditional statement is true.",
                     "while(robot.y != 10) {\n   robot.y = robot.y + 1\n}"
+                },
+                new[]
+                {
+                    "LÄPÄISTY: Käytä while-silmukkaa.",
+                    "While-silmukat toistavat linjoja useita kertoja kunnes ehtolauseen ehto ei täyty.",
+                    "while(robot.y != 10) {\n   robot.y = robot.y + 1\n}"
                 }
             },
             {
                 new[]
                 {
-                    "PASS: Use the sleep() function.",
-                    "The sleep() function adds a delay. ",
+                    "PASS: Use the sleep() method.",
+                    "The sleep() method adds a delay. ",
                     "You can use it in loops to slow things down and see more clearly whats going on.",
+                    "loop(10) {\n   sleep(100)\n   robot.x = robot.x + 1\n   robot.y = robot.y + 1\n}"
+
+                },
+                new[]
+                {
+                    "LÄPÄISY: Käytä sleep() metoodia.",
+                    "sleep() metoodi lisää viiveen. ",
+                    "Voit käyttää sitä silmukoissa hidastaakseen toimintoa, ja nähdäkseen selvemmin mitä tapahtuu.",
                     "loop(10) {\n   sleep(100)\n   robot.x = robot.x + 1\n   robot.y = robot.y + 1\n}"
 
                 }
@@ -165,12 +278,21 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Reach the flag by any means.",
-                }
+                },
+                new[]
+                {
+                    "PASS: Tavoita lipulle kaikin keinoin.",
+                },
             },
             {
                 new[]
                 {
                     "PASS: Collect all the gems.",
+                    "gem[1].x = 5"
+                },
+                new[]
+                {
+                    "LÄPÄISY: Kerää kaikki jalokivet.",
                     "gem[1].x = 5"
                 }
             },
@@ -180,12 +302,24 @@ namespace pLdevTest
                     "PASS: Survive.",
                     "The Update() method runs 60 times a second until the program is stopped.",
                     "x = 0\nUpdate() {\n   x = x + 1\n}"
-                }
+                },
+                 new[]
+                {
+                    "LÄPÄISY: Selviä.",
+                    "Update() metoodii vetää linjat sen sisällä 60 kertaa sekunissa, kunnes ohjelma loppuu.",
+                    "x = 0\nUpdate() {\n   x = x + 1\n}"
+                },
+
             },
             {
                 new[]
                 {
-                    "PASS: Survive",
+                    "PASS: Survive.",
+                    "enemy[2].y = 5"
+                },
+                new[]
+                {
+                    "LÄPÄISY: Selviä.",
                     "enemy[2].y = 5"
                 }
             },
@@ -193,19 +327,33 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Collect all the gems",
+                },
+                new[]
+                {
+                    "LÄPÄISY: Kerää kaikki jalokivet.",
                 }
             },
             {
                 new[]
                 {
                     "PASS: Reach the flag.",
-                }
+                },
+                new[]
+                {
+                    "PASS: Tavoita lipulle kaikin keinoin.",
+                },
             },
             {
                 new[]
                 {
-                    "PASS: DESTROY all the enemies.",
+                    "PASS: DESTROY all the aliens.",
                     "Use the shoot() method to fire a projectile.",
+                    "shoot()"
+                },
+                new[]
+                {
+                    "LÄPÄISY: TUHOA kaikki avaruusolennot.",
+                    "Käytä shoot() metoodia ampumakseen ammuksen.",
                     "shoot()"
                 }
             },
@@ -213,14 +361,24 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Sort the colors.",
-                    "Sort red to Y=1, green to Y=2, blue to Y=3",
+                    "Sort red to Y=1, green to Y=2 and blue to Y=3.",
+                    "if(colorBlock[1].color == color.Red) {"
+                },
+                new[]
+                {
+                    "LÄPÄISY: Lajittele värit.",
+                    "Lajittele punainen Y=1:een, vihreä Y=2:een ja sininen Y=3:een.",
                     "if(colorBlock[1].color == color.Red) {"
                 }
             },
             {
                 new[]
                 {
-                    "PASS: Kill the boss.",
+                    "PASS: DESTROY The Alien's final BOSS, JACK.",
+                },
+                new[]
+                {
+                    "LÄPÄISY: TUHOA Avaruusolentojen POMO, JORMA.",
                 }
             },
         };
@@ -407,35 +565,41 @@ namespace pLdevTest
                 missionComplete = true;
             }
 
-            if(missionComplete)
+            if (missionComplete)
             {
-                if(mission == 8)
+                if (mission != 16)
                 {
-                    WorldTransistion();
+                    if (mission == 8)
+                    {
+                        WorldTransistion();
+                    }
+
+                    if (mission > completedMissions)
+                    {
+                        completedMissions++;
+                    }
+                    mission++;
+
+                    CurrWorldMission++;
+
+                    GameScene.playground.CreateTiles();
+
+                    ResetMission();
                 }
-
-                mission++;
-
-                CurrWorldMission++;
-                FormatMissionText();
-
-                GameScene.playground.CreateTiles();
-
-                ResetMission();
             }
         }
         public static void FormatMissionText()
         {
-            formattedStrings = new string[MissionsInfoText[mission, 0].Length];
+            formattedStrings = new string[MissionsInfoText[mission, LanguageHandler.language].Length];
 
             for (int i = 0; i < formattedStrings.Length; i++)
             {
                 if (MissionsInfoColor[mission, 0][i] == GlobalThings.orangeColor)
                 {
-                    formattedStrings[i] = MissionsInfoText[mission, 0][i];
+                    formattedStrings[i] = MissionsInfoText[mission, LanguageHandler.language][i];
                 } else
                 {
-                    formattedStrings[i] = GlobalThings.FormatLineBreak(MissionsInfoText[mission, 0][i], 440);
+                    formattedStrings[i] = GlobalThings.FormatLineBreak(MissionsInfoText[mission, LanguageHandler.language][i], 440);
 
                 }
             }
@@ -457,6 +621,8 @@ namespace pLdevTest
 
         public static void ResetMission()
         {
+            FormatMissionText();
+
             GameScene.playground.bullets = new List<Bullet>();
             MissionPlaying = false;
             MissionComplete = false;

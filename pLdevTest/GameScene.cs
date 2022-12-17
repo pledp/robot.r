@@ -40,9 +40,6 @@ namespace pLdevTest
             helpBar = new HelpBar(_graphics, 250, "HELPBAR", 0, "AIR");
 
             levelCompleteTypewriter = new LevelCompleteTypewriter();
-           
-            MissionHandler.FormatMissionText();
-
         }
 
         public void UpdateProprtions(object sender, EventArgs e, GraphicsDeviceManager _graphics)

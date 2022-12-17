@@ -23,15 +23,15 @@ float4 MainPS(VertexShaderOutput input) : COLOR
     // pixel from texture position X:Y, take it from (X+Y*0.2:Y) to create a slanted effected
       input.TextureCoordinates -= 0.5;				// offcenter screen
       float r = input.TextureCoordinates.x * input.TextureCoordinates.x + input.TextureCoordinates.y * input.TextureCoordinates.y; 	// get ratio
-      input.TextureCoordinates *= 4.2 + r;				// apply ratio
-      input.TextureCoordinates *= 0.22;				// zoom
+      input.TextureCoordinates *= 8.2 + r;				// apply ratio
+      input.TextureCoordinates *= 0.12;				// zoom
       input.TextureCoordinates += 0.5;
 
     float4 color = tex2D(SpriteTextureSampler, input.TextureCoordinates);
     float4 col = tex2D(SpriteTextureSampler, input.TextureCoordinates);
-    col.r = tex2D(SpriteTextureSampler, float2(input.TextureCoordinates.x + 0.0005f, input.TextureCoordinates.y + 0.0005f)).x;
-    col.g = tex2D(SpriteTextureSampler, float2(input.TextureCoordinates.x, input.TextureCoordinates.y + 0.0005f*2)).y;
-    col.b = tex2D(SpriteTextureSampler, float2(input.TextureCoordinates.x + 0.0005f*2, input.TextureCoordinates.y)).z;
+    col.r = tex2D(SpriteTextureSampler, float2(input.TextureCoordinates.x + 0.0006f, input.TextureCoordinates.y + 0.0006f)).x;
+    col.g = tex2D(SpriteTextureSampler, float2(input.TextureCoordinates.x, input.TextureCoordinates.y + 0.0006f*2)).y;
+    col.b = tex2D(SpriteTextureSampler, float2(input.TextureCoordinates.x + 0.0006f*2, input.TextureCoordinates.y)).z;
 
     return col;
 }

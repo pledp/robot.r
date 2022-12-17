@@ -27,12 +27,16 @@ namespace pLdevTest
         private Texture2D clipboard;
         private Color clipboardColor;
 
+        ChangeMissionButton missionArrow;
+
         public MissionInfo(GraphicsDevice _graphics)
         {
             whiteRectangle = new Texture2D(_graphics, 1, 1);
             whiteRectangle.SetData(new[] { Color.White });
             area = new Rectangle(_graphics.Viewport.Width - 600, 465, 600, _graphics.Viewport.Height - (140 + 465));
             clipboardColor = new Color(139, 97, 64);
+
+            missionArrow = new ChangeMissionButton(_graphics);
 
         }
 
@@ -41,6 +45,7 @@ namespace pLdevTest
             _matrix = Matrix.CreateTranslation(new Vector3(_scrollOffset, 0));
             mouseState = Mouse.GetState();
             // Check if scroll wheel value has updated
+            missionArrow.Update(gameTime);
             
             if (mouseState.ScrollWheelValue != lastMouseState.ScrollWheelValue)
             {
@@ -84,7 +89,7 @@ namespace pLdevTest
             missionCounterText[3] = MissionHandler.WorldMissionCount[MissionHandler.World].ToString();
 
             // Draw frame
-            _spriteBatch.DrawString(GlobalThings.font, MissionHandler.Missions[MissionHandler.Mission], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 410), PlayGround.pgColor);
+            _spriteBatch.DrawString(GlobalThings.font, MissionHandler.Missions[MissionHandler.Mission,LanguageHandler.language], new Vector2(_graphics.GraphicsDevice.Viewport.Width - 600, 410), PlayGround.pgColor);
 
             // Draw clipboard and paper
             _spriteBatch.Draw(whiteRectangle, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 625, 490, 600, _graphics.GraphicsDevice.Viewport.Height - 490), clipboardColor);
@@ -116,7 +121,7 @@ namespace pLdevTest
             _spriteBatch.GraphicsDevice.ScissorRectangle = new Rectangle(_graphics.GraphicsDevice.Viewport.Width - 600, 555, 550, (_graphics.GraphicsDevice.Viewport.Height - 555) - 60);
             int overallOffset = 0;
 
-            for (int x = 0; x < MissionHandler.MissionsInfoText[MissionHandler.Mission, 0].Length; x++)
+            for (int x = 0; x < MissionHandler.MissionsInfoText[MissionHandler.Mission, LanguageHandler.language].Length; x++)
             {
                 int breakLineOffset = 0;
                 int breakLineSize = 20;
@@ -178,12 +183,14 @@ namespace pLdevTest
             }
             _spriteBatch.End();
             _spriteBatch.Begin();
-            
+            missionArrow.Draw(_spriteBatch);
+
         }
 
         public void UpdateProportions(GraphicsDevice _graphics)
         {
             area = new Rectangle(_graphics.Viewport.Width - 600, 465, 600, _graphics.Viewport.Height - (140 + 465));
+            missionArrow.UpdateProportions(_graphics);
         }
     }
 }

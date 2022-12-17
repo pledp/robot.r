@@ -116,12 +116,13 @@ namespace pLdevTest
         }
         public async void GameSceneTransistion(GraphicsDevice _graphics, ContentManager Content)
         {
-            // Don't look at this please
+            // Start transistion
             CircleScreenTransistion.playTransistion = true;
             CircleScreenTransistion.keepScreen = true;
 
             await Task.Delay(5000);
             Game1.menuScene = false;
+            MissionHandler.FormatMissionText();
 
             CircleScreenTransistion.playTransistion = true;
         }

@@ -60,8 +60,14 @@ namespace pLdevTest
             "",
             "if(6 == 3 || 6 == 6 && 1 == 1){\n   x = 1\n}",
             "loop(5){\n   print(5)\n}",
-            "",
-            ""
+            "x = 0\nwhile(x < 5) {\n   x = x + 1\n}",
+            "x = 0\nUpdate(){\n   x = x + 1\n}",
+            "x = sqrt(5)",
+            "x = 1\nprint(x)\nsleep(500)\nprint(x + 1)",
+            "robot.x = 3\nrobot.y = robot.x",
+            "gem[0].x = 3\ngem[5].y = 6",
+            "enemy[0].x = 3\nenemy[5].y = 6",
+            "colorBlock[0].x = 3\ncolorBlock[5].y = robot.x\nif(colorBlock[1].color == color.Red) {\n   print(\"red\")\n}",
         };
 
         public HelpBar(GraphicsDevice _graphics, int width, string text, int index, string content)
@@ -99,15 +105,6 @@ namespace pLdevTest
                 buttonPressed = true;
             }
 
-            int offsetY = 0;
-            for(int x = 0; x < infoWidgets.Length; x++)
-            {
-                infoWidgets[x].widgetTitle = LanguageHandler.HelpBarWidgets[x][LanguageHandler.language][0];
-                infoWidgets[x].widgetText = LanguageHandler.HelpBarWidgets[x][LanguageHandler.language][1];
-
-                infoWidgets[x].Update(gameTime, new Vector2(helpBar.X, helpBar.Y+10 + offsetY + (x*50)));
-                offsetY += (int)GlobalThings.font.MeasureString(GlobalThings.FormatLineBreak(infoWidgets[x].widgetTitle, 280)).Y;
-            }
 
             if (buttonPressed)
             {
@@ -133,11 +130,11 @@ namespace pLdevTest
                     // Check if new scroll wheel value is negative or positive
                     if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)
                     {
-                        _scrollOffset.Y -= 10;
+                        _scrollOffset.Y -= 20;
                     }
                     else if (mouseState.ScrollWheelValue > lastMouseState.ScrollWheelValue)
                     {
-                        _scrollOffset.Y += 10;
+                        _scrollOffset.Y += 20;
                     }
                 }
             }
@@ -172,6 +169,15 @@ namespace pLdevTest
 
         public void Draw(SpriteBatch spriteBatch, GameTime gameTime, GraphicsDeviceManager graphics)
         {
+            int offsetY = 0;
+            for (int x = 0; x < infoWidgets.Length; x++)
+            {
+                infoWidgets[x].widgetTitle = LanguageHandler.HelpBarWidgets[x][LanguageHandler.language][0];
+                infoWidgets[x].widgetText = LanguageHandler.HelpBarWidgets[x][LanguageHandler.language][1];
+
+                infoWidgets[x].Update(gameTime, new Vector2(helpBar.X, helpBar.Y + 10 + offsetY + (x * 50)));
+                offsetY += (int)GlobalThings.font.MeasureString(GlobalThings.FormatLineBreak(infoWidgets[x].widgetTitle, 280)).Y;
+            }
             spriteBatch.Draw(helpBarTexture, new Rectangle(helpBar.X + 20, helpBar.Y + 20, helpBar.Width, helpBar.Height), Color.Black * 0.5f);
 
             spriteBatch.Draw(helpBarTexture, helpBar, helpBarColor);

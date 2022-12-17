@@ -389,6 +389,11 @@ namespace pLdevTest
                         coloredBlocks[y] = new ColoredBlock(playground.X, playground.Y, y, 5, y);
                     }
                     break;
+                case 16:
+                    MissionHandler.AmountOfEnemies = 1;
+                    enemies = new EnemyBlock[1];
+                    enemies[0] = new EnemyBlock(playground.X, playground.Y,20, 8, 0);
+                    break;
             }
         }
 
