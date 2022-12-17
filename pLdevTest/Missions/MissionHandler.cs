@@ -300,13 +300,13 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Survive.",
-                    "The Update() method runs 60 times a second until the program is stopped.",
+                    "The Update() method runs 144 times a second until the program is stopped.",
                     "x = 0\nUpdate() {\n   x = x + 1\n}"
                 },
                  new[]
                 {
                     "LÄPÄISY: Selviä.",
-                    "Update() metoodii vetää linjat sen sisällä 60 kertaa sekunissa, kunnes ohjelma loppuu.",
+                    "Update() metoodii vetää linjat sen sisällä 144 kertaa sekunissa, kunnes ohjelma loppuu.",
                     "x = 0\nUpdate() {\n   x = x + 1\n}"
                 },
 

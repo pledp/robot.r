@@ -17,6 +17,7 @@ namespace pLdevTest
         public static Color orangeColor;
         public static SpriteFont smallerFont;
         public static SpriteFont font;
+        public static Texture2D whiteTexture;
         public static Texture2D gemTexture;
         public static Texture2D enemyTexture;
         public static Texture2D frameTexture;
@@ -39,6 +40,10 @@ namespace pLdevTest
             greenTexture.SetData(new[] { Color.Green });
             blueTexture = new Texture2D(_graphics, 1, 1);
             blueTexture.SetData(new[] { Color.Blue });
+
+            whiteTexture = new Texture2D(_graphics, 1, 1);
+            whiteTexture.SetData(new[] { Color.White });
+
 
             frameTexture = new Texture2D(_graphics, 1, 1);
             frameTexture.SetData(new[] { new Color(50, 41, 47) });

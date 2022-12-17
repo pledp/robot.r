@@ -12,6 +12,8 @@ namespace pLdevTest
 {
     public class Game1 : Game
     {
+        public static bool fullscreen = false;
+
         public static GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         public static GameWindow gw;
@@ -43,14 +45,10 @@ namespace pLdevTest
             base.Initialize();
             // Cap FPS to 60 FPS
             IsFixedTimeStep = true;
-            TargetElapsedTime = TimeSpan.FromSeconds(1 / 60.0f);
+            TargetElapsedTime = TimeSpan.FromSeconds(1 / 144.0f);
 
+            Debug.WriteLine(_graphics.GraphicsDevice.Viewport.Width + " " + _graphics.GraphicsDevice.Viewport.Height);
 
-
-            /*_graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            _graphics.IsFullScreen = true;
-            _graphics.ApplyChanges();*/
 
             Window.TextInput += ProcessTextInput;
             Window.ClientSizeChanged += ProcessWindowSizeChange;
@@ -74,18 +72,20 @@ namespace pLdevTest
         protected override void LoadContent()
         {
             crtEffect = Content.Load<Effect>("CRTeffect");
+
             renderTarget = new RenderTarget2D(_graphics.GraphicsDevice, _graphics.GraphicsDevice.Viewport.Width, _graphics.GraphicsDevice.Viewport.Height);
 
             gw = Window;
             GlobalThings.LoadContent(Content, _graphics.GraphicsDevice);
             _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
             mainMenu = new MainMenu(_graphics.GraphicsDevice);
+            mainMenu.LoadContent(Content);
+
             transistion = new CircleScreenTransistion(_graphics.GraphicsDevice);
             gameScene = new GameScene(_graphics.GraphicsDevice);
 
             transistion.LoadContent(Content, _graphics.GraphicsDevice);
             gameScene.LoadContent(Content, _graphics.GraphicsDevice);
-
         }
 
         protected override void Update(GameTime gameTime)
@@ -103,7 +103,7 @@ namespace pLdevTest
             }
             else if(menuScene)
             {
-                mainMenu.Update(_graphics.GraphicsDevice, Content, gameTime);
+                mainMenu.Update(_graphics, Content, gameTime);
             }
             
             transistion.Update(gameTime, _graphics.GraphicsDevice);

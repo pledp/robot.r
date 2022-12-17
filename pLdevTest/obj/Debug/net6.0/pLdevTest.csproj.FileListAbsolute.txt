@@ -110,3 +110,4 @@ C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Content\CRTeffect.xnb
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Content\StopButton.xnb
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Content\StopButtonPressed.xnb
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\pLdevTest\bin\Debug\net6.0\Content\pLdevLogo.xnb

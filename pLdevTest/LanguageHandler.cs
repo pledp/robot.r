@@ -96,12 +96,12 @@ namespace pLdevTest
                 new[]
                 {
                     "Update()",
-                    "The Update() method runs all the lines within it 60 times a second, until the program is ended."
+                    "The Update() method runs all the lines within it 144 times a second, until the program is ended."
                 },
                 new[]
                 {
                     "Update()",
-                    "Update() metoodi vetää linjat sen sisällä 60 kertaa sekunnissa, kunnes ohjelma loppuu."
+                    "Update() metoodi vetää linjat sen sisällä 144 kertaa sekunnissa, kunnes ohjelma loppuu."
                 }
             },
             new[]

@@ -19,11 +19,16 @@ namespace pLdevTest
         private Rectangle engButtonPos;
         private Texture2D engTexture;
 
+        private Texture2D pLdevLogo;
+
         private Rectangle finButtonPos;
         private Texture2D finTexture;
 
         private Rectangle crtButtonPos;
         private Texture2D crtButtonTexture;
+
+        private Rectangle fullscreenButtonPos;
+        private Texture2D fullscreenButtonTexture;
 
         private Rectangle selectedLangPos;
         private Vector2 startingPos;
@@ -53,17 +58,25 @@ namespace pLdevTest
             crtButtonTexture = new Texture2D(graphicsDevice, 1, 1);
             crtButtonTexture.SetData(new[] { Color.LightPink });
 
+            fullscreenButtonPos = new Rectangle(40, 450, 50, 50);
+            fullscreenButtonTexture = new Texture2D(graphicsDevice, 1, 1);
+            fullscreenButtonTexture.SetData(new[] { Color.White });
+
             langSelector = new Vector2(engButtonPos.X + 10, engButtonPos.Y);
 
             minPos = new Vector2((int)GlobalThings.font.MeasureString("PLAY").X + 40, (int)GlobalThings.font.MeasureString("PLAY").Y + 10);
             startingPos = new Vector2(buttonPos.Width, buttonPos.Height);
         }
-        public void Update(GraphicsDevice _graphics, ContentManager Content, GameTime gameTime)
+        public void LoadContent(ContentManager Content)
+        {
+            pLdevLogo = Content.Load<Texture2D>("pLdevLogo");
+        }
+        public void Update(GraphicsDeviceManager _graphics, ContentManager Content, GameTime gameTime)
         {
             mouseState = Mouse.GetState();
             if (GlobalThings.EnterArea(buttonPos, mouseState) && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
             {
-                GameSceneTransistion(_graphics, Content);
+                GameSceneTransistion(_graphics.GraphicsDevice, Content);
             }
 
 
@@ -82,6 +95,26 @@ namespace pLdevTest
             if (GlobalThings.EnterArea(crtButtonPos, mouseState) && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
             {
                 Game1.ToggleCrtEffect = !Game1.ToggleCrtEffect;
+            }
+
+            if (GlobalThings.EnterArea(fullscreenButtonPos, mouseState) && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
+            {
+                if (Game1.fullscreen)
+                {
+                    _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                    _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                    _graphics.IsFullScreen = true;
+                    _graphics.ApplyChanges();
+                }
+                else
+                {
+                    _graphics.PreferredBackBufferWidth = 800;
+                    _graphics.PreferredBackBufferHeight = 480;
+                    _graphics.IsFullScreen = false;
+                    _graphics.ApplyChanges();
+                }
+
+                Game1.fullscreen = !Game1.fullscreen;
             }
 
             if (GlobalThings.EnterArea(buttonPos, mouseState))
@@ -111,7 +144,6 @@ namespace pLdevTest
             _spriteBatch.Draw(finTexture, finButtonPos, Color.White);
             _spriteBatch.DrawString(GlobalThings.font, "Suomi", new Vector2(finButtonPos.X + 70, finButtonPos.Y), Color.White);
 
-
             _spriteBatch.Draw(crtButtonTexture, crtButtonPos, Color.White);
             _spriteBatch.DrawString(GlobalThings.font, "CRT-Effect", new Vector2(crtButtonPos.X+ 70, crtButtonPos.Y), Color.White);
             if(Game1.ToggleCrtEffect)
@@ -120,7 +152,12 @@ namespace pLdevTest
             }
             _spriteBatch.DrawString(GlobalThings.font, "X", langSelector, Color.Black);
 
+            _spriteBatch.Draw(fullscreenButtonTexture, fullscreenButtonPos, Color.White);
+            _spriteBatch.DrawString(GlobalThings.font, "Fullscreen", new Vector2(fullscreenButtonPos.X + 70, fullscreenButtonPos.Y), Color.White);
+
             _spriteBatch.DrawString(GlobalThings.font, "PLAY", new Vector2(buttonPos.X, buttonPos.Y), Color.White);
+            _spriteBatch.Draw(GlobalThings.whiteTexture, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - pLdevLogo.Width - 50, _graphics.GraphicsDevice.Viewport.Height - pLdevLogo.Height - 50, pLdevLogo.Width, pLdevLogo.Height), Color.White);
+            _spriteBatch.Draw(pLdevLogo, new Rectangle(_graphics.GraphicsDevice.Viewport.Width - pLdevLogo.Width - 50, _graphics.GraphicsDevice.Viewport.Height - pLdevLogo.Height - 50, pLdevLogo.Width, pLdevLogo.Height), Color.White);
         }
         private void AnimateMenuItem(Vector2 newPos, GameTime gameTime)
         {
