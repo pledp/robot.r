@@ -45,7 +45,7 @@ namespace pLdevTest
             base.Initialize();
             // Cap FPS to 60 FPS
             IsFixedTimeStep = true;
-            TargetElapsedTime = TimeSpan.FromSeconds(1 / 144.0f);
+            TargetElapsedTime = TimeSpan.FromSeconds(1 / 60.0f);
 
             Debug.WriteLine(_graphics.GraphicsDevice.Viewport.Width + " " + _graphics.GraphicsDevice.Viewport.Height);
 
