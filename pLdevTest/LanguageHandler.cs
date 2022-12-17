@@ -9,7 +9,7 @@ namespace pLdevTest
     static class LanguageHandler
     {
         // 0 == English, 1 == Finnish
-        public static int language = 1;
+        public static int language = 0;
 
         public static string[][][] HelpBarWidgets =
         {

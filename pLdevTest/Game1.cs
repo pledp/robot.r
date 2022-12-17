@@ -18,7 +18,9 @@ namespace pLdevTest
         public GameScene gameScene;
         private MainMenu mainMenu;
         public static CircleScreenTransistion transistion;
-        public static bool menuScene = false;
+        public static bool menuScene = true;
+        RenderTarget2D renderTarget;
+        Effect crtEffect;
 
         public Game1()
         {
@@ -57,7 +59,7 @@ namespace pLdevTest
             gameScene.UpdateProprtions(sender, e, _graphics);
 
             transistion.ResizeRenderTarget(_graphics.GraphicsDevice);
-   
+            renderTarget = new RenderTarget2D(_graphics.GraphicsDevice, _graphics.GraphicsDevice.Viewport.Width, _graphics.GraphicsDevice.Viewport.Height);
         }
         public void ProcessTextInput(object sender, TextInputEventArgs e)
         {
@@ -65,11 +67,13 @@ namespace pLdevTest
             {   
                 gameScene.ProcessTextInput(sender, e);
             }
-            
         }
         
         protected override void LoadContent()
         {
+            crtEffect = Content.Load<Effect>("CRTeffect");
+            renderTarget = new RenderTarget2D(_graphics.GraphicsDevice, _graphics.GraphicsDevice.Viewport.Width, _graphics.GraphicsDevice.Viewport.Height);
+
             gw = Window;
             GlobalThings.LoadContent(Content, _graphics.GraphicsDevice);
             _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
@@ -104,6 +108,10 @@ namespace pLdevTest
             {
                 transistion.DrawTransistionRenderTarget(_spriteBatch, gameTime, _graphics.GraphicsDevice);
             }
+            _spriteBatch.End();
+
+            _graphics.GraphicsDevice.SetRenderTarget(renderTarget);
+            _spriteBatch.Begin();
 
             if (!menuScene)
             {
@@ -121,6 +129,13 @@ namespace pLdevTest
             }
 
             base.Draw(gameTime);
+            _spriteBatch.End();
+            _graphics.GraphicsDevice.SetRenderTarget(null);
+
+
+            _spriteBatch.Begin(effect: crtEffect);
+ 
+            _spriteBatch.Draw(renderTarget, new Rectangle(0, 0, _graphics.GraphicsDevice.Viewport.Width, _graphics.GraphicsDevice.Viewport.Height), Color.White);
             _spriteBatch.End();
         }
     }

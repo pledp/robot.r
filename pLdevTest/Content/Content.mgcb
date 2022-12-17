@@ -25,6 +25,12 @@
 /processorParam:TextureFormat=Color
 /build:clipboard.png
 
+#begin CRTeffect.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:CRTeffect.fx
+
 #begin effect1.fx
 /importer:EffectImporter
 /processor:EffectProcessor

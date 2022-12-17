@@ -417,11 +417,7 @@ namespace pLdevTest
                 mission++;
 
                 CurrWorldMission++;
-                formattedStrings = new string[MissionsInfoText[mission, 0].Length];
-                for(int i = 0; i < formattedStrings.Length; i++)
-                {
-                    formattedStrings[i] = GlobalThings.FormatLineBreak(MissionsInfoText[mission, 0][i], 440);
-                }
+                FormatMissionText();
 
                 GameScene.playground.CreateTiles();
 
@@ -432,29 +428,15 @@ namespace pLdevTest
         {
             formattedStrings = new string[MissionsInfoText[mission, 0].Length];
 
-            for (int i = 0; i < MissionsInfoText[mission, 0].Length; i++)
+            for (int i = 0; i < formattedStrings.Length; i++)
             {
                 if (MissionsInfoColor[mission, 0][i] == GlobalThings.orangeColor)
                 {
                     formattedStrings[i] = MissionsInfoText[mission, 0][i];
-                }
-                else
+                } else
                 {
-                    int lineWidth = 0;
-                    string[] splitBySpaces = MissionHandler.MissionsInfoText[MissionHandler.Mission, 0][i].Split(" ");
-                    string formattedString = "";
-                    for (int y = 0; y < splitBySpaces.Length; y++)
-                    {
-                        int stringWidth = (int)GlobalThings.smallerFont.MeasureString(splitBySpaces[y]).X;
-                        lineWidth = lineWidth + stringWidth;
-                        if (lineWidth > 440)
-                        {
-                            formattedString = formattedString + "\n";
-                            lineWidth = stringWidth;
-                        }
-                        formattedString = formattedString + splitBySpaces[y] + " ";
-                    }
-                    formattedStrings[i] = formattedString;
+                    formattedStrings[i] = GlobalThings.FormatLineBreak(MissionsInfoText[mission, 0][i], 440);
+
                 }
             }
         }

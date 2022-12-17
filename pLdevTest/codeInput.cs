@@ -78,10 +78,6 @@ namespace pLdevTest
             cursorOffset = 0;
 
             fontGlyphs = GlobalThings.font.GetGlyphs();
-            foreach(KeyValuePair<char, SpriteFont.Glyph> c in fontGlyphs)
-            {
-                Debug.WriteLine(c);
-            }
 
             size = new Vector2();
             pos = new Vector2();
@@ -151,7 +147,7 @@ namespace pLdevTest
             _matrix = Matrix.CreateTranslation(new Vector3(_scrollOffset, 0));
             mouseState = Mouse.GetState();
             // Check if scroll wheel value has updated
-            if (mouseState.ScrollWheelValue != lastMouseState.ScrollWheelValue)
+            if (mouseState.ScrollWheelValue != lastMouseState.ScrollWheelValue && GlobalThings.EnterArea(new Rectangle(80,10, 300, graphics.GraphicsDevice.Viewport.Height), mouseState) && !GlobalThings.EnterArea(HelpBar.HelpBarProperty, mouseState))
             {
                 // Check if new scroll wheel value is negative or positive
                 if (mouseState.ScrollWheelValue < lastMouseState.ScrollWheelValue)

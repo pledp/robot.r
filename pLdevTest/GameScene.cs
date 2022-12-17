@@ -40,6 +40,7 @@ namespace pLdevTest
             helpBar = new HelpBar(_graphics, 250, "HELPBAR", 0, "AIR");
 
             levelCompleteTypewriter = new LevelCompleteTypewriter();
+           
             MissionHandler.FormatMissionText();
 
         }

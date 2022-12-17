@@ -45,10 +45,7 @@ namespace pLdevTest
         }
         public static bool EnterArea(Rectangle area, MouseState mouseState)
         {
-            if (mouseState.X < area.X + area.Width &&
-                mouseState.X > area.X &&
-                mouseState.Y < area.Y + area.Height &&
-                mouseState.Y > area.Y)
+            if (area.Contains(mouseState.Position))
             {
                 return true;
             }

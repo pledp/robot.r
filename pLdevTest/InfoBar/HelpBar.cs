@@ -32,7 +32,12 @@ namespace pLdevTest
         InfoWidget infoWidget;
         InfoWidget[] infoWidgets;
 
-        private Rectangle helpBar;
+        private static Rectangle helpBar;
+        public static Rectangle HelpBarProperty
+        {
+            get { return helpBar; }
+        }
+
         private Texture2D helpBarTexture;
         private int helpBarWidth;
         private int helpBarIndex;
