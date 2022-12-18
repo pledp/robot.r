@@ -46,7 +46,4 @@ C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\robot.r\obj\Release\net6.0
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\robot.r\obj\Release\net6.0\robot.r.pdb
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\robot.r\obj\Release\net6.0\robot.r.genruntimeconfig.cache
 C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\robot.r\obj\Release\net6.0\ref\robot.r.dll
-C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\robot.r\bin\Release\net6.0\robot.r.dll.manifest
-C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\robot.r\bin\Release\net6.0\robot.r.application
-C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\robot.r\obj\Release\net6.0\robot.r.dll.manifest
-C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\robot.r\obj\Release\net6.0\robot.r.application
+C:\Users\lasse\source\repos\pLdevTest\pLdevTest\pLdev\robot.r\bin\Release\net6.0\Content\transistionCircle.xnb

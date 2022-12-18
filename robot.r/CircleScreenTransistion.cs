@@ -8,16 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace pLdevTest
+namespace robot.r
 {
     public class CircleScreenTransistion
     {
 
-        private Effect maskEffect;
         private Texture2D transistionMaskTexture;
         private Texture2D transistionTexture;
-        RenderTarget2D transistionMask;
-        RenderTarget2D mainTarget;
         Rectangle transistionPos;
 
         double elapsedTime;
@@ -39,25 +36,11 @@ namespace pLdevTest
             transistionPos = new Rectangle(_graphics.Viewport.Width / 2 - 100, _graphics.Viewport.Height / 2 - 100, 200, 200);
             openingTransistion = new Vector2(_graphics.Viewport.Width + _graphics.Viewport.Height, _graphics.Viewport.Width + _graphics.Viewport.Height);
             startingSize = openingTransistion;
-            var pp = _graphics.PresentationParameters;
-            transistionMask = new RenderTarget2D(
-                _graphics, pp.BackBufferWidth, pp.BackBufferHeight);
-            mainTarget = new RenderTarget2D(
-               _graphics, pp.BackBufferWidth, pp.BackBufferHeight);
 
             transistionColor = new Color(153, 243, 159);
         }
         public void ResizeRenderTarget(GraphicsDevice _graphics)
         {
-            transistionMask.Dispose();
-            mainTarget.Dispose();
-
-            var pp = _graphics.PresentationParameters;
-            transistionMask = new RenderTarget2D(
-                _graphics, pp.BackBufferWidth, pp.BackBufferHeight);
-            mainTarget = new RenderTarget2D(
-               _graphics, pp.BackBufferWidth, pp.BackBufferHeight);
-
             openingTransistion = new Vector2(_graphics.Viewport.Width + _graphics.Viewport.Height, _graphics.Viewport.Width + _graphics.Viewport.Height);
             if(transistionComplete)
             {
@@ -70,8 +53,7 @@ namespace pLdevTest
 
         public void LoadContent(ContentManager Content, GraphicsDevice _graphics)
         {
-            transistionMaskTexture = Content.Load<Texture2D>("transistionMask");
-            maskEffect = Content.Load<Effect>("MaskShader");
+            transistionMaskTexture = Content.Load<Texture2D>("transistionCircle");
         }
 
         public void Update(GameTime gameTime, GraphicsDevice _graphics)
@@ -91,41 +73,14 @@ namespace pLdevTest
             transistionPos.Y = _graphics.Viewport.Height / 2 - transistionPos.Height / 2;
             transistionPos.X = _graphics.Viewport.Width / 2 - transistionPos.Width / 2;
         }
-        public void DrawTransistionRenderTarget(SpriteBatch _spriteBatch, GameTime gameTime, GraphicsDevice _graphics)
-        {
-            // Create mask for circle transistion
-            _spriteBatch.End();
-            _graphics.SetRenderTarget(transistionMask);
-            _graphics.Clear(Color.Transparent);
-
-            // Create light mask
-            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive);
-            _spriteBatch.Draw(transistionMaskTexture, transistionPos, Color.White);
-            _spriteBatch.End();
-
-            // Draw to render texture
-            _graphics.SetRenderTarget(mainTarget);
-            _graphics.Clear(Color.Transparent);
-            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-            _spriteBatch.Draw(transistionTexture, new Rectangle(0, 0, _graphics.Viewport.Width, _graphics.Viewport.Height), transistionColor);
-            _spriteBatch.End();
-
-            _graphics.SetRenderTarget(null);
-            _spriteBatch.Begin();
-        }
 
         public void Draw(SpriteBatch _spriteBatch, GraphicsDevice _graphics)
         {
+            _spriteBatch.Draw(transistionMaskTexture, transistionPos, Color.White);
             _spriteBatch.Draw(transistionTexture, new Rectangle(0, 0, _graphics.Viewport.Width, transistionPos.Y), transistionColor);
             _spriteBatch.Draw(transistionTexture, new Rectangle(0, transistionPos.Y + transistionPos.Height, _graphics.Viewport.Width, _graphics.Viewport.Width - (transistionPos.Y + transistionPos.Height)), transistionColor);
             _spriteBatch.Draw(transistionTexture, new Rectangle(0, transistionPos.Y, transistionPos.X, transistionPos.Height), transistionColor);
             _spriteBatch.Draw(transistionTexture, new Rectangle(transistionPos.X + transistionPos.Width, transistionPos.Y, _graphics.Viewport.Width - (transistionPos.X + transistionPos.Width), transistionPos.Height), transistionColor);
-
-            _spriteBatch.End();
-            _spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-            maskEffect.Parameters["Mask"].SetValue(transistionMask);
-            maskEffect.CurrentTechnique.Passes[0].Apply();
-            _spriteBatch.Draw(mainTarget, new Vector2(0, 0), Color.White);
         }
 
         public void OpenTransistion(GraphicsDevice _graphics, Vector2 newScale, GameTime gameTime)

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace pLdevTest
+namespace robot.r
 {
     public class MainMenu
     {
@@ -99,8 +99,10 @@ namespace pLdevTest
 
             if (GlobalThings.EnterArea(fullscreenButtonPos, mouseState) && lastMouseState.LeftButton == ButtonState.Released && mouseState.LeftButton == ButtonState.Pressed)
             {
+                Game1.fullscreen = !Game1.fullscreen;
                 if (Game1.fullscreen)
                 {
+                    _graphics.HardwareModeSwitch = false;
                     _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
                     _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
                     _graphics.IsFullScreen = true;
@@ -113,8 +115,6 @@ namespace pLdevTest
                     _graphics.IsFullScreen = false;
                     _graphics.ApplyChanges();
                 }
-
-                Game1.fullscreen = !Game1.fullscreen;
             }
 
             if (GlobalThings.EnterArea(buttonPos, mouseState))
@@ -136,6 +136,9 @@ namespace pLdevTest
         }
         public void Draw(GameTime gameTime, SpriteBatch _spriteBatch, GraphicsDeviceManager _graphics)
         {
+
+            _spriteBatch.DrawString(GlobalThings.font, "robot.r",new Vector2(_graphics.GraphicsDevice.Viewport.Width - pLdevLogo.Width - 50, _graphics.GraphicsDevice.Viewport.Height - pLdevLogo.Height - 100), Color.White);
+
             _spriteBatch.Draw(playButtonTexture, new Rectangle(buttonPos.X-20, buttonPos.Y-5, buttonPos.Width, buttonPos.Height), Color.White);
 
             _spriteBatch.Draw(engTexture, engButtonPos, Color.White);
@@ -153,6 +156,12 @@ namespace pLdevTest
             _spriteBatch.DrawString(GlobalThings.font, "X", langSelector, Color.Black);
 
             _spriteBatch.Draw(fullscreenButtonTexture, fullscreenButtonPos, Color.White);
+
+
+            if (Game1.fullscreen)
+            {
+                _spriteBatch.DrawString(GlobalThings.font, "X", new Vector2(fullscreenButtonPos.X + 10, fullscreenButtonPos.Y), Color.Black);
+            }
             _spriteBatch.DrawString(GlobalThings.font, "Fullscreen", new Vector2(fullscreenButtonPos.X + 70, fullscreenButtonPos.Y), Color.White);
 
             _spriteBatch.DrawString(GlobalThings.font, "PLAY", new Vector2(buttonPos.X, buttonPos.Y), Color.White);

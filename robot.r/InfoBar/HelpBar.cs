@@ -14,7 +14,7 @@ using System.Security.Cryptography;
 using Myra.Graphics2D.UI;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace pLdevTest
+namespace robot.r
 {
     public class HelpBar
     {

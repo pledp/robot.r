@@ -7,10 +7,12 @@ using System.Text;
 using System.IO;
 using Microsoft.Xna.Framework.Content;
 
-namespace pLdevTest
+namespace robot.r
 {
     public class GameScene
     {
+        public static TextBubble textBubble;
+
         public static PlayGround playground;
         private MissionInfo missionInfo;
         private HelpBar helpBar;
@@ -38,6 +40,7 @@ namespace pLdevTest
 
             codeTextBar = new codeInput();
             helpBar = new HelpBar(_graphics, 250, "HELPBAR", 0, "AIR");
+            textBubble = new TextBubble();
 
             levelCompleteTypewriter = new LevelCompleteTypewriter();
         }
@@ -73,12 +76,15 @@ namespace pLdevTest
 
         public void Update(GameTime gameTime, GraphicsDeviceManager _graphics)
         {
+            GlobalThings.playTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // TODO: Add your update logic here
             codeTextBar.Update(gameTime, _graphics);
             playground.Update(gameTime);
             missionInfo.Update(gameTime, _graphics.GraphicsDevice);
             helpBar.Update(_graphics.GraphicsDevice, gameTime);
+            textBubble.Update(gameTime);
+
             if (LevelCompleteTypewriter.play)
             {
                 levelCompleteTypewriter.Update(gameTime);
@@ -115,6 +121,7 @@ namespace pLdevTest
 
             codeTextBar.Draw(_spriteBatch, gameTime, _graphics);
             helpBar.Draw(_spriteBatch, gameTime, _graphics);
+            textBubble.Draw(_spriteBatch, gameTime, _graphics.GraphicsDevice);
         }
     }
 }

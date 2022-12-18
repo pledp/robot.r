@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace pLdevTest
+namespace robot.r
 {
     public static class MissionHandler
     {
@@ -300,13 +300,13 @@ namespace pLdevTest
                 new[]
                 {
                     "PASS: Survive.",
-                    "The Update() method runs 144 times a second until the program is stopped.",
+                    "The Update() method runs 100 times a second until the program is stopped.",
                     "x = 0\nUpdate() {\n   x = x + 1\n}"
                 },
                  new[]
                 {
                     "LÄPÄISY: Selviä.",
-                    "Update() metoodii vetää linjat sen sisällä 144 kertaa sekunissa, kunnes ohjelma loppuu.",
+                    "Update() metoodii vetää linjat sen sisällä 100 kertaa sekunissa, kunnes ohjelma loppuu.",
                     "x = 0\nUpdate() {\n   x = x + 1\n}"
                 },
 
@@ -585,6 +585,19 @@ namespace pLdevTest
                     GameScene.playground.CreateTiles();
 
                     ResetMission();
+                } else
+                {
+                    int minutes = (int)GlobalThings.playTime / 60;
+                    int seconds = (int)GlobalThings.playTime % 60;
+
+                    LanguageHandler.GameEndString[0][2] = "PLAYTIME: " + minutes +"."+ seconds + "s";
+                    LanguageHandler.GameEndString[1][2] = "PELIAIKA: " + minutes +"."+ seconds + "s";
+
+
+                    GameScene.textBubble.typeWriterStringType = "";
+                    GameScene.textBubble.currentLine = 0;
+                    GameScene.textBubble.isPlaying = true;
+                    GameScene.textBubble.typeWriterString = LanguageHandler.GameEndString;
                 }
             }
         }

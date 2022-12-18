@@ -8,7 +8,7 @@ using info.lundin.math;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace pLdevTest
+namespace robot.r
 {
     public class EnemyBlock : PlaygroundObject
     {

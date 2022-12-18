@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace pLdevTest
+namespace robot.r
 {
     static class LanguageHandler
     {
@@ -96,12 +96,12 @@ namespace pLdevTest
                 new[]
                 {
                     "Update()",
-                    "The Update() method runs all the lines within it 144 times a second, until the program is ended."
+                    "The Update() method runs all the lines within it 100 times a second, until the program is ended."
                 },
                 new[]
                 {
                     "Update()",
-                    "Update() metoodi vetää linjat sen sisällä 144 kertaa sekunnissa, kunnes ohjelma loppuu."
+                    "Update() metoodi vetää linjat sen sisällä 100 kertaa sekunnissa, kunnes ohjelma loppuu."
                 }
             },
             new[]
@@ -188,6 +188,20 @@ namespace pLdevTest
         {
             "Press ESC to return to menu.",
             "Paina ESC palataksesi valikkoon."
+        };
+
+        public static string[][] GameEndString =
+        {
+            new[]{
+                "The Aliens are defeated!",
+                "Only thanks to YOU, the Hero this world truly needs!",
+                "PLAYTIME: "
+            },
+            new[]{
+                "Avaruusolennot on lyöty!",
+                "Kiitokset TEILLE, tämän maailman todellakin tarvitsema sankari!",
+                "PELIAIKA: "
+            }
         };
     }
 }

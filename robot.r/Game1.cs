@@ -8,7 +8,7 @@ using System.IO;
 using Microsoft.Xna.Framework.Content;
 using System.Transactions;
 
-namespace pLdevTest
+namespace robot.r
 {
     public class Game1 : Game
     {
@@ -33,25 +33,27 @@ namespace pLdevTest
 
             };
             Content.RootDirectory = "Content";
-            Window.AllowUserResizing = true;
-            
 
+            Window.AllowUserResizing = true;
+
+            _graphics.SynchronizeWithVerticalRetrace = false;
+            IsFixedTimeStep = true;
+            TargetElapsedTime = TimeSpan.FromSeconds(1 / 100.0f);
+
+            _graphics.ApplyChanges();
             IsMouseVisible = true;
+
+            Window.TextInput += ProcessTextInput;
+            Window.ClientSizeChanged += ProcessWindowSizeChange;
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+
             base.Initialize();
-            // Cap FPS to 60 FPS
-            IsFixedTimeStep = true;
-            TargetElapsedTime = TimeSpan.FromSeconds(1 / 60.0f);
 
-            Debug.WriteLine(_graphics.GraphicsDevice.Viewport.Width + " " + _graphics.GraphicsDevice.Viewport.Height);
-
-
-            Window.TextInput += ProcessTextInput;
-            Window.ClientSizeChanged += ProcessWindowSizeChange;
         }
 
         private void ProcessWindowSizeChange(object sender, EventArgs e)
@@ -71,19 +73,19 @@ namespace pLdevTest
         
         protected override void LoadContent()
         {
+            
             crtEffect = Content.Load<Effect>("CRTeffect");
 
             renderTarget = new RenderTarget2D(_graphics.GraphicsDevice, _graphics.GraphicsDevice.Viewport.Width, _graphics.GraphicsDevice.Viewport.Height);
 
-            gw = Window;
             GlobalThings.LoadContent(Content, _graphics.GraphicsDevice);
+
             _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
             mainMenu = new MainMenu(_graphics.GraphicsDevice);
-            mainMenu.LoadContent(Content);
-
             transistion = new CircleScreenTransistion(_graphics.GraphicsDevice);
             gameScene = new GameScene(_graphics.GraphicsDevice);
 
+            mainMenu.LoadContent(Content);
             transistion.LoadContent(Content, _graphics.GraphicsDevice);
             gameScene.LoadContent(Content, _graphics.GraphicsDevice);
         }
@@ -107,19 +109,12 @@ namespace pLdevTest
             }
             
             transistion.Update(gameTime, _graphics.GraphicsDevice);
+            
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            _graphics.GraphicsDevice.Clear(Color.Black);
-            _spriteBatch.Begin();
-            if (CircleScreenTransistion.playTransistion || CircleScreenTransistion.keepScreen)
-            {
-                transistion.DrawTransistionRenderTarget(_spriteBatch, gameTime, _graphics.GraphicsDevice);
-            }
-            _spriteBatch.End();
-
             _graphics.GraphicsDevice.SetRenderTarget(renderTarget);
             _spriteBatch.Begin();
 
@@ -138,7 +133,6 @@ namespace pLdevTest
                 transistion.Draw(_spriteBatch, _graphics.GraphicsDevice);
             }
 
-            base.Draw(gameTime);
             _spriteBatch.End();
             _graphics.GraphicsDevice.SetRenderTarget(null);
 
@@ -152,6 +146,8 @@ namespace pLdevTest
             }
  
             _spriteBatch.Draw(renderTarget, new Rectangle(0, 0, _graphics.GraphicsDevice.Viewport.Width, _graphics.GraphicsDevice.Viewport.Height), Color.White);
+
+            base.Draw(gameTime);
             _spriteBatch.End();
         }
     }

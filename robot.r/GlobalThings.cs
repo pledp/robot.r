@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace pLdevTest
+namespace robot.r
 {
     public static class GlobalThings
     {
@@ -24,6 +24,8 @@ namespace pLdevTest
         public static Texture2D blueTexture;
         public static Texture2D greenTexture;
         public static Color darkerGrey;
+
+        public static float playTime;
 
         public static void LoadContent(ContentManager Content, GraphicsDevice _graphics)
         {

@@ -12,7 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 
-namespace pLdevTest
+namespace robot.r
 {
     public class codeInput
     {
@@ -76,6 +76,7 @@ namespace pLdevTest
             numberOfLines = 1;
             currentChar = 0;
             cursorOffset = 0;
+            formattedCode = new List<String>();
 
             fontGlyphs = GlobalThings.font.GetGlyphs();
 
