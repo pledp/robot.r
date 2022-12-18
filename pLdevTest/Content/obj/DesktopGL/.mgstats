@@ -1,3 +1,0 @@
-Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/CRTeffect.fx","C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/bin/DesktopGL/CRTeffect.xnb","EffectProcessor","CompiledEffectContent",1674,1331,0,3418116
-"C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/pLdev logo-export.png","C:/Users/lasse/source/repos/pLdevTest/pLdevTest/pLdev/pLdevTest/Content/bin/DesktopGL/pLdevLogo.xnb","TextureProcessor","Texture2DContent",1379,180085,0,0469255

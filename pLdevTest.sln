@@ -3,23 +3,35 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "pLdevTest", "pLdevTest\pLdevTest.csproj", "{197F62FE-C409-4F74-AD5E-99F42085BC3B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robot.r", "robot.r\robot.r.csproj", "{B431E217-44B6-43EF-BAB3-CCEBDCBB2101}"
 EndProject
 Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{197F62FE-C409-4F74-AD5E-99F42085BC3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{197F62FE-C409-4F74-AD5E-99F42085BC3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{197F62FE-C409-4F74-AD5E-99F42085BC3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{197F62FE-C409-4F74-AD5E-99F42085BC3B}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C2CE60F8-3077-4975-849F-1C705ED338DF}
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B431E217-44B6-43EF-BAB3-CCEBDCBB2101}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B431E217-44B6-43EF-BAB3-CCEBDCBB2101}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B431E217-44B6-43EF-BAB3-CCEBDCBB2101}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B431E217-44B6-43EF-BAB3-CCEBDCBB2101}.Debug|x64.Build.0 = Debug|Any CPU
+		{B431E217-44B6-43EF-BAB3-CCEBDCBB2101}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B431E217-44B6-43EF-BAB3-CCEBDCBB2101}.Debug|x86.Build.0 = Debug|Any CPU
+		{B431E217-44B6-43EF-BAB3-CCEBDCBB2101}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B431E217-44B6-43EF-BAB3-CCEBDCBB2101}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B431E217-44B6-43EF-BAB3-CCEBDCBB2101}.Release|x64.ActiveCfg = Release|Any CPU
+		{B431E217-44B6-43EF-BAB3-CCEBDCBB2101}.Release|x64.Build.0 = Release|Any CPU
+		{B431E217-44B6-43EF-BAB3-CCEBDCBB2101}.Release|x86.ActiveCfg = Release|Any CPU
+		{B431E217-44B6-43EF-BAB3-CCEBDCBB2101}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
