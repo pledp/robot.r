@@ -86,7 +86,7 @@ namespace robot.r
                 "Tunkeutuva viive",
             },
             {
-                "Goals (Singular",
+                "Goals (Singular)",
                 "Maaleja (Yksikkö)",
             },
             {

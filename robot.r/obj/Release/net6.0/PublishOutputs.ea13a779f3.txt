@@ -13,6 +13,7 @@ C:\Users\lasse\Downloads\testbuildgame\Content/robot.xnb
 C:\Users\lasse\Downloads\testbuildgame\Content/smallerFont.xnb
 C:\Users\lasse\Downloads\testbuildgame\Content/StopButton.xnb
 C:\Users\lasse\Downloads\testbuildgame\Content/StopButtonPressed.xnb
+C:\Users\lasse\Downloads\testbuildgame\Content/transistionCircle.xnb
 C:\Users\lasse\Downloads\testbuildgame\Content/transistionMask.xnb
 C:\Users\lasse\Downloads\testbuildgame\robot.r.dll
 C:\Users\lasse\Downloads\testbuildgame\robot.r.deps.json

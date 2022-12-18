@@ -20,13 +20,15 @@ namespace robot.r
         {
             new[]{
                 "The Aliens are invading!",
-                "The End Of The World is coming!",
-                "But, apparently if you defeat all these so called \"Missions\", they will surrender!"
+                "The End Of The World is near!",
+                "But, apparently if you defeat all these so called \"Missions\", they will surrender!",
+                "Only YOU can save All Mankind!"
             },
             new[]{
                 "Avaruusolennot hyökkäävät!",
-                "Maailmanloppu on tulemassa!",
-                "Mutta, ilmeisesti jos lyöt kaikki nämä niin sanotut \"Tehtävät\", he antautuvat!"
+                "Maailmanloppu on hyvinkin lähellä!",
+                "Mutta, ilmeisesti jos lyöt kaikki nämä niin sanotut \"Tehtävät\", he antautuvat!",
+                "Vain TE voitte pelastaa koko Ihmiskunnan!"
             }
         };
         private double typeWriterTimer;
