@@ -1,6 +1,6 @@
 # robot.r
 
-Puzzle game written for a internship. Inspired by Sebastian Lague's[https://www.youtube.com/watch?v=dY6jR52fFWo] project. This repo is a mess, please ignore.
+Puzzle game written for a internship. Inspired by [Sebastian Lague's](https://www.youtube.com/watch?v=dY6jR52fFWo) project. This repo is a mess, please ignore.
 
 # Building
 
